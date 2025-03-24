@@ -1,0 +1,324 @@
+:root {
+  --primary-gold: #CDB06C;
+  --secondary-gold: #8B7355;
+  --cyber-black: #0A0A0A;
+  --cyber-gray: #1E1E1E;
+  --text-color: #FFFFFF;
+  --accent-color: #FFB800;
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  background-color: rgba(10, 10, 10, 0.95);
+  padding: 1rem 2rem;
+  border-bottom: 2px solid var(--primary-gold);
+  position: relative;
+  z-index: 100;
+}
+
+.container::before,
+.container::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    var(--primary-gold) 20%, 
+    var(--primary-gold) 80%, 
+    transparent 100%
+  );
+  opacity: 0.5;
+}
+
+.container::before {
+  top: 0;
+}
+
+.container::after {
+  bottom: 0;
+}
+
+.headerContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem
+}
+
+.logo {
+  font-family: 'Rajdhani', sans-serif;
+  color: var(--text-color);
+  font-size: 1.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  position: relative;
+  display: inline-block;
+  padding: 0 1rem;
+}
+
+.logo::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 70%;
+  background: var(--primary-gold);
+}
+
+.logo span {
+  color: var(--primary-gold);
+  position: relative;
+}
+
+.logo span::after {
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--primary-gold);
+  transform-origin: left;
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.logo:hover span::after {
+  transform: scaleX(1);
+}
+
+.navWrapper {
+  display: flex;
+  align-items: center;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.navList {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+
+.navItem {
+  position: relative;
+  padding: 0.5rem 0;
+}
+
+.navLink {
+  color: var(--text-color);
+  text-decoration: none;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 0.3s ease;
+  position: relative;
+  padding: 0.5rem 1rem;
+}
+
+.navLink::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 2px;
+  height: 0;
+  background: var(--primary-gold);
+  transition: height 0.3s ease;
+}
+
+.navLink:hover::before {
+  height: 100%;
+}
+
+.navLink:hover {
+  color: var(--primary-gold);
+}
+
+.active .navLink {
+  color: var(--primary-gold);
+}
+
+.active .navLink::before {
+  height: 100%;
+}
+
+.searchContainer {
+  position: relative;
+  width: 250px;
+}
+
+.searchInput {
+  width: 100%;
+  background: transparent;
+  border: 1px solid var(--secondary-gold);
+  color: var(--text-color);
+  padding: 0.5rem 2.5rem 0.5rem 1rem;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.searchInput::placeholder {
+  color: var(--secondary-gold);
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: var(--primary-gold);
+}
+
+.searchIcon {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--secondary-gold);
+  transition: color 0.3s ease;
+}
+
+.searchContainer:focus-within .searchIcon {
+  color: var(--primary-gold);
+}
+
+@keyframes glitch {
+  0% {
+    clip-path: inset(50% 0 30% 0);
+    transform: translate(-5px, 5px);
+  }
+  20% {
+    clip-path: inset(15% 0 65% 0);
+    transform: translate(5px, -5px);
+  }
+  40% {
+    clip-path: inset(80% 0 5% 0);
+    transform: translate(5px, 5px);
+  }
+  60% {
+    clip-path: inset(30% 0 55% 0);
+    transform: translate(-5px, -5px);
+  }
+  80% {
+    clip-path: inset(70% 0 15% 0);
+    transform: translate(-5px, 5px);
+  }
+  100% {
+    clip-path: inset(50% 0 30% 0);
+    transform: translate(5px, -5px);
+  }
+}
+
+.glitch {
+  position: relative;
+  animation: glitch 0.2s infinite;
+}
+
+.glitch::before,
+.glitch::after {
+  content: 'Digital';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  clip: rect(0, 900px, 0, 0);
+}
+
+.glitch::before {
+  left: 2px;
+  text-shadow: -2px 0 var(--accent-color);
+  animation: glitch-anim 2s infinite linear alternate-reverse;
+}
+
+.glitch::after {
+  left: -2px;
+  text-shadow: 2px 0 var(--primary-gold);
+  animation: glitch-anim 3s infinite linear alternate-reverse;
+}
+
+.glitch span {
+  position: relative;
+  z-index: 1;
+}
+
+.glitch span::before,
+.glitch span::after {
+  content: 'Hive';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  clip: rect(0, 900px, 0, 0);
+}
+
+.glitch span::before {
+  left: 2px;
+  text-shadow: -2px 0 var(--accent-color);
+  animation: glitch-anim 3s infinite linear alternate-reverse;
+}
+
+.glitch span::after {
+  left: -2px;
+  text-shadow: 2px 0 var(--primary-gold);
+  animation: glitch-anim 2s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-anim {
+  0%{clip:rect(44px,9999px,56px,0)}
+
+  5%{clip:rect(12px,9999px,23px,0)}
+
+  10%{clip:rect(64px,9999px,78px,0)}
+
+  15%{clip:rect(34px,9999px,45px,0)}
+
+  20%{clip:rect(92px,9999px,100px,0)}
+
+  25%{clip:rect(23px,9999px,34px,0)}
+
+  30%{clip:rect(76px,9999px,89px,0)}
+
+  35%{clip:rect(45px,9999px,58px,0)}
+
+  40%{clip:rect(12px,9999px,25px,0)}
+
+  45%{clip:rect(67px,9999px,80px,0)}
+
+  50%{clip:rect(34px,9999px,47px,0)}
+
+  55%{clip:rect(89px,9999px,100px,0)}
+
+  60%{clip:rect(56px,9999px,67px,0)}
+
+  65%{clip:rect(23px,9999px,34px,0)}
+
+  70%{clip:rect(78px,9999px,89px,0)}
+
+  75%{clip:rect(45px,9999px,56px,0)}
+
+  80%{clip:rect(12px,9999px,23px,0)}
+
+  85%{clip:rect(67px,9999px,78px,0)}
+
+  90%{clip:rect(34px,9999px,45px,0)}
+
+  95%{clip:rect(89px,9999px,100px,0)}
+  
+  100%{clip:rect(56px,9999px,67px,0)}
+}

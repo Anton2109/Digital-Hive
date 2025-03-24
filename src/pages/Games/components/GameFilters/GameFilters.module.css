@@ -1,0 +1,78 @@
+.filters {
+  background: var(--color-background-secondary);
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+}
+
+.filters h3 {
+  margin: 0 0 1rem 0;
+  font-size: 1.2rem;
+  color: var(--color-text-primary);
+}
+
+.filterGroup {
+  margin-bottom: 1.5rem;
+}
+
+.filterGroup:last-child {
+  margin-bottom: 0;
+}
+
+.filterLabel {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+}
+
+.filterSelect {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  background: var(--color-background-primary);
+  color: var(--color-text-primary);
+}
+
+.filterSelect:focus {
+  outline: none;
+  border-color: var(--color-accent);
+}
+
+.priceRange {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.priceInput {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  background: var(--color-background-primary);
+  color: var(--color-text-primary);
+}
+
+.priceInput:focus {
+  outline: none;
+  border-color: var(--color-accent);
+}
+
+.filterButton {
+  width: 100%;
+  padding: 0.75rem;
+  margin-top: 1rem;
+  background: var(--color-accent);
+  color: var(--color-text-inverse);
+  border: none;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.filterButton:hover {
+  background: var(--color-accent-hover);
+} 

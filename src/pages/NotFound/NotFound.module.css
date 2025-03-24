@@ -1,0 +1,180 @@
+.notFound {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  text-align: center;
+  padding: 2rem;
+}
+
+.glitchWrapper {
+  position: relative;
+  margin-bottom: 2rem;
+}
+
+.glitchText {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 8rem;
+  font-weight: 700;
+  color: var(--primary-gold);
+  position: relative;
+  text-shadow: 0.05em 0 0 var(--cyber-red),
+              -0.025em -0.05em 0 var(--cyber-blue),
+              0.025em 0.05em 0 var(--primary-gold);
+  animation: glitch 500ms infinite;
+}
+
+.glitchText::before,
+.glitchText::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.glitchText::before {
+  left: 2px;
+  text-shadow: -2px 0 var(--cyber-red);
+  clip: rect(24px, 550px, 90px, 0);
+  animation: glitch-anim 3s infinite linear alternate-reverse;
+}
+
+.glitchText::after {
+  left: -2px;
+  text-shadow: -2px 0 var(--cyber-blue);
+  clip: rect(85px, 550px, 140px, 0);
+  animation: glitch-anim2 2.5s infinite linear alternate-reverse;
+}
+
+.message {
+  font-size: 1.5rem;
+  color: var(--text-primary);
+  margin-bottom: 2rem;
+  font-family: 'Rajdhani', sans-serif;
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  color: var(--primary-gold);
+  text-decoration: none;
+  font-size: 1.2rem;
+  font-family: 'Rajdhani', sans-serif;
+  transition: all 0.3s ease;
+  border: 1px solid var(--primary-gold);
+  padding: 0.5rem 1rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.link::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: rgba(205, 176, 108, 0.1);
+  transition: all 0.3s ease;
+}
+
+.link:hover::before {
+  left: 0;
+}
+
+.link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 15px rgba(205, 176, 108, 0.3);
+}
+
+.arrow {
+  margin-left: 0.5rem;
+  transition: transform 0.3s ease;
+}
+
+.link:hover .arrow {
+  transform: translateX(5px);
+}
+
+@keyframes glitch {
+  0% {
+    text-shadow: 0.05em 0 0 var(--cyber-red),
+                -0.025em -0.05em 0 var(--cyber-blue),
+                0.025em 0.05em 0 var(--primary-gold);
+  }
+  14% {
+    text-shadow: 0.05em 0 0 var(--cyber-red),
+                -0.025em -0.05em 0 var(--cyber-blue),
+                0.025em 0.05em 0 var(--primary-gold);
+  }
+  15% {
+    text-shadow: -0.05em -0.025em 0 var(--cyber-red),
+                0.025em 0.025em 0 var(--cyber-blue),
+                -0.05em -0.05em 0 var(--primary-gold);
+  }
+  49% {
+    text-shadow: -0.05em -0.025em 0 var(--cyber-red),
+                0.025em 0.025em 0 var(--cyber-blue),
+                -0.05em -0.05em 0 var(--primary-gold);
+  }
+  50% {
+    text-shadow: 0.025em 0.05em 0 var(--cyber-red),
+                0.05em 0 0 var(--cyber-blue),
+                0 -0.05em 0 var(--primary-gold);
+  }
+  99% {
+    text-shadow: 0.025em 0.05em 0 var(--cyber-red),
+                0.05em 0 0 var(--cyber-blue),
+                0 -0.05em 0 var(--primary-gold);
+  }
+  100% {
+    text-shadow: -0.025em 0 0 var(--cyber-red),
+                -0.025em -0.025em 0 var(--cyber-blue),
+                -0.025em -0.05em 0 var(--primary-gold);
+  }
+}
+
+@keyframes glitch-anim {
+  0% {
+    clip: rect(14px, 550px, 59px, 0);
+  }
+  20% {
+    clip: rect(37px, 550px, 128px, 0);
+  }
+  40% {
+    clip: rect(89px, 550px, 145px, 0);
+  }
+  60% {
+    clip: rect(5px, 550px, 32px, 0);
+  }
+  80% {
+    clip: rect(64px, 550px, 98px, 0);
+  }
+  100% {
+    clip: rect(24px, 550px, 78px, 0);
+  }
+}
+
+@keyframes glitch-anim2 {
+  0% {
+    clip: rect(67px, 550px, 108px, 0);
+  }
+  20% {
+    clip: rect(42px, 550px, 84px, 0);
+  }
+  40% {
+    clip: rect(12px, 550px, 46px, 0);
+  }
+  60% {
+    clip: rect(78px, 550px, 124px, 0);
+  }
+  80% {
+    clip: rect(34px, 550px, 89px, 0);
+  }
+  100% {
+    clip: rect(56px, 550px, 102px, 0);
+  }
+} 

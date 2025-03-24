@@ -1,0 +1,581 @@
+.home {
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--color-background-primary);
+}
+
+.slider {
+  position: relative;
+  width: 100%;
+  height: 600px;
+  overflow: hidden;
+  background: var(--cyber-black);
+  border: 1px solid rgba(205, 176, 108, 0.3);
+}
+
+.slider::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    var(--primary-gold) 20%, 
+    var(--primary-gold) 80%, 
+    transparent 100%
+  );
+  opacity: 0.5;
+  z-index: 2;
+}
+
+.slider::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    var(--primary-gold) 20%, 
+    var(--primary-gold) 80%, 
+    transparent 100%
+  );
+  opacity: 0.5;
+  z-index: 2;
+}
+
+.slides {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+  height: 100%;
+}
+
+.slide {
+  min-width: 100%;
+  height: 100%;
+}
+
+.slideContent {
+  display: flex;
+  height: 100%;
+  padding: 2rem;
+  position: relative;
+}
+
+.slideInfo {
+  flex: 1;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+
+.slideInfo::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2px;
+  height: 70%;
+  background: var(--primary-gold);
+  opacity: 0.5;
+}
+
+.gameTitle {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 3rem;
+  color: var(--primary-gold);
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  position: relative;
+  padding-left: 1rem;
+}
+
+.gameDescription {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1.2rem;
+  color: var(--text-color);
+  margin-bottom: 2rem;
+  line-height: 1.6;
+  opacity: 0.8;
+  padding-left: 1rem;
+}
+
+.priceBlock {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  padding-left: 1rem;
+}
+
+.prices {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.oldPrice {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1.2rem;
+  color: var(--text-color);
+  opacity: 0.5;
+  text-decoration: line-through;
+}
+
+.newPrice {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 2rem;
+  color: var(--primary-gold);
+  font-weight: 600;
+}
+
+.discount {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1.5rem;
+  color: #00ff00;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border: 1px solid #00ff00;
+  position: relative;
+}
+
+.discount::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #00ff00;
+  opacity: 0.1;
+}
+
+.buyButton {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1.2rem;
+  color: var(--cyber-black);
+  background: var(--primary-gold);
+  border: none;
+  padding: 1rem 2rem;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  width: fit-content;
+  margin-left: 1rem;
+}
+
+.buyButton:hover {
+  background: var(--accent-color);
+}
+
+.buttonGlitch {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--primary-gold);
+  mix-blend-mode: difference;
+  animation: glitch 0.3s infinite;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.buyButton:hover .buttonGlitch {
+  opacity: 0.5;
+}
+
+.slideImage {
+  flex: 1.5;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.imageOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.8) 0%,
+    rgba(0, 0, 0, 0.4) 50%,
+    rgba(0, 0, 0, 0.2) 100%
+  ); */
+}
+
+.sliderControls {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 1rem;
+  z-index: 2;
+}
+
+.sliderDot {
+  width: 12px;
+  height: 12px;
+  border: 1px solid var(--primary-gold);
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.3s ease;
+}
+
+.sliderDot.active {
+  background: var(--primary-gold);
+  transform: rotate(45deg);
+}
+
+.sliderProgress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: rgba(205, 176, 108, 0.2);
+  z-index: 2;
+}
+
+.progressBar {
+  height: 100%;
+  background: var(--primary-gold);
+  transition: width 0.3s linear;
+}
+
+@keyframes glitch {
+  0% {
+    transform: translate(0);
+  }
+  20% {
+    transform: translate(-2px, 2px);
+  }
+  40% {
+    transform: translate(-2px, -2px);
+  }
+  60% {
+    transform: translate(2px, 2px);
+  }
+  80% {
+    transform: translate(2px, -2px);
+  }
+  100% {
+    transform: translate(0);
+  }
+}
+
+@media (max-width: 1024px) {
+  .slider {
+    height: 500px;
+  }
+
+  .slideContent {
+    flex-direction: column;
+  }
+
+  .slideInfo {
+    padding: 1rem;
+  }
+
+  .gameTitle {
+    font-size: 2rem;
+  }
+
+  .gameDescription {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .slider {
+    height: 400px;
+  }
+
+  .priceBlock {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+}
+
+/* Hero секция */
+.hero {
+  position: relative;
+  height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--color-text-inverse);
+  overflow: hidden;
+}
+
+.heroBackground {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
+
+.heroOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7));
+  z-index: -1;
+}
+
+.heroContent {
+  max-width: 800px;
+  padding: 2rem;
+}
+
+.heroTitle {
+  font-size: 3.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.heroSubtitle {
+  font-size: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.heroButton {
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  background: var(--color-accent);
+  color: var(--color-text-inverse);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.heroButton:hover {
+  background: var(--color-accent-hover);
+}
+
+/* Секция категорий */
+.categories {
+  padding: 4rem 2rem;
+  background: var(--color-background-primary);
+}
+
+.sectionTitle {
+  text-align: center;
+  font-size: 2.5rem;
+  color: var(--color-text-primary);
+  margin-bottom: 3rem;
+}
+
+.categoryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.categoryCard {
+  position: relative;
+  height: 200px;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
+
+.categoryCard:hover {
+  transform: translateY(-4px);
+}
+
+.categoryImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.categoryOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  color: #fff;
+  /* background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)); */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.categoryTitle {
+  color: var(--color-text-inverse);
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+/* Секция особенностей */
+.features {
+  padding: 4rem 2rem;
+  background: var(--color-background-secondary);
+}
+
+.featureGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.featureCard {
+  padding: 2rem;
+  text-align: center;
+  background: var(--color-background-primary);
+  border-radius: 8px;
+}
+
+.featureIcon {
+  font-size: 3rem;
+  color: var(--color-accent);
+  margin-bottom: 1rem;
+}
+
+.featureTitle {
+  font-size: 1.5rem;
+  color: var(--color-text-primary);
+  margin-bottom: 1rem;
+}
+
+.featureDescription {
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+/* Секция новостей */
+.news {
+  padding: 4rem 2rem;
+  background: var(--color-background-primary);
+}
+
+.newsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.newsCard {
+  background: var(--color-background-secondary);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.newsImage {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.newsContent {
+  padding: 1.5rem;
+}
+
+.newsDate {
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.newsTitle {
+  font-size: 1.2rem;
+  color: var(--color-text-primary);
+  margin-bottom: 1rem;
+}
+
+.newsExcerpt {
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.newsLink {
+  color: var(--color-accent);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.newsLink:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 1024px) {
+  .heroTitle {
+    font-size: 3rem;
+  }
+
+  .heroSubtitle {
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero {
+    height: 500px;
+  }
+
+  .heroTitle {
+    font-size: 2.5rem;
+  }
+
+  .categories,
+  .features,
+  .news {
+    padding: 3rem 1.5rem;
+  }
+
+  .sectionTitle {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    height: 400px;
+  }
+
+  .heroTitle {
+    font-size: 2rem;
+  }
+
+  .heroSubtitle {
+    font-size: 1rem;
+  }
+
+  .heroButton {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+  }
+}
