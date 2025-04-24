@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { FaShoppingCart, FaUser, FaHeart, FaSearch } from "react-icons/fa";
-import { NavItem } from "@/types/navigation";
+import { INavigation } from "@/types/navigation";
 import styles from "./Header.module.css";
 
 const Header: React.FC = () => {
@@ -19,7 +19,7 @@ const Header: React.FC = () => {
     return () => clearInterval(glitchInterval);
   }, []);
 
-  const navItems: NavItem[] = [
+  const navItems: INavigation[] = [
     { name: "Главная", path: "/" },
     { name: "Скидки", path: "/games/sales" },
     { name: "Популярные", path: "/games/popular" },
@@ -66,9 +66,9 @@ const Header: React.FC = () => {
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
           />
-          <div className={styles.searchIcon}>
+          <button className={styles.searchIcon}>
             <FaSearch size={16} />
-          </div>
+          </button>
         </form>
       </div>
 

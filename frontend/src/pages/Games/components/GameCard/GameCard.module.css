@@ -16,7 +16,7 @@
 .imageWrapper {
   position: relative;
   width: 100%;
-  padding-top: 56.25%; /* 16:9 aspect ratio */
+  height: 150px;
 }
 
 .image {
@@ -29,19 +29,19 @@
 }
 
 .content {
-  padding: 1rem;
+  padding: 16px;
 }
 
 .title {
   margin: 0;
-  font-size: 1.1rem;
+  font-size: 18px;
   font-weight: 600;
   color: var(--color-text-primary);
 }
 
 .price {
-  margin-top: 0.5rem;
-  font-size: 1.2rem;
+  margin-top: 8px;
+  font-size: 19px;
   font-weight: 700;
   color: var(--color-accent);
 }
@@ -49,8 +49,8 @@
 .oldPrice {
   text-decoration: line-through;
   color: var(--color-text-secondary);
-  margin-right: 0.5rem;
-  font-size: 1rem;
+  margin-right: 8px;
+  font-size: 16px;
 }
 
 .newPrice {
@@ -59,12 +59,12 @@
 
 .discount {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
+  top: 16px;
+  right: 16px;
   background: var(--color-accent);
-  color: var(--color-text-inverse);
-  padding: 0.25rem 0.5rem;
+  color: var(--color-text-primary);
+  padding: 4px 8px;
   border-radius: 4px;
   font-weight: 600;
-  font-size: 0.9rem;
-} 
+  font-size: 14px;
+}

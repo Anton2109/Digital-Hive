@@ -1,13 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { NewsItem } from '@/types/news';
+import { INews } from '@/types/news';
 import styles from './News.module.css';
 
-const news: NewsItem[] = [
+const news: INews[] = [
   {
     id: '1',
     title: 'Новые обновления для популярных игр',
-    excerpt: 'Узнайте о последних обновлениях и улучшениях в ваших любимых играх.',
+    desc: 'Узнайте о последних обновлениях и улучшениях в ваших любимых играх.',
     date: '15 марта 2025',
     image: '/images/news/updates.jpg',
     link: '/news/updates'
@@ -15,7 +15,7 @@ const news: NewsItem[] = [
   {
     id: '2',
     title: 'Турнир по Counter Strike 2',
-    excerpt: 'Присоединяйтесь к просмотру и делайте ставки на один икс бет.',
+    desc: 'Присоединяйтесь к просмотру и делайте ставки на один икс бет.',
     date: '10 марта 2025',
     image: '/images/news/tournament.jpg',
     link: '/news/tournament'
@@ -23,7 +23,7 @@ const news: NewsItem[] = [
   {
     id: '3',
     title: 'Новые игры в каталоге',
-    excerpt: 'Познакомьтесь с новыми играми, в нашем каталоге.',
+    desc: 'Познакомьтесь с новыми играми, в нашем каталоге.',
     date: '5 марта 2025',
     image: '@/assets/images/deus-ex.jpg',
     link: '/news/new-games'
@@ -44,7 +44,7 @@ const News: React.FC = () => {
             <div className={styles.newsContent}>
               <span className={styles.newsDate}>{item.date}</span>
               <h3 className={styles.newsTitle}>{item.title}</h3>
-              <p className={styles.newsExcerpt}>{item.excerpt}</p>
+              <p className={styles.newsDesc}>{item.desc}</p>
             </div>
           </Link>
         ))}

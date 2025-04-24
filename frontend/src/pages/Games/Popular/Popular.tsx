@@ -1,44 +1,8 @@
-import { useState } from 'react';
 import styles from './Popular.module.css';
-import GameGrid from '../components/GameGrid';
 import GameFilters from '../components/GameFilters';
-
-interface Game {
-  id: string;
-  title: string;
-  price: number;
-  imageUrl: string;
-  genre: string[];
-  discount?: number;
-  rating: number;
-  reviews: number;
-}
+import GamesList from '../GamesList/GamesList';
 
 const Popular = () => {
-  const [games] = useState<Game[]>([
-    {
-      id: '1',
-      title: 'Elden Ring',
-      price: 59.99,
-      imageUrl: 'https://placehold.co/600x400',
-      genre: ['RPG', 'Action'],
-      rating: 4.9,
-      reviews: 125000
-    },
-    {
-      id: '2',
-      title: 'God of War',
-      price: 49.99,
-      imageUrl: 'https://placehold.co/600x400',
-      genre: ['Action', 'Adventure'],
-      rating: 4.8,
-      reviews: 98000
-    },
-  ]);
-
-  const handleFilterChange = (filters: any) => {
-    console.log('Фильтры:', filters);
-  };
 
   const stats = [
     { value: '10M+', label: 'Активных игроков' },
@@ -65,12 +29,12 @@ const Popular = () => {
         ))}
       </div>
 
-      <div className={styles.filters}>
-        <GameFilters onFilterChange={handleFilterChange} />
+      <div>
+        <GameFilters />
       </div>
 
-      <div className={styles.grid}>
-        <GameGrid games={games} />
+      <div>
+        <GamesList />
       </div>
     </div>
   );

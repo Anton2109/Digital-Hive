@@ -3,6 +3,7 @@ import { Outlet } from 'react-router-dom';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 import styles from './PageLayout.module.css';
+import Loader from '../Loader/Loader';
 
 const PageLayout = () => {
   return (
@@ -10,9 +11,7 @@ const PageLayout = () => {
       <Header />
       <main className={styles.main}>
         <Suspense fallback={
-          <div className={styles.loading}>
-            <div className={styles.loadingText}>Загрузка...</div>
-          </div>
+          <Loader />
         }>
           <Outlet />
         </Suspense>

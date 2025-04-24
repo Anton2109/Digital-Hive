@@ -1,4 +1,29 @@
+/* Swiper */
+.swiper {
+  height: 100%;
+}
+
+:global(.swiper-pagination) {
+  position: absolute;
+  bottom: 40px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  z-index: 2;
+}
+
+.swiperSlide {
+  overflow: hidden !important;
+}
+
+.slideContent {
+  width: 100%;
+  height: 100%;
+}
+
 .slider {
+  margin-top: 30px;
   position: relative;
   width: 100%;
   height: 600px;
@@ -8,16 +33,17 @@
 }
 
 .slider::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(90deg, 
-    transparent 0%, 
-    var(--primary-gold) 20%, 
-    var(--primary-gold) 80%, 
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--primary-gold) 20%,
+    var(--primary-gold) 80%,
     transparent 100%
   );
   opacity: 0.5;
@@ -25,16 +51,17 @@
 }
 
 .slider::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(90deg, 
-    transparent 0%, 
-    var(--primary-gold) 20%, 
-    var(--primary-gold) 80%, 
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--primary-gold) 20%,
+    var(--primary-gold) 80%,
     transparent 100%
   );
   opacity: 0.5;
@@ -64,13 +91,13 @@
 .slideContent {
   display: flex;
   height: 100%;
-  padding: 2rem;
+  padding: 32px;
   position: relative;
 }
 
 .slideInfo {
   flex: 1;
-  padding: 2rem;
+  padding: 32px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -79,7 +106,7 @@
 }
 
 .slideInfo::before {
-  content: '';
+  content: "";
   position: absolute;
   left: 0;
   top: 50%;
@@ -91,67 +118,62 @@
 }
 
 .gameTitle {
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 3rem;
+  font-size: 48px;
   color: var(--primary-gold);
-  margin-bottom: 1rem;
+  margin-bottom: 16px;
   text-transform: uppercase;
   letter-spacing: 2px;
   position: relative;
-  padding-left: 1rem;
+  padding-left: 16px;
 }
 
 .gameDescription {
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 1.2rem;
+  font-size: 19px;
   color: var(--text-color);
-  margin-bottom: 2rem;
+  margin-bottom: 32px;
   line-height: 1.6;
   opacity: 0.8;
-  padding-left: 1rem;
+  padding-left: 16px;
 }
 
 .priceBlock {
   display: flex;
   align-items: center;
-  gap: 2rem;
-  margin-bottom: 2rem;
-  padding-left: 1rem;
+  gap: 32px;
+  margin-bottom: 32px;
+  padding-left: 16px;
 }
 
 .prices {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 16px;
 }
 
 .oldPrice {
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 1.2rem;
+  font-size: 19px;
   color: var(--text-color);
   opacity: 0.5;
   text-decoration: line-through;
 }
 
 .newPrice {
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 2rem;
+  font-size: 32px;
   color: var(--primary-gold);
   font-weight: 600;
 }
 
 .discount {
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 1.5rem;
+  font-size: 24px;
   color: #00ff00;
   font-weight: 600;
-  padding: 0.5rem 1rem;
+  padding: 8px 16px;
   border: 1px solid #00ff00;
   position: relative;
 }
 
 .discount::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -162,12 +184,11 @@
 }
 
 .buyButton {
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 1.2rem;
+  font-size: 19px;
   color: var(--cyber-black);
   background: var(--primary-gold);
   border: none;
-  padding: 1rem 2rem;
+  padding: 16px 32px;
   cursor: pointer;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -175,7 +196,7 @@
   overflow: hidden;
   transition: all 0.3s ease;
   width: fit-content;
-  margin-left: 1rem;
+  margin-left: 16px;
 }
 
 .buyButton:hover {
@@ -228,11 +249,11 @@
 
 .sliderControls {
   position: absolute;
-  bottom: 2rem;
+  bottom: 40px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  gap: 1rem;
+  gap: 16px;
   z-index: 2;
 }
 
@@ -249,22 +270,6 @@
 .sliderDot.active {
   background: var(--primary-gold);
   transform: rotate(45deg);
-}
-
-.sliderProgress {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: rgba(205, 176, 108, 0.2);
-  z-index: 2;
-}
-
-.progressBar {
-  height: 100%;
-  background: var(--primary-gold);
-  transition: width 0.3s linear;
 }
 
 @keyframes glitch {
@@ -287,47 +292,3 @@
     transform: translate(0);
   }
 }
-
-@media (max-width: 1024px) {
-  .slider {
-    height: 500px;
-  }
-  
-  .slideContent {
-    padding: 1.5rem;
-  }
-  
-  .slideInfo {
-    padding: 1.5rem;
-  }
-  
-  .gameTitle {
-    font-size: 2.5rem;
-  }
-  
-  .gameDescription {
-    font-size: 1.1rem;
-  }
-}
-
-@media (max-width: 768px) {
-  .slider {
-    height: 400px;
-  }
-  
-  .priceBlock {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
-  }
-  
-  .slideContent {
-    flex-direction: column;
-    padding: 1rem;
-  }
-  
-  .slideImage {
-    height: 200px;
-    margin-top: 1rem;
-  }
-} 

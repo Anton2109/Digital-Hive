@@ -1,6 +1,6 @@
 import { ReactElement } from 'react';
 
-export interface Feature {
+export interface IFeature {
   id: string;
   icon: ReactElement;
   title: string;

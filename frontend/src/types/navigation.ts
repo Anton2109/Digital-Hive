@@ -1,6 +1,6 @@
 import { ReactElement } from 'react';
 
-export interface NavItem {
+export interface INavigation {
   name: string;
   path: string;
   icon?: ReactElement;

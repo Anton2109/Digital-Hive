@@ -1,4 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Nova+Square&display=swap');
 @import './variables.css';
+
 
 * {
   padding: 0px;
@@ -9,7 +11,7 @@
 body {
   background-color: #000;
   color: #fff;
-  font-family: 'Rajdhani', sans-serif;
+  font-family: "Nova Square", sans-serif;
 }
 
 *,

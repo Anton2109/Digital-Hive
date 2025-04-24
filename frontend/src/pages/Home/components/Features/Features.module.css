@@ -1,37 +1,39 @@
 .features {
-  padding: 4rem 2rem;
+  padding: 64px 32px;
   background: var(--cyber-black);
   position: relative;
   overflow: hidden;
 }
 
 .features::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(90deg, 
-    transparent 0%, 
-    var(--primary-gold) 20%, 
-    var(--primary-gold) 80%, 
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--primary-gold) 20%,
+    var(--primary-gold) 80%,
     transparent 100%
   );
   opacity: 0.5;
 }
 
 .features::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(90deg, 
-    transparent 0%, 
-    var(--primary-gold) 20%, 
-    var(--primary-gold) 80%, 
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--primary-gold) 20%,
+    var(--primary-gold) 80%,
     transparent 100%
   );
   opacity: 0.5;
@@ -39,19 +41,18 @@
 
 .title {
   text-align: center;
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 2.5rem;
+  font-size: 40px;
   color: var(--primary-gold);
-  margin-bottom: 3rem;
+  margin-bottom: 48px;
   text-transform: uppercase;
   letter-spacing: 2px;
   position: relative;
 }
 
 .title::after {
-  content: '';
+  content: "";
   position: absolute;
-  bottom: -1rem;
+  bottom: -16px;
   left: 50%;
   transform: translateX(-50%);
   width: 100px;
@@ -63,7 +64,7 @@
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
+  gap: 32px;
   max-width: 1200px;
   margin: 0 auto;
   position: relative;
@@ -71,7 +72,7 @@
 }
 
 .featureCard {
-  padding: 2rem;
+  padding: 32px;
   text-align: center;
   background: rgba(205, 176, 108, 0.05);
   border: 1px solid rgba(205, 176, 108, 0.1);
@@ -82,7 +83,7 @@
 }
 
 .featureCard::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -109,17 +110,17 @@
 }
 
 .iconWrapper {
-  font-size: 3rem;
+  font-size: 48px;
   color: var(--primary-gold);
-  margin-bottom: 1.5rem;
+  margin-bottom: 24px;
   position: relative;
   display: inline-block;
 }
 
 .iconWrapper::after {
-  content: '';
+  content: "";
   position: absolute;
-  bottom: -0.5rem;
+  bottom: -8px;
   left: 50%;
   transform: translateX(-50%);
   width: 50px;
@@ -129,31 +130,15 @@
 }
 
 .featureTitle {
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 1.5rem;
+  font-size: 24px;
   color: var(--primary-gold);
-  margin-bottom: 1rem;
+  margin-bottom: 16px;
   text-transform: uppercase;
   letter-spacing: 1px;
 }
 
 .featureDescription {
-  font-family: 'Rajdhani', sans-serif;
   color: var(--text-color);
   line-height: 1.6;
   opacity: 0.8;
 }
-
-@media (max-width: 768px) {
-  .features {
-    padding: 3rem 1.5rem;
-  }
-
-  .title {
-    font-size: 2rem;
-  }
-
-  .grid {
-    grid-template-columns: 1fr;
-  }
-} 

@@ -3,21 +3,21 @@ import styles from './GameCard.module.css';
 
 interface GameCardProps {
   id: string;
-  title: string;
+  name: string;
   price: number;
   imageUrl: string;
   discount?: number;
 }
 
-const GameCard = ({ id, title, price, imageUrl, discount }: GameCardProps) => {
+const GameCard = ({ id, name, price, imageUrl, discount }: GameCardProps) => {
   return (
     <Link to={`/games/${id}`} className={styles.card}>
       <div className={styles.imageWrapper}>
-        <img src={imageUrl} alt={title} className={styles.image} />
+        <img src={imageUrl} alt={name} className={styles.image} />
         {discount && <div className={styles.discount}>-{discount}%</div>}
       </div>
       <div className={styles.content}>
-        <h3 className={styles.title}>{title}</h3>
+        <h3 className={styles.title}>{name}</h3>
         <div className={styles.price}>
           {discount ? (
             <>

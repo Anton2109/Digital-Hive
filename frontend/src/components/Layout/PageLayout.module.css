@@ -8,49 +8,7 @@
 .main {
   flex: 1;
   width: 100%;
-  max-width: 1200px;
+  max-width: 1800px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 32px;
 }
-
-.loading {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 400px;
-}
-
-.loadingText {
-  font-family: 'Rajdhani', sans-serif;
-  color: var(--primary-gold);
-  font-size: 1.5rem;
-  position: relative;
-  padding-left: 2rem;
-}
-
-.loadingText::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 1rem;
-  height: 2px;
-  background: var(--primary-gold);
-  animation: loadingLine 1s infinite;
-}
-
-@keyframes loadingLine {
-  0% {
-    transform: translateY(-50%) scaleX(0.5);
-    opacity: 0.3;
-  }
-  50% {
-    transform: translateY(-50%) scaleX(1.5);
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(-50%) scaleX(0.5);
-    opacity: 0.3;
-  }
-} 

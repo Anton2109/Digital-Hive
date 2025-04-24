@@ -8,7 +8,7 @@ const Hero = () => {
     <section className={styles.hero}>
       <img
         src={img}
-        alt="Hero background"
+        alt=""
         className={styles.heroBackground}
       />
       <div className={styles.heroOverlay} />

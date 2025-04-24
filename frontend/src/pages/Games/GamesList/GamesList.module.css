@@ -1,43 +1,82 @@
 .container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
+  padding: 32px;
 }
 
-.header {
-  margin-bottom: 2rem;
-}
-
-.title {
-  font-size: 2rem;
-  color: var(--color-text-primary);
-  margin: 0 0 1rem 0;
-}
-
-.description {
-  color: var(--color-text-secondary);
-  font-size: 1.1rem;
-  max-width: 600px;
-}
-
-.filtersAndGrid {
+.gamesGrid {
   display: grid;
-  grid-template-columns: 250px 1fr;
-  gap: 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 32px;
+  padding: 16px;
 }
 
-@media (max-width: 1024px) {
-  .container {
-    padding: 1.5rem;
-  }
+.gameCard {
+  width: 320px;
+  height: 320px;
+  position: relative;
+  background: var(--cyber-black);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: 0.2s ease;
+  border: 1px solid rgba(205, 176, 108, 0.2);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
 }
 
-@media (max-width: 768px) {
-  .filtersAndGrid {
-    grid-template-columns: 1fr;
-  }
+.gameCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(255, 42, 109, 0.2);
+  border-color: var(--primary-gold);
+}
 
-  .title {
-    font-size: 1.75rem;
-  }
-} 
+.gameCard::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, transparent 0%,rgba(205, 176, 108, 0.1) 50%, transparent 100%);
+  z-index: 1;
+}
+
+.gameImage {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-bottom: 2px solid var(--primary-gold);
+  transition: 0.2s ease;
+}
+
+.gameCard:hover .gameImage {
+  transform: scale(1.05);
+  filter: brightness(1.1);
+}
+
+.gameTitle {
+  color: var(--text-color);
+  font-size: 19px;
+  font-weight: 600;
+  padding: 16px;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: relative;
+  z-index: 2;
+  background: linear-gradient(
+    to right,
+    var(--primary-gold) 0%,
+    var(--text-color) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gamePrice {
+  color: var(--primary-gold);
+  font-size: 22px;
+  font-weight: bold;
+  padding: 0 16px 16px;
+  margin: 0;
+  text-shadow: 0 0 8px rgba(205, 176, 108, 0.3);
+  position: relative;
+  z-index: 2;
+}

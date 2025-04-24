@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import styles from "./GamesList.module.css";
 import { IGame } from "@/types/game";
 import GameService from "@/API/GameService";
@@ -13,7 +14,9 @@ const GamesList = () => {
     const fetchGames = async () => {
       try {
         if (categoryId) {
-          const categoryGames = await GameService.getGamesByCategoryId(Number(categoryId));
+          const categoryGames = await GameService.getGamesByCategoryId(
+            Number(categoryId)
+          );
           setGames(categoryGames);
         } else {
           const allGames = await GameService.getGames();
@@ -29,19 +32,19 @@ const GamesList = () => {
 
   return (
     <div className={styles.container}>
-      <h1>`Игры по категории ${categoryId}`</h1>
-
       <div className={styles.gamesGrid}>
         {games.map((game) => (
-          <div key={game.id} className={styles.gameCard}>
-            <img 
-              src={game.img} 
-              alt={game.title} 
-              className={styles.gameImage}
-            />
-            <h3 className={styles.gameTitle}>{game.title}</h3>
-            <p className={styles.gamePrice}>{game.price} ₽</p>
-          </div>
+          <Link key={game.id} to={`/games/${game.name}`}>
+            <div key={game.id} className={styles.gameCard}>
+              <img
+                src={game.img}
+                alt={game.name}
+                className={styles.gameImage}
+              />
+              <h3 className={styles.gameTitle}>{game.name}</h3>
+              <p className={styles.gamePrice}>{game.price} ₽</p>
+            </div>
+          </Link>
         ))}
       </div>
     </div>

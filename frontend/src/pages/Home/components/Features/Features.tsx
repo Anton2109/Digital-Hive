@@ -1,8 +1,8 @@
 import { FaGamepad, FaShieldAlt, FaHeadset } from 'react-icons/fa';
-import { Feature } from '@/types/feature';
+import { IFeature } from '@/types/feature';
 import styles from './Features.module.css';
 
-const features: Feature[] = [
+const features: IFeature[] = [
   {
     id: '1',
     icon: <FaGamepad size={24} />,

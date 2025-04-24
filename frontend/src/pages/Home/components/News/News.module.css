@@ -1,5 +1,5 @@
 .news {
-  padding: 4rem 2rem;
+  padding: 64px 32px;
   background: var(--cyber-black);
   position: relative;
   overflow: hidden;
@@ -39,10 +39,9 @@
 
 .title {
   text-align: center;
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 2.5rem;
+  font-size: 40px;
   color: var(--primary-gold);
-  margin-bottom: 3rem;
+  margin-bottom: 48px;
   text-transform: uppercase;
   letter-spacing: 2px;
   position: relative;
@@ -51,7 +50,7 @@
 .title::after {
   content: '';
   position: absolute;
-  bottom: -1rem;
+  bottom: -16px;
   left: 50%;
   transform: translateX(-50%);
   width: 100px;
@@ -63,7 +62,7 @@
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
+  gap: 32px;
   max-width: 1200px;
   margin: 0 auto;
   position: relative;
@@ -121,29 +120,27 @@
 }
 
 .newsContent {
-  padding: 1.5rem;
+  padding: 24px;
   position: relative;
   z-index: 1;
 }
 
 .newsDate {
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 0.9rem;
+  font-size: 14px;
   color: var(--primary-gold);
   opacity: 0.8;
-  margin-bottom: 0.5rem;
+  margin-bottom: 8px;
   display: block;
 }
 
 .newsTitle {
-  font-family: 'Rajdhani', sans-serif;
-  font-size: 1.2rem;
+  font-size: 16px;
   color: var(--primary-gold);
-  margin-bottom: 1rem;
+  margin-bottom: 16px;
   text-transform: uppercase;
   letter-spacing: 1px;
   position: relative;
-  padding-left: 1rem;
+  padding-left: 16px;
 }
 
 .newsTitle::before {
@@ -158,12 +155,11 @@
   opacity: 0.5;
 }
 
-.newsExcerpt {
-  font-family: 'Rajdhani', sans-serif;
+.newsDesc {
   color: var(--text-color);
   line-height: 1.6;
   opacity: 0.8;
-  margin-bottom: 1rem;
+  margin-bottom: 16px;
 }
 
 .newsLink {
@@ -175,25 +171,3 @@
 .newsLink:hover {
   text-decoration: underline;
 }
-
-@media (max-width: 768px) {
-  .news {
-    padding: 3rem 1.5rem;
-  }
-
-  .title {
-    font-size: 2rem;
-  }
-
-  .grid {
-    grid-template-columns: 1fr;
-  }
-
-  .newsImage {
-    height: 180px;
-  }
-
-  .newsTitle {
-    font-size: 1.1rem;
-  }
-} 

@@ -1,78 +1,43 @@
 .filters {
-  background: var(--color-background-secondary);
-  padding: 1.5rem;
+  background-color: var(--color-background-secondary);
+  padding: 24px;
   border-radius: 8px;
-  margin-bottom: 2rem;
 }
 
-.filters h3 {
-  margin: 0 0 1rem 0;
-  font-size: 1.2rem;
-  color: var(--color-text-primary);
-}
-
-.filterGroup {
-  margin-bottom: 1.5rem;
-}
-
-.filterGroup:last-child {
-  margin-bottom: 0;
-}
-
-.filterLabel {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-weight: 500;
-  color: var(--color-text-secondary);
-}
-
-.filterSelect {
-  width: 100%;
-  padding: 0.5rem;
-  border: 1px solid var(--color-border);
-  border-radius: 4px;
-  background: var(--color-background-primary);
-  color: var(--color-text-primary);
-}
-
-.filterSelect:focus {
-  outline: none;
-  border-color: var(--color-accent);
-}
-
-.priceRange {
+.btnWrapper {
+  width: 115px;
+  padding: 8px 16px;
   display: flex;
-  gap: 1rem;
   align-items: center;
-}
-
-.priceInput {
-  width: 100%;
-  padding: 0.5rem;
-  border: 1px solid var(--color-border);
-  border-radius: 4px;
-  background: var(--color-background-primary);
-  color: var(--color-text-primary);
-}
-
-.priceInput:focus {
-  outline: none;
-  border-color: var(--color-accent);
-}
-
-.filterButton {
-  width: 100%;
-  padding: 0.75rem;
-  margin-top: 1rem;
-  background: var(--color-accent);
-  color: var(--color-text-inverse);
-  border: none;
-  border-radius: 4px;
-  font-weight: 600;
+  justify-content: space-between;
+  gap: 8px;
   cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
+  border: 1px solid var(--primary-gold);
+  border-radius: 6px;
+  background-color: transparent;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
 }
 
-.filterButton:hover {
-  background: var(--color-accent-hover);
-} 
+.btnWrapper:hover {
+  border-color: var(--color-accent-gold);
+}
+
+.btnFilter {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.25px;
+  background: none;
+  border: none;
+  transition: color 0.2s ease;
+  cursor: pointer;
+}
+
+.btnWrapper svg {
+  color: var(--primary-gold);
+  transition: all 0.3s ease;
+  transform: scale(1);
+  filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.3));
+}
