@@ -1,7 +1,7 @@
 import { Controller, Get, Param, NotFoundException } from '@nestjs/common';
 import { GameByIdService } from './game-by-id.service';
 
-@Controller('game-by-id')
+@Controller('game-details')
 export class GameByIdController {
   constructor(private readonly gameByIdService: GameByIdService) {}
 

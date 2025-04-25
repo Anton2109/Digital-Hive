@@ -1,12 +1,13 @@
 import { API_ENDPOINTS } from "./endpoints";
 import { API_URL } from "@/constants";
 import axios from "axios";
-import { IGame } from "@/types/game";
+import { IGame, IGameCard } from "@/types/game";
 import { ICategory } from "@/types/category";
 
 const baseUrl = API_URL;
 
 export default class GameService {
+  
   static async getGames(): Promise<IGame[]> {
     try {
       const response = await axios.get<IGame[]>(
@@ -31,9 +32,9 @@ export default class GameService {
     }
   }
 
-  static async getGameById(id: number): Promise<IGame | null> {
+  static async getGameById(id: number): Promise<IGameCard | null> {
     try {
-      const response = await axios.get<IGame>(
+      const response = await axios.get<IGameCard>(
         `${baseUrl}${API_ENDPOINTS.GAME_BY_ID(id)}`
       );
       return response.data;

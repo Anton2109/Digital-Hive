@@ -1,0 +1,30 @@
+.button {
+  font-size: 24px;
+  color: #ffd700;
+  font-weight: bold;
+  margin: 20px 0;
+
+  cursor: pointer;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  border-radius: 20px;
+  padding: 8px 15px;
+  width: 300px;
+  transition: all 0.4s ease;
+}
+
+.button:hover {
+  box-shadow: 0 0 5px rgba(0, 255, 255, 0.3), 0 0 10px rgba(0, 255, 255, 0.2),
+    0 0 15px rgba(0, 255, 255, 0.1);
+
+  animation: neon 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes neon {
+  from {
+    box-shadow: 0 0 5px rgba(0, 255, 255, 0.3);
+  }
+  to {
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
+  }
+}

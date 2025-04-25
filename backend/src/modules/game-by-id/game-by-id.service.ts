@@ -23,51 +23,46 @@ export class GameByIdService {
   async findOne(id: number) {
     const game = await this.gameRepository.findOne({
       where: { id },
+      relations: [
+        'categories',
+        'gameInfo',
+        'minRequirements',
+        'maxRequirements',
+      ],
     });
 
     if (!game) {
-      throw new NotFoundException(`Game with ID ${id} not found`);
+      throw new NotFoundException(`Игра по Id: ${id} не найдена`);
     }
-
-    const [gameInfo, minReq, maxReq] = await Promise.all([
-      this.gameInfoRepository.findOne({
-        where: { gameId: id },
-      }),
-      this.systemReqMinRepository.findOne({
-        where: { gameId: id },
-      }),
-      this.systemReqMaxRepository.findOne({
-        where: { gameId: id },
-      }),
-    ]);
 
     return {
       id: game.id,
       name: game.name,
       img: `${pathsConfig.baseUrl}${pathsConfig.assets.images.games}/${game.img}`,
       price: game.price,
+      categories: game.categories,
       info: {
-        description: gameInfo?.description,
+        description: game.gameInfo?.description || 'Описание отсутствует',
       },
       systemRequirements: {
-        minimum: minReq
+        minimum: game.minRequirements
           ? {
-              windows: minReq.windows,
-              processor: minReq.processor,
-              RAM: minReq.RAM,
-              graphicsCard: minReq.graphicsCard,
-              DirectX: minReq.DirectX,
-              DiskSpace: minReq.DiskSpace,
+              windows: game.minRequirements.windows,
+              processor: game.minRequirements.processor,
+              RAM: game.minRequirements.RAM,
+              graphicsCard: game.minRequirements.graphicsCard,
+              DirectX: game.minRequirements.DirectX,
+              DiskSpace: game.minRequirements.DiskSpace,
             }
           : null,
-        recommended: maxReq
+        recommended: game.maxRequirements
           ? {
-              windows: maxReq.windows,
-              processor: maxReq.processor,
-              RAM: maxReq.RAM,
-              graphicsCard: maxReq.graphicsCard,
-              DirectX: maxReq.DirectX,
-              DiskSpace: maxReq.DiskSpace,
+              windows: game.maxRequirements.windows,
+              processor: game.maxRequirements.processor,
+              RAM: game.maxRequirements.RAM,
+              graphicsCard: game.maxRequirements.graphicsCard,
+              DirectX: game.maxRequirements.DirectX,
+              DiskSpace: game.maxRequirements.DiskSpace,
             }
           : null,
       },

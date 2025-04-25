@@ -34,7 +34,7 @@ const GamesList = () => {
     <div className={styles.container}>
       <div className={styles.gamesGrid}>
         {games.map((game) => (
-          <Link key={game.id} to={`/games/${game.name}`}>
+          <Link key={game.id} to={`/games/${game.id}`}>
             <div key={game.id} className={styles.gameCard}>
               <img
                 src={game.img}

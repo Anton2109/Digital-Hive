@@ -32,16 +32,16 @@ export class GameService {
 
   async findOne(id: number): Promise<Game> {
     if (isNaN(id)) {
-      throw new BadRequestException(`Некрректный ID игры: ${id}`);
+      throw new BadRequestException(`Некорректный ID игры: ${id}`);
     }
 
     const game = await this.gameRepository.findOne({
       where: { id },
-      relations: ['genres'],
+      relations: ['categories'],
     });
 
     if (!game) {
-      throw new NotFoundException(`Game with ID ${id} not found`);
+      throw new NotFoundException(`Игра с id: ${id} не найдена`);
     }
 
     return {

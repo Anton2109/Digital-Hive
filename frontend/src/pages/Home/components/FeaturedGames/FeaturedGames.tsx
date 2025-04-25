@@ -109,7 +109,7 @@ const FeaturedGames = () => {
                     )}
                   </div>
                 </div>
-                <Link to={`/games/${game.id}`} className={styles.buyButton}>
+                <Link to={`/games/${game.name}`} className={styles.buyButton}>
                   Купить сейчас
                   <div className={styles.buttonGlitch} />
                 </Link>

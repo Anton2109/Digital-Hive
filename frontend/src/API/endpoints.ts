@@ -1,7 +1,7 @@
 export const API_ENDPOINTS = {
 
   GAMES: '/games',
-  GAME_BY_ID: (id: string | number) => `/games/${id}`,
+  GAME_BY_ID: (id: string | number) => `/game-details/${id}`,
   GAMES_BY_CATEGORY: (categoryId: string | number) => `/categories/${categoryId}/games`,
   GAME_DETAILS: (id: string) => `/games/${id}`,
   FEATURED_GAMES: '/games/featured',

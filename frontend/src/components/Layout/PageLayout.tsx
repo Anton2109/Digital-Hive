@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 import styles from './PageLayout.module.css';
-import Loader from '../Loader/Loader';
+import Loader from '../../UI/Loader/Loader';
 
 const PageLayout = () => {
   return (
