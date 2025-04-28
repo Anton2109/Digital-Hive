@@ -1,14 +1,19 @@
 import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { FaShoppingCart, FaUser, FaHeart, FaSearch } from "react-icons/fa";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { FaShoppingCart, FaUser, FaHeart } from "react-icons/fa";
 import { INavigation } from "@/types/navigation";
 import styles from "./Header.module.css";
+import Search from "../Search/Search";
+import { IGame } from "@/types/game";
+import { useGameSearch } from "@/hooks/useGameSearch";
 
 const Header: React.FC = () => {
   const [activeItem, setActiveItem] = useState<string | null>(null);
-  const [searchValue, setSearchValue] = useState("");
   const [isGlitching, setIsGlitching] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { searchValue, results, isLoading, handleSearchChange, clearSearch } =
+    useGameSearch();
 
   useEffect(() => {
     const glitchInterval = setInterval(() => {
@@ -44,9 +49,8 @@ const Header: React.FC = () => {
     setActiveItem(item);
   };
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Search:", searchValue);
+  const handleResultClick = (game: IGame) => {
+    navigate(`/games/${game.id}`);
   };
 
   return (
@@ -58,18 +62,14 @@ const Header: React.FC = () => {
           </h1>
         </Link>
 
-        <form className={styles.searchContainer} onSubmit={handleSearch}>
-          <input
-            type="text"
-            className={styles.searchInput}
-            placeholder="Поиск..."
-            value={searchValue}
-            onChange={(e) => setSearchValue(e.target.value)}
-          />
-          <button className={styles.searchIcon}>
-            <FaSearch size={16} />
-          </button>
-        </form>
+        <Search
+          searchValue={searchValue}
+          setSearchValue={handleSearchChange}
+          searchResults={results}
+          isLoading={isLoading}
+          onResultClick={handleResultClick}
+          clearSearch={clearSearch}
+        />
       </div>
 
       <div className={styles.navWrapper}>

@@ -4,6 +4,7 @@ import styles from "./GamesList.module.css";
 import { IGame } from "@/types/game";
 import GameService from "@/API/GameService";
 import { useSearchParams } from "react-router-dom";
+import Loader from "@/UI/Loader/Loader";
 
 const GamesList = () => {
   const [games, setGames] = useState<IGame[]>([]);
@@ -28,7 +29,12 @@ const GamesList = () => {
     };
 
     fetchGames();
+    
   }, [categoryId]);
+
+  if (!games) {
+    return <Loader />;
+  }
 
   return (
     <div className={styles.container}>

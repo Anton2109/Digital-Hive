@@ -7,7 +7,6 @@ import { ICategory } from "@/types/category";
 const baseUrl = API_URL;
 
 export default class GameService {
-  
   static async getGames(): Promise<IGame[]> {
     try {
       const response = await axios.get<IGame[]>(
@@ -52,6 +51,17 @@ export default class GameService {
       return response.data;
     } catch (error) {
       console.error("Ошибка при получении игр по категории:", error);
+      return [];
+    }
+  }
+
+  static async searchGames(query: string): Promise<IGame[]> {
+    try {
+      const response = await axios.get(`${baseUrl}${API_ENDPOINTS.GAMES}`, {params: { name: query, limit: 10 },
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Ошибка при поиске игр:", error);
       return [];
     }
   }
