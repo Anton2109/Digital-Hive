@@ -1,0 +1,68 @@
+@import url("../../styles/variables.css");
+
+.filterContainer {
+  width: 250px;
+  margin-right: 32px;
+}
+
+.filterTitle {
+  margin-bottom: 16px;
+  color: var(--color-text-secondary);
+  font-size: 18px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(205, 176, 108, 0.2);
+}
+
+.filterList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: var(--cyber-black);
+  border-radius: 4px;
+}
+
+.filterItem {
+  padding: 12px 16px;
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  border-radius: 4px;
+  position: relative;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  text-align: left;
+}
+
+.filterItem:hover {
+  color: var(--text-color);
+  background: rgba(255, 42, 109, 0.1);
+}
+
+.filterItem:hover::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(
+    to bottom,
+    var(--primary-gold),
+    var(--accent-color)
+  );
+}
+
+.filterItem.active {
+  color: var(--primary-gold);
+  background: rgba(205, 176, 108, 0.1);
+  border-left: 2px solid var(--primary-gold);
+}

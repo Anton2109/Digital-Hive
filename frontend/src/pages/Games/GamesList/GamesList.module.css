@@ -1,17 +1,44 @@
+@import url("../../../styles/variables.css");
+
 .container {
+  display: flex;
   padding: 32px;
+}
+
+.mainContent {
+display: flex;
+}
+
+.title {
+  font-size: 48px;
+  margin-bottom: 32px;
+  color: transparent;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  background: linear-gradient(
+    to right,
+    var(--primary-gold),
+    var(--accent-color)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  position: relative;
+  padding-bottom: 16px;
 }
 
 .gamesGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 32px;
-  padding: 16px;
+  padding: 16px 16px 16px 64px;
+  margin-left: 32px;
+  max-width: calc(100% - 32px);
 }
 
 .gameCard {
-  width: 320px;
-  height: 320px;
+  width: 100%;
+  max-width: 320px;
   position: relative;
   background: var(--cyber-black);
   border-radius: 8px;
@@ -34,7 +61,12 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(45deg, transparent 0%,rgba(205, 176, 108, 0.1) 50%, transparent 100%);
+  background: linear-gradient(
+    45deg,
+    transparent 0%,
+    rgba(205, 176, 108, 0.1) 50%,
+    transparent 100%
+  );
   z-index: 1;
 }
 

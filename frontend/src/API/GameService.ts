@@ -26,7 +26,7 @@ export default class GameService {
       );
       return response.data;
     } catch (error) {
-      console.error("Ошибка при получении списка жанров:", error);
+      console.error("Ошибка при получении списка категорий:", error);
       return [];
     }
   }
