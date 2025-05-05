@@ -1,17 +1,11 @@
-import { ICategory } from "@/types/category";
+import { ICategoryFilterProps } from "@/interfaces/category";
 import styles from "./CategoryFilter.module.css";
-
-interface CategoryFilterProps {
-  categories: ICategory[];
-  selectedCategory: number | null;
-  onSelectCategory: (categoryId: number | null) => void;
-}
 
 const CategoryFilter = ({
   categories,
   selectedCategory,
   onSelectCategory,
-}: CategoryFilterProps) => {
+}: ICategoryFilterProps) => {
   return (
     <div className={styles.filterContainer}>
       <h3 className={styles.filterTitle}>Категории</h3>

@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaShoppingCart, FaUser, FaHeart } from "react-icons/fa";
-import { INavigation } from "@/types/navigation";
+import { INavigation } from "@/interfaces/navigation";
 import styles from "./Header.module.css";
 import Search from "../Search/Search";
-import { IGame } from "@/types/game";
+import { IGame } from "@/interfaces/game";
 import { useGameSearch } from "@/hooks/useGameSearch";
 
 const Header: React.FC = () => {

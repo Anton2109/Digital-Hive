@@ -1,5 +1,4 @@
 import styles from './Popular.module.css';
-import GameFilters from '../components/GameFilters';
 import GamesList from '../GamesList/GamesList';
 
 const Popular = () => {
@@ -27,10 +26,6 @@ const Popular = () => {
             <div className={styles.statLabel}>{stat.label}</div>
           </div>
         ))}
-      </div>
-
-      <div>
-        <GameFilters />
       </div>
 
       <div>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { ICategory } from "@/types/category";
+import { ICategory } from "@/interfaces/category";
 import styles from "./Categories.module.css";
 import GameService from "@/API/GameService";
 import Loader from "@/UI/Loader/Loader";

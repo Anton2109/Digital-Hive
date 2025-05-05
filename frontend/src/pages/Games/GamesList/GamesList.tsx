@@ -1,73 +1,74 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import styles from "./GamesList.module.css";
-import { IGame } from "@/types/game";
-import { ICategory } from "@/types/category";
+import { IGame } from "@/interfaces/game";
+import { ICategory } from "@/interfaces/category";
 import GameService from "@/API/GameService";
 import Loader from "@/UI/Loader/Loader";
-import CategoryFilter from "@/components/CategoryFilter/CategoryFilter";
+import { AdvancedGameFilters } from "../components/AdvancedGameFilters/AdvancedGameFilters";
+import { SortType } from "@/types/SortType";
+import { sortGames } from "@/utils/gameSorting";
 
 const GamesList = () => {
   const [games, setGames] = useState<IGame[]>([]);
   const [categories, setCategories] = useState<ICategory[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [sortType, setSortType] = useState<SortType>("price_asc");
+
+  const sortedGames = useMemo(
+    () => sortGames(games, sortType),
+    [games, sortType]
+  );
 
   useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const categoriesData = await GameService.getCategories();
-        setCategories(categoriesData);
-      } catch (error) {
-        console.error("Ошибка при загрузке категорий:", error);
-      }
-    };
-
-    fetchCategories();
-  }, []);
-
-  useEffect(() => {
-    const fetchGames = async () => {
+    const fetchData = async () => {
       setIsLoading(true);
       try {
-        const gamesData = selectedCategory
-          ? await GameService.getGamesByCategoryId(selectedCategory)
-          : await GameService.getGames();
+        const [categoriesData, gamesData] = await Promise.all([
+          GameService.getCategories(),
+          selectedCategory
+            ? GameService.getGamesByCategoryId(selectedCategory)
+            : GameService.getGames(),
+        ]);
+        setCategories(categoriesData);
         setGames(gamesData);
       } catch (error) {
-        console.error("Ошибка при загрузке игр:", error);
+        console.error("Ошибка при загрузке:", error);
       } finally {
         setIsLoading(false);
       }
     };
 
-    fetchGames();
+    fetchData();
   }, [selectedCategory]);
 
-  const handleCategorySelect = (categoryId: number | null) => {
+  const onCategorySelect = (categoryId: number | null) => {
     setSelectedCategory(categoryId);
   };
 
-  if (isLoading) {
-    return <Loader />;
-  }
-
-  return (
+  return isLoading ? (
+    <Loader />
+  ) : (
     <div className={styles.container}>
-      <div className={styles.mainContent}>
-        <CategoryFilter
+      <div className={styles.filtersPanel}>
+        <AdvancedGameFilters
           categories={categories}
           selectedCategory={selectedCategory}
-          onSelectCategory={handleCategorySelect}
+          onSelectCategory={onCategorySelect}
+          currentSort={sortType}
+          onSortChange={setSortType}
         />
+      </div>
 
+      <div className={styles.mainContent}>
         <div className={styles.gamesGrid}>
-          {games.length > 0 ? (
-            games.map((game) => (
+          {sortedGames.length > 0 ? (
+            sortedGames.map((game) => (
               <Link key={game.id} to={`/games/${game.id}`}>
                 <div className={styles.gameCard}>
                   <img
-                    src={game.img}
+                    src={game.img_path}
                     alt={game.name}
                     className={styles.gameImage}
                   />
@@ -77,9 +78,7 @@ const GamesList = () => {
               </Link>
             ))
           ) : (
-            <div className={styles.noGames}>
-              Игр в этой категории не найдено
-            </div>
+            <p className={styles.noGames}>Игры не найдены</p>
           )}
         </div>
       </div>

@@ -1,0 +1,1 @@
+export type SortType = "price_asc" | "price_desc" | "name_asc" | "name_desc";

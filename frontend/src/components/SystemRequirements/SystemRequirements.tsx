@@ -1,5 +1,5 @@
 import styles from '@/pages/Games/GameDetails/GameDetails.module.css';
-import { ISystemRequirementsProps } from '@/types/game';
+import { ISystemRequirementsProps } from '@/interfaces/game';
 
 const SystemRequirements = ({title, requirements}: ISystemRequirementsProps) => {
   return (

@@ -1,16 +1,16 @@
 import styles from './Home.module.css';
-import Hero from './components/Hero/Hero';
+// import Hero from './components/Hero/Hero';
 import FeaturedGames from './components/FeaturedGames/FeaturedGames';
-import Categories from './components/Categories/Categories';
+// import Categories from './components/Categories/Categories';
 import Features from './components/Features/Features';
 import News from './components/News/News';
 
 const Home = () => {
   return (
     <div className={styles.home}>
-      <Hero />
+      {/* <Hero /> */}
       <FeaturedGames />
-      <Categories />
+      {/* <Categories /> */}
       <Features />
       <News />
     </div>

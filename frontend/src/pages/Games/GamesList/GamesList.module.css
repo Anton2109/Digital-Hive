@@ -2,11 +2,22 @@
 
 .container {
   display: flex;
+  flex-direction: column;
   padding: 32px;
+  gap: 32px;
+  min-height: calc(100vh - 64px);
+}
+
+.filtersPanel {
+  border-radius: 8px;
+  padding: 16px;
+  z-index: 10;
+  width: 100%;
+  overflow-x: auto;
 }
 
 .mainContent {
-display: flex;
+  flex: 1;
 }
 
 .title {
@@ -29,16 +40,13 @@ display: flex;
 
 .gamesGrid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 32px;
-  padding: 16px 16px 16px 64px;
-  margin-left: 32px;
-  max-width: calc(100% - 32px);
+  padding: 16px;
 }
 
 .gameCard {
   width: 100%;
-  max-width: 320px;
   position: relative;
   background: var(--cyber-black);
   border-radius: 8px;
@@ -99,16 +107,23 @@ display: flex;
     var(--text-color) 100%
   );
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .gamePrice {
   color: var(--primary-gold);
-  font-size: 22px;
-  font-weight: bold;
+  font-size: 18px;
+  font-weight: 600;
   padding: 0 16px 16px;
   margin: 0;
-  text-shadow: 0 0 8px rgba(205, 176, 108, 0.3);
   position: relative;
   z-index: 2;
+}
+
+.noGames {
+  color: var(--text-color);
+  text-align: center;
+  font-size: 18px;
+  padding: 32px;
+  grid-column: 1 / -1;
 }

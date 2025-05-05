@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
-import { IGameCard } from "@/types/game";
+import { IGameCard } from "@/interfaces/game";
 import GameService from "@/API/GameService";
 import RequirementsList from "@/components/SystemRequirements/SystemRequirements";
-import Loader from "@/UI/Loader/Loader";
 import { Button } from "@/UI/Button/Button";
 
 import { useParams } from 'react-router-dom';
@@ -30,7 +29,7 @@ const GameDetails = () => {
   }, [gameId]);
 
   if (!game) {
-    return <Loader />;
+    return <div>Игра не найдена</div>;
   }
 
   return (
@@ -39,15 +38,13 @@ const GameDetails = () => {
 
       <div className={styles.gameContent}>
         <div className={styles.imageSection}>
-          <img className={styles.gameImage} src={game.img} alt={game.name} />
+          <img className={styles.gameImage} src={game.img_path} alt={game.name} />
         </div>
 
         <div className={styles.infoSection}>
-          <p className={styles.description}>{game.info.description}</p>
+          <p className={styles.description}>{game.gameInfo?.description}</p>
           <div className={styles.buttonContainer}>
-
             <Button>Купить за {game.price}</Button>
-
             <button className={styles.priceButton}>Добавить в корзину</button>
           </div>
 
@@ -72,12 +69,12 @@ const GameDetails = () => {
 
           {showRecommended ? (
             <RequirementsList
-              requirements={game.systemRequirements.recommended}
+              requirements={game.systemReqMax}
               title="Рекомендованные системные требования"
             />
           ) : (
             <RequirementsList
-              requirements={game.systemRequirements.minimum}
+              requirements={game.systemReqMin}
               title="Минимальные системные требования"
             />
           )}

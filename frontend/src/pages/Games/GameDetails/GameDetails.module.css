@@ -166,6 +166,46 @@
   margin-top: 20px;
 }
 
+.buttonContainer button {
+  flex: 1;
+  padding: 16px 32px;
+  font-size: 18px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border: none;
+}
+
+.buttonContainer button:first-child {
+  background: linear-gradient(45deg, var(--primary-gold), var(--accent-color));
+  color: var(--cyber-black);
+  box-shadow: 0 4px 15px rgba(205, 176, 108, 0.3);
+}
+
+.buttonContainer button:first-child:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(205, 176, 108, 0.4);
+}
+
+.buttonContainer button:first-child:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 10px rgba(205, 176, 108, 0.3);
+}
+
+.buttonContainer button:last-child {
+  background: rgba(10, 10, 10, 0.7);
+  color: var(--primary-gold);
+  border: 1px solid var(--primary-gold);
+}
+
+.buttonContainer button:last-child:hover {
+  background: rgba(10, 10, 10, 0.9);
+  box-shadow: 0 0 15px rgba(205, 176, 108, 0.4);
+}
+
 .secondaryButton {
   flex: 1;
   padding: 12px;

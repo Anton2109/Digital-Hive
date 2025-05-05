@@ -1,8 +1,8 @@
 import { API_ENDPOINTS } from "./endpoints";
 import { API_URL } from "@/constants";
 import axios from "axios";
-import { IGame, IGameCard } from "@/types/game";
-import { ICategory } from "@/types/category";
+import { IGame, IGameCard } from "@/interfaces/game";
+import { ICategory } from "@/interfaces/category";
 
 const baseUrl = API_URL;
 
@@ -57,7 +57,8 @@ export default class GameService {
 
   static async searchGames(query: string): Promise<IGame[]> {
     try {
-      const response = await axios.get(`${baseUrl}${API_ENDPOINTS.GAMES}`, {params: { name: query, limit: 10 },
+      const response = await axios.get(`${baseUrl}${API_ENDPOINTS.GAMES}`, {
+        params: { name: query, limit: 10 },
       });
       return response.data;
     } catch (error) {

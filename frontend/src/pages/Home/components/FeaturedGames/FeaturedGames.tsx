@@ -2,15 +2,17 @@ import { useState, useRef, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper";
-import { FeaturedGame } from "@/types/game";
+import { FeaturedGame, IGame } from "@/interfaces/game";
 import styles from "./FeaturedGames.module.css";
 import { Link } from "react-router-dom";
 
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/autoplay";
+import GameService from "@/API/GameService";
 
 const FeaturedGames = () => {
+  // const [featuredGames, setFeaturedGames] = useState<IGame[]>([]);
   const swiperRef = useRef<SwiperType | null>(null);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -49,9 +51,22 @@ const FeaturedGames = () => {
     },
   ];
 
+  // useEffect(() => {
+  //   const fetchGames = async () => {
+  //     try {
+  //       const featuredData = await GameService.getGames()
+  //       setFeaturedGames(featuredData);
+  //     } catch (error) {
+  //       console.log("Ошибка получения игр в слайдер:", error);
+  //     }
+  //   };
+
+  //   fetchGames();
+  // }, []);
+
   useEffect(() => {
     if (swiperRef.current) {
-      swiperRef.current.autoplay[isHovered ? 'stop' : 'start']();
+      swiperRef.current.autoplay[isHovered ? "stop" : "start"]();
     }
   }, [isHovered]);
 
@@ -63,28 +78,19 @@ const FeaturedGames = () => {
     >
       <Swiper
         modules={[Autoplay, Pagination]}
-
         onSwiper={(swiper) => (swiperRef.current = swiper)}
-
         autoplay={{ delay: 1500, disableOnInteraction: false }}
-
         pagination={{
           clickable: true,
           bulletClass: styles.sliderDot,
           bulletActiveClass: styles.active,
         }}
-
         speed={800}
-
         loop={true}
-
         slidesPerView={1}
-
         spaceBetween={0}
-
         centeredSlides={true}
-        
-        style={{ height: '100%' }}
+        style={{ height: "100%" }}
       >
         {featuredGames.map((game) => (
           <SwiperSlide key={game.id} className={styles.swiperSlide}>
@@ -109,7 +115,7 @@ const FeaturedGames = () => {
                     )}
                   </div>
                 </div>
-                <Link to={`/games/${game.name}`} className={styles.buyButton}>
+                <Link to={`/games/${game.id}`} className={styles.buyButton}>
                   Купить сейчас
                   <div className={styles.buttonGlitch} />
                 </Link>

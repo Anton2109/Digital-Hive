@@ -1,6 +1,6 @@
 import { lazy } from 'react';
 import PageLayout from '@/components/Layout/PageLayout';
-import { AppRoute } from '@/types/routes';
+import { AppRoute } from '@/interfaces/routes';
 
 const Home = lazy(() => import('@/pages/Home/Home'));
 const Games = lazy(() => import('@/pages/Games/Games'));

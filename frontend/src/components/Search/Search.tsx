@@ -1,7 +1,7 @@
 import { FaSearch } from "react-icons/fa";
 import { useEffect, useRef } from "react";
 import styles from "./Search.module.css";
-import { IGame } from "@/types/game";
+import { IGame } from "@/interfaces/game";
 
 interface ISearchProps {
   searchValue: string;
@@ -74,7 +74,7 @@ const Search = ({
                     onClick={() => handleResultClick(game)}
                   >
                     <img
-                      src={game.img}
+                      src={game.img_path}
                       alt={game.name}
                       className={styles.searchResultImage}
                     />

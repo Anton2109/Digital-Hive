@@ -1,9 +1,7 @@
 import styles from './Sales.module.css';
 import GamesList from '../GamesList/GamesList';
-import GameFilters from '../components/GameFilters';
 
 const Sales = () => {
-
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -13,10 +11,6 @@ const Sales = () => {
           Не упустите возможность приобрести отличные игры по выгодным ценам.
           Предложение ограничено по времени!
         </p>
-      </div>
-
-      <div>
-        <GameFilters />
       </div>
 
       <div className={styles.grid}>

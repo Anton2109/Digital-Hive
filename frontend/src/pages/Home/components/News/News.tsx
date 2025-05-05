@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { INews } from '@/types/news';
+import { INews } from '@/interfaces/news';
 import styles from './News.module.css';
 
 const news: INews[] = [

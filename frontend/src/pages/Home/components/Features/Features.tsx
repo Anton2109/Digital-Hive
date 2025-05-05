@@ -1,5 +1,5 @@
 import { FaGamepad, FaShieldAlt, FaHeadset } from 'react-icons/fa';
-import { IFeature } from '@/types/feature';
+import { IFeature } from '@/interfaces/feature';
 import styles from './Features.module.css';
 
 const features: IFeature[] = [
