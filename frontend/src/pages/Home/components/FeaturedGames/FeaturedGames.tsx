@@ -57,7 +57,7 @@ const FeaturedGames = () => {
   //       const featuredData = await GameService.getGames()
   //       setFeaturedGames(featuredData);
   //     } catch (error) {
-  //       console.log("Ошибка получения игр в слайдер:", error);
+  //       console.log("Ошибка получения игр в слайдере:", error);
   //     }
   //   };
 

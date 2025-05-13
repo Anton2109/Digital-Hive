@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsNumber, IsOptional, ValidateNested, IsArray } from 'class-validator';
+import { IsString, IsNotEmpty, IsNumber, IsOptional, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 
 class SystemRequirementsDto {

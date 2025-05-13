@@ -1,0 +1,86 @@
+@import url("../../styles/variables.css");
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 32px;
+  position: relative;
+}
+
+.pagination button {
+  padding: 10px 16px;
+  border: 1px solid rgba(205, 176, 108, 0.3);
+  background: var(--cyber-black);
+  color: var(--text-color);
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  min-width: 44px;
+}
+
+.pagination button:hover:not(:disabled, .active) {
+  background: var(--color-background-secondary);
+  border-color: var(--primary-gold);
+  box-shadow: 0 0 15px rgba(205, 176, 108, 0.2);
+  transform: translateY(-2px);
+}
+
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  border-color: rgba(205, 176, 108, 0.1);
+}
+
+.pagination .active {
+  border-color: var(--accent-color);
+  background: linear-gradient(
+    45deg,
+    var(--cyber-black) 0%,
+    var(--color-primary) 100%
+  );
+  color: var(--accent-color);
+  font-weight: 700;
+  position: relative;
+}
+
+.pagination .active::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 2px;
+  background: linear-gradient(
+    to right,
+    var(--primary-gold),
+    var(--accent-color)
+  );
+  border-radius: 2px;
+}
+
+.pagination button:not(.active):hover {
+  color: var(--primary-gold);
+}
+
+@keyframes cyber-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 42, 109, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 8px rgba(255, 42, 109, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 42, 109, 0);
+  }
+}
+
+.pagination button:focus:not(:disabled) {
+  outline: none;
+  animation: cyber-pulse 1s;
+}

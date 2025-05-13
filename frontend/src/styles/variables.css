@@ -5,7 +5,7 @@
 
   --color-text-primary: #ffffff;
   --color-text-secondary: #b3b3b3;
-  
+
   --color-background-primary: #121212;
   --color-background-secondary: #1a1a1a;
 
@@ -13,4 +13,6 @@
   --primary-gold: #cdb06c;
   --accent-color: #ff2a6d;
   --text-color: #ffffff;
+
+  --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
 }

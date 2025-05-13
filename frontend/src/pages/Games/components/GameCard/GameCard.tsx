@@ -1,38 +1,22 @@
-import { Link } from 'react-router-dom';
-import styles from './GameCard.module.css';
+import styles from "./GameCard.module.css";
+import { IGameBase } from "@/interfaces/game";
+import { FavoriteButton } from "@/UI/FavouriteButton/FavoriteButton";
 
 interface GameCardProps {
-  id: string;
-  name: string;
-  price: number;
-  imageUrl: string;
-  discount?: number;
+  game: IGameBase;
 }
 
-const GameCard = ({ id, name, price, imageUrl, discount }: GameCardProps) => {
+const GameCard = ({ game }: GameCardProps) => {
   return (
-    <Link to={`/games/${id}`} className={styles.card}>
-      <div className={styles.imageWrapper}>
-        <img src={imageUrl} alt={name} className={styles.image} />
-        {discount && <div className={styles.discount}>-{discount}%</div>}
+    <div className={styles.gameCard}>
+      <div className={styles.imageContainer}>
+        <img src={game.img_path} alt={game.name} className={styles.gameImage} />
+        <FavoriteButton gameId={game.id} className={styles.favoriteButton} />
       </div>
-      <div className={styles.content}>
-        <h3 className={styles.title}>{name}</h3>
-        <div className={styles.price}>
-          {discount ? (
-            <>
-              <span className={styles.oldPrice}>${price}</span>
-              <span className={styles.newPrice}>
-                ${price * (1 - discount / 100)}
-              </span>
-            </>
-          ) : (
-            <span>${price}</span>
-          )}
-        </div>
-      </div>
-    </Link>
+      <h3 className={styles.gameTitle}>{game.name}</h3>
+      <p className={styles.gamePrice}>{game.price} ₽</p>
+    </div>
   );
 };
 
-export default GameCard; 
+export default GameCard;

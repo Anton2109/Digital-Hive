@@ -57,9 +57,12 @@ export default class GameService {
 
   static async searchGames(query: string): Promise<IGame[]> {
     try {
-      const response = await axios.get(`${baseUrl}${API_ENDPOINTS.GAMES}`, {
-        params: { name: query, limit: 10 },
-      });
+      const response = await axios.get<IGame[]>(
+        `${baseUrl}${API_ENDPOINTS.GAMES}`,
+        {
+          params: { name: query, limit: 10 },
+        }
+      );
       return response.data;
     } catch (error) {
       console.error("Ошибка при поиске игр:", error);

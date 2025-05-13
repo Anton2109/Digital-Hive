@@ -1,14 +1,23 @@
-export interface IGame {
-  id: string;
+export interface IGameBase {
+  id: number;
   name: string;
-  description: string;
   price: number;
-  discountPrice?: number;
-  discount?: number;
   img_path: string;
+  categories?: IGameCategory[];
+}
+
+export interface IGameCategory {
+  id: number;
+  name: string;
+  categoriesImg: string;
+}
+
+export interface IGame extends IGameBase {
+  description: string;
+  discountPrice?: number;
   releaseDate?: string;
-  categories?: string;
-  developer?: string;
+  systemReqMin?: ISystemReq;
+  systemReqMax?: ISystemReq;
 }
 
 export interface FeaturedGame extends IGame {
@@ -34,7 +43,7 @@ export interface IGameCard {
   name: string;
   img_path: string;
   price: number;
-  gameInfo: {
+  gameInfo?: {
     id: number;
     game_id: number;
     description: string;
@@ -44,11 +53,11 @@ export interface IGameCard {
     rating: string;
     img: string;
   };
-  systemReqMin: ISystemReq;
-  systemReqMax: ISystemReq;
-  categories: Array<{
+  systemReqMin?: ISystemReq;
+  systemReqMax?: ISystemReq;
+  categories?: {
     id: number;
     name: string;
     categoriesImg: string;
-  }>;
+  };
 }

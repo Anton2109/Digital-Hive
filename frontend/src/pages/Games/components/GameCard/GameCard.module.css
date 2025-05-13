@@ -1,70 +1,125 @@
-.card {
-  display: flex;
-  flex-direction: column;
-  background: var(--color-background-secondary);
+@import url("../../../../styles/variables.css");
+
+.gameCard {
+  width: 100%;
+  position: relative;
+  background: var(--cyber-black);
   border-radius: 8px;
   overflow: hidden;
-  transition: transform 0.2s ease-in-out;
-  text-decoration: none;
-  color: inherit;
+  transition: 0.2s ease;
+  border: 1px solid rgba(205, 176, 108, 0.2);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
 }
 
-.card:hover {
-  transform: translateY(-4px);
+.gameCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(255, 42, 109, 0.2);
+  border-color: var(--primary-gold);
 }
 
-.imageWrapper {
-  position: relative;
-  width: 100%;
-  height: 150px;
-}
-
-.image {
+.gameCard::before {
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    45deg,
+    transparent 0%,
+    rgba(205, 176, 108, 0.1) 50%,
+    transparent 100%
+  );
+  z-index: 1;
+}
+
+.gameImage {
   width: 100%;
-  height: 100%;
+  height: 200px;
   object-fit: cover;
+  border-bottom: 2px solid var(--primary-gold);
+  transition: 0.2s ease;
 }
 
-.content {
+.gameCard:hover .gameImage {
+  transform: scale(1.05);
+  filter: brightness(1.1);
+}
+
+.gameTitle {
+  color: var(--text-color);
+  font-size: 19px;
+  font-weight: 600;
   padding: 16px;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: relative;
+  z-index: 2;
+  background: linear-gradient(
+    to right,
+    var(--primary-gold) 0%,
+    var(--text-color) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
 }
 
-.title {
-  margin: 0;
+.gamePrice {
+  color: var(--primary-gold);
   font-size: 18px;
   font-weight: 600;
-  color: var(--color-text-primary);
+  padding: 0 16px 16px;
+  margin: 0;
+  position: relative;
+  z-index: 2;
 }
 
-.price {
-  margin-top: 8px;
-  font-size: 19px;
-  font-weight: 700;
-  color: var(--color-accent);
-}
-
-.oldPrice {
-  text-decoration: line-through;
-  color: var(--color-text-secondary);
-  margin-right: 8px;
-  font-size: 16px;
-}
-
-.newPrice {
-  color: var(--color-accent);
-}
-
-.discount {
+.favoriteButton {
   position: absolute;
-  top: 16px;
-  right: 16px;
-  background: var(--color-accent);
-  color: var(--color-text-primary);
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-weight: 600;
-  font-size: 14px;
+  top: 12px;
+  right: 12px;
+  background: rgba(10, 10, 10, 0.7);
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 3;
+  transition: all 0.3s var(--ease-out-expo);
+  backdrop-filter: blur(2px);
+}
+
+.favoriteButton:hover {
+  background: rgba(205, 176, 108, 0.2);
+  transform: scale(1.1);
+}
+
+.favoriteIcon {
+  color: var(--primary-gold);
+  font-size: 18px;
+  transition: all 0.3s var(--ease-out-expo);
+}
+
+.favoriteButton:hover .favoriteIcon {
+  color: var(--accent-color);
+}
+
+.gameInfo {
+  position: relative;
+  z-index: 2;
+  padding: 16px;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgba(0, 0, 0, 0.8) 100%
+  );
+}
+
+.favoriteButton[data-active="true"] .favoriteIcon {
+  color: var(--accent-color);
+  filter: drop-shadow(0 0 4px rgba(255, 68, 68, 0.6));
 }
