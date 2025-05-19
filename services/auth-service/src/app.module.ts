@@ -1,6 +1,6 @@
-import { Module } from '@nestjs/common';
+import { Module, Logger } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
 
 @Module({
@@ -8,21 +8,29 @@ import { UsersModule } from './users/users.module';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      useFactory: (configService: ConfigService) => ({
-        type: 'mysql',
-        host: configService.get('DB_HOST'),
-        port: configService.get('DB_PORT'),
-        username: configService.get('DB_USER'),
-        password: configService.get('DB_PASSWORD'),
-        database: configService.get('DB_NAME'),
-        entities: [__dirname + '/**/*.entity{.ts,.js}'],
-        synchronize: false,
-      }),
-      inject: [ConfigService],
+    TypeOrmModule.forRoot({
+      type: 'mysql',
+      host: process.env.DB_HOST || 'mysql',
+      port: parseInt(process.env.DB_PORT) || 3306,
+      username: process.env.DB_USER || 'auth_user',
+      password: process.env.DB_PASSWORD || 'auth_pass',
+      database: process.env.DB_NAME || 'auth_service',
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
+      synchronize: false,
+      logging: true,
     }),
     UsersModule,
   ],
 })
-export class AppModule {}
+export class AppModule {
+  private readonly logger = new Logger(AppModule.name);
+
+  constructor() {
+    this.logger.debug(`Database configuration:
+      Host: ${process.env.DB_HOST || 'mysql'}
+      Port: ${process.env.DB_PORT || 3306}
+      Database: ${process.env.DB_NAME || 'auth_service'}
+      User: ${process.env.DB_USER || 'auth_user'}
+    `);
+  }
+}

@@ -8,15 +8,9 @@ export class User {
   @Column({ unique: true })
   email: string;
 
-  @Column({ unique: true })
+  @Column({ unique: true, length: 50 })
   username: string;
 
-  @Column()
+  @Column({ name: 'password_hash', length: 60 })
   password_hash: string;
-
-  @Column({ default: true })
-  isActive: boolean;
-
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  created_at: Date;
-} 
+}

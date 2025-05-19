@@ -1,15 +1,6 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Param,
-  Req,
-  Res,
-  Query,
-} from "@nestjs/common";
+import { Controller, Get, Post, Body, Param, Req, Query } from "@nestjs/common";
 import { AppService } from "./app.service";
-import { Request, Response } from "express";
+import { Request } from "express";
 import { HttpService } from "@nestjs/axios";
 import { firstValueFrom } from "rxjs";
 
@@ -21,10 +12,18 @@ export class AppController {
   ) {}
 
   @Get("auth/*")
-  @Post("auth/*")
-  async handleAuthRequest(@Req() req: Request, @Body() body?: any) {
+  async getUsers(@Req() req: Request, @Query() query: any) {
     const path = req.path.replace("/auth", "");
-    return this.appService.forwardRequest("auth", path, req.method, body);
+    return this.appService.forwardRequest("auth", path, "GET", query);
+  }
+
+  @Post("auth/*")
+  async postUsers(@Req() req: Request, @Body() body: any) {
+    const path = req.path.replace("/auth", "");
+    console.log(`Original path: ${req.path}`);
+    console.log(`Modified path: ${path}`);
+    console.log(`Request body: ${JSON.stringify(body)}`);
+    return this.appService.forwardRequest("auth", path, "POST", body);
   }
 
   @Get("games")
@@ -48,7 +47,7 @@ export class AppController {
   @Post("games")
   @Post("games/*")
   @Get("games/*")
-  async handleGameRequest(@Req() req: Request, @Body() body?: any) {
+  async gameRequests(@Req() req: Request, @Body() body?: any) {
     const path = req.path;
     return this.appService.forwardRequest("game", path, req.method, body);
   }
