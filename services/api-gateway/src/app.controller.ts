@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import {
   Controller,
   Get,
@@ -11,8 +12,11 @@ import {
   Headers,
   Res,
 } from "@nestjs/common";
+=======
+import { Controller, Get, Post, Body, Param, Req, Query } from "@nestjs/common";
+>>>>>>> 62fe03f665779e0b10bed12214d10c77982b9400
 import { AppService } from "./app.service";
-import { Request, Response } from "express";
+import { Request } from "express";
 import { HttpService } from "@nestjs/axios";
 import { firstValueFrom } from "rxjs";
 
@@ -24,6 +28,7 @@ export class AppController {
   ) {}
 
   @Get("auth/*")
+<<<<<<< HEAD
   async getUsers(@Req() req: Request, @Query() query: any, @Headers() headers: any) {
     const path = req.path.replace("/auth", "");
     return this.appService.forwardRequest("auth", path, "GET", query, headers);
@@ -31,11 +36,24 @@ export class AppController {
 
   @Post("auth/*")
   async postUsers(@Req() req: Request, @Body() body: any, @Headers() headers: any) {
+=======
+  async getUsers(@Req() req: Request, @Query() query: any) {
+    const path = req.path.replace("/auth", "");
+    return this.appService.forwardRequest("auth", path, "GET", query);
+  }
+
+  @Post("auth/*")
+  async postUsers(@Req() req: Request, @Body() body: any) {
+>>>>>>> 62fe03f665779e0b10bed12214d10c77982b9400
     const path = req.path.replace("/auth", "");
     console.log(`Original path: ${req.path}`);
     console.log(`Modified path: ${path}`);
     console.log(`Request body: ${JSON.stringify(body)}`);
+<<<<<<< HEAD
     return this.appService.forwardRequest("auth", path, "POST", body, headers);
+=======
+    return this.appService.forwardRequest("auth", path, "POST", body);
+>>>>>>> 62fe03f665779e0b10bed12214d10c77982b9400
   }
 
   @Get("games")

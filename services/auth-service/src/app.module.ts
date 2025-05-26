@@ -24,4 +24,15 @@ import { AuthModule } from './auth/auth.module';
     AuthModule,
   ],
 })
-export class AppModule {}
+export class AppModule {
+  private readonly logger = new Logger(AppModule.name);
+
+  constructor() {
+    this.logger.debug(`Database configuration:
+      Host: ${process.env.DB_HOST || 'mysql'}
+      Port: ${process.env.DB_PORT || 3306}
+      Database: ${process.env.DB_NAME || 'auth_service'}
+      User: ${process.env.DB_USER || 'auth_user'}
+    `);
+  }
+}

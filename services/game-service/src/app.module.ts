@@ -14,7 +14,11 @@ import { DefaultNamingStrategy } from 'typeorm';
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
         type: 'mysql',
+<<<<<<< HEAD
         // driver: require('mysql2'),
+=======
+        driver: require('mysql2'),
+>>>>>>> 62fe03f665779e0b10bed12214d10c77982b9400
         host: configService.get('DB_HOST'),
         port: configService.get('DB_PORT'),
         username: configService.get('DB_USER'),
