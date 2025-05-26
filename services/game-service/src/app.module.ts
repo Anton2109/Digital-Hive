@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { GamesModule } from './games/games.module';
+import { GameKeysModule } from './game-keys/game-keys.module';
 import { DefaultNamingStrategy } from 'typeorm';
 
 @Module({
@@ -13,6 +14,7 @@ import { DefaultNamingStrategy } from 'typeorm';
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
         type: 'mysql',
+        // driver: require('mysql2'),
         host: configService.get('DB_HOST'),
         port: configService.get('DB_PORT'),
         username: configService.get('DB_USER'),
@@ -28,6 +30,7 @@ import { DefaultNamingStrategy } from 'typeorm';
       inject: [ConfigService],
     }),
     GamesModule,
+    GameKeysModule,
   ],
 
   controllers: [],

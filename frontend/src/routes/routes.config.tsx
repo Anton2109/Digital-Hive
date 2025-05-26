@@ -16,6 +16,8 @@ const Terms = lazy(() => import('@/pages/Terms/Terms'));
 const Privacy = lazy(() => import('@/pages/Privacy/Privacy'));
 const Support = lazy(() => import('@/pages/Support/Support'));
 const NotFound = lazy(() => import('@/pages/NotFound/NotFound'));
+const Auth = lazy(() => import('@/pages/Auth/Auth'));
+const Payment = lazy(() => import('@/pages/Payment/Payment'));
 
 export const routes = [
   {
@@ -69,6 +71,11 @@ export const routes = [
         title: 'Профиль'
       },
       {
+        path: 'payment',
+        element: <Payment />,
+        title: 'Оплата'
+      },
+      {
         path: 'info/about',
         element: <About />,
         title: 'О нас'
@@ -92,6 +99,16 @@ export const routes = [
         path: '*',
         element: <NotFound />,
         title: 'Страница не найдена'
+      },
+      {
+        path: 'auth/register',
+        element: <Auth />,
+        title: 'Форма регистрации/ авторизации'
+      },
+      {
+        path: 'auth/login',
+        element: <Auth />,
+        title: 'Форма регистрации/ авторизации'
       }
     ]
   }

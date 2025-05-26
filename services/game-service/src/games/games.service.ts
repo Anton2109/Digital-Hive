@@ -37,13 +37,15 @@ export class GamesService {
       relations: ['gameInfo', 'systemReqMin', 'systemReqMax', 'categories'],
     });
 
-    return games.map(game => ({
+    return games.map((game) => ({
       ...game,
       img_path: this.formatGameImagePath(game.img_path),
-      gameInfo: game.gameInfo ? {
-        ...game.gameInfo,
-        img: this.formatGameImagePath(game.gameInfo.img)
-      } : null
+      gameInfo: game.gameInfo
+        ? {
+            ...game.gameInfo,
+            img: this.formatGameImagePath(game.gameInfo.img),
+          }
+        : null,
     }));
   }
 
@@ -66,27 +68,34 @@ export class GamesService {
     }
 
     if (!game.gameInfo) {
-      game.gameInfo = await this.gameInfoRepository.findOne({ where: { game_id: id } });
+      game.gameInfo = await this.gameInfoRepository.findOne({
+        where: { game_id: id },
+      });
     }
     if (!game.systemReqMin) {
-      game.systemReqMin = await this.systemReqMinRepository.findOne({ where: { game_id: id } });
+      game.systemReqMin = await this.systemReqMinRepository.findOne({
+        where: { game_id: id },
+      });
     }
     if (!game.systemReqMax) {
-      game.systemReqMax = await this.systemReqMaxRepository.findOne({ where: { game_id: id } });
+      game.systemReqMax = await this.systemReqMaxRepository.findOne({
+        where: { game_id: id },
+      });
     }
 
     return {
       ...game,
       img_path: this.formatGameImagePath(game.img_path),
-      gameInfo: game.gameInfo ? {
-        ...game.gameInfo,
-        img: this.formatGameImagePath(game.gameInfo.img)
-      } : null
+      gameInfo: game.gameInfo
+        ? {
+            ...game.gameInfo,
+            img: this.formatGameImagePath(game.gameInfo.img),
+          }
+        : null,
     };
   }
 
   async create(createGameDto: CreateGameDto): Promise<Game> {
-    // Создаем игру
     const game = this.gameRepository.create({
       name: createGameDto.name,
       img_path: createGameDto.img_path,
@@ -94,7 +103,6 @@ export class GamesService {
     });
     const savedGame = await this.gameRepository.save(game);
 
-    // Создаем информацию об игре
     if (createGameDto.gameInfo) {
       const gameInfo = this.gameInfoRepository.create({
         ...createGameDto.gameInfo,
@@ -103,7 +111,6 @@ export class GamesService {
       await this.gameInfoRepository.save(gameInfo);
     }
 
-    // Создаем минимальные требования
     if (createGameDto.minimumRequirements) {
       const minReq = this.systemReqMinRepository.create({
         ...createGameDto.minimumRequirements,
@@ -112,7 +119,6 @@ export class GamesService {
       await this.systemReqMinRepository.save(minReq);
     }
 
-    // Создаем рекомендуемые требования
     if (createGameDto.recommendedRequirements) {
       const maxReq = this.systemReqMaxRepository.create({
         ...createGameDto.recommendedRequirements,
@@ -139,13 +145,15 @@ export class GamesService {
       .where('LOWER(game.name) LIKE LOWER(:query)', { query: `%${query}%` })
       .getMany();
 
-    return games.map(game => ({
+    return games.map((game) => ({
       ...game,
       img_path: this.formatGameImagePath(game.img_path),
-      gameInfo: game.gameInfo ? {
-        ...game.gameInfo,
-        img: this.formatGameImagePath(game.gameInfo.img)
-      } : null
+      gameInfo: game.gameInfo
+        ? {
+            ...game.gameInfo,
+            img: this.formatGameImagePath(game.gameInfo.img),
+          }
+        : null,
     }));
   }
 
@@ -159,13 +167,15 @@ export class GamesService {
       .where('categories.id = :categoryId', { categoryId })
       .getMany();
 
-    return games.map(game => ({
+    return games.map((game) => ({
       ...game,
       img_path: this.formatGameImagePath(game.img_path),
-      gameInfo: game.gameInfo ? {
-        ...game.gameInfo,
-        img: this.formatGameImagePath(game.gameInfo.img)
-      } : null
+      gameInfo: game.gameInfo
+        ? {
+            ...game.gameInfo,
+            img: this.formatGameImagePath(game.gameInfo.img),
+          }
+        : null,
     }));
   }
-} 
+}

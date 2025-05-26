@@ -1,0 +1,19 @@
+CREATE DATABASE IF NOT EXISTS basket_service CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+USE basket_service;
+
+CREATE TABLE IF NOT EXISTS `cart` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `session_id` VARCHAR(255) NOT NULL,
+  `game_id` INT NOT NULL,
+  `quantity` INT DEFAULT 1,
+  `added_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS `orders` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `email` VARCHAR(255) NOT NULL,
+    `status` ENUM('pending', 'completed', 'cancelled') NOT NULL DEFAULT 'pending',
+    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);

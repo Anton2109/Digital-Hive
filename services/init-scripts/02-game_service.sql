@@ -91,7 +91,7 @@ CREATE TABLE `games` (
 
 LOCK TABLES `games` WRITE;
 /*!40000 ALTER TABLE `games` DISABLE KEYS */;
-INSERT INTO `games` VALUES (1,'Fallout 4','fallout4.jpg',1299),(2,'Forza Horizon 5','forza5.jpg',3899),(3,'Deus Ex: Manking Divided','demn.jpeg',1399),(4,'Forza Horizon 4','forza4.jpg',1499),(5,'Battlefield 2042','battlefield2042.webp',4199),(6,'Ghost of Tsushima','tsushima.jpg',4299),(7,'Mortal Combat 11','mk11.jpg',499),(8,'Red Dead Redemption 2','rdr2.jpg',3499),(9,'The Crew Motorfest','crew.jpeg',2199),(10,'Lies of P','p.jpeg',4599),(11,'Sea of Thieves','sea.jpg',2599),(12,'Elden Ring','elden.avif',3999),(13,'Helldivers 2','hell.webp',2999),(14,'Star Wars: Battlefront II','starWarsBattlefront2.png',999);
+INSERT INTO `games` VALUES (1,'Fallout 4','fallout4.jpg',1299),(2,'Forza Horizon 5','forza5.jpg',3899),(3,'Deus Ex: Mankind Divided','demn.jpeg',1399),(4,'Forza Horizon 4','forza4.jpg',1499),(5,'Battlefield 2042','battlefield2042.webp',4199),(6,'Ghost of Tsushima','tsushima.jpg',4299),(7,'Mortal Combat 11','mk11.jpg',499),(8,'Red Dead Redemption 2','rdr2.jpg',3499),(9,'The Crew Motorfest','crew.jpeg',2199),(10,'Lies of P','p.jpeg',4599),(11,'Sea of Thieves','sea.jpg',2599),(12,'Elden Ring','elden.avif',3999),(13,'Helldivers 2','hell.webp',2999),(14,'Star Wars: Battlefront II','starWarsBattlefront2.png',999);
 /*!40000 ALTER TABLE `games` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -203,6 +203,128 @@ INSERT INTO `game_info` VALUES
 (13, 13, 'Helldivers 2 - это кооперативный шутер от третьего лица, в котором игроки сражаются с инопланетными захватчиками на различных планетах.', '2024-02-08', 'Arrowhead Game Studios', 'Sony Interactive Entertainment', 9.0, 'hell.webp'),
 (14, 14, 'Star Wars: Battlefront II - это шутер от первого и третьего лица, действие которого происходит во вселенной Звездных войн. Игроки могут сражаться на стороне Сопротивления или Первого Ордена.', '2017-11-17', 'DICE', 'Electronic Arts', 8.3, 'starWarsBattlefront2.png');
 /*!40000 ALTER TABLE `game_info` ENABLE KEYS */;
+UNLOCK TABLES;
+
+DROP TABLE IF EXISTS `game_keys`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `game_keys` (
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `game_id` INT NOT NULL,
+    `key` VARCHAR(255) NOT NULL,
+    `status` ENUM('available', 'used', 'reserved') NOT NULL DEFAULT 'available',
+    `used_at` TIMESTAMP NULL,
+    `order_id` INT NULL,
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (`game_id`) REFERENCES `games` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `game_keys`
+--
+
+LOCK TABLES `game_keys` WRITE;
+/*!40000 ALTER TABLE `game_keys` DISABLE KEYS */;
+INSERT INTO `game_keys` (`game_id`, `key`) VALUES
+-- Fallout 4
+(1, 'FO4-XXXX-XXXX-XXXX-1'),
+(1, 'FO4-XXXX-XXXX-XXXX-2'),
+(1, 'FO4-XXXX-XXXX-XXXX-3'),
+(1, 'FO4-XXXX-XXXX-XXXX-4'),
+(1, 'FO4-XXXX-XXXX-XXXX-5'),
+
+-- Forza Horizon 5
+(2, 'FH5-XXXX-XXXX-XXXX-1'),
+(2, 'FH5-XXXX-XXXX-XXXX-2'),
+(2, 'FH5-XXXX-XXXX-XXXX-3'),
+(2, 'FH5-XXXX-XXXX-XXXX-4'),
+(2, 'FH5-XXXX-XXXX-XXXX-5'),
+
+-- Deus Ex: Mankind Divided
+(3, 'DXMD-XXXX-XXXX-XXXX-1'),
+(3, 'DXMD-XXXX-XXXX-XXXX-2'),
+(3, 'DXMD-XXXX-XXXX-XXXX-3'),
+(3, 'DXMD-XXXX-XXXX-XXXX-4'),
+(3, 'DXMD-XXXX-XXXX-XXXX-5'),
+
+-- Forza Horizon 4
+(4, 'FH4-XXXX-XXXX-XXXX-1'),
+(4, 'FH4-XXXX-XXXX-XXXX-2'),
+(4, 'FH4-XXXX-XXXX-XXXX-3'),
+(4, 'FH4-XXXX-XXXX-XXXX-4'),
+(4, 'FH4-XXXX-XXXX-XXXX-5'),
+
+-- Battlefield 2042
+(5, 'BF42-XXXX-XXXX-XXXX-1'),
+(5, 'BF42-XXXX-XXXX-XXXX-2'),
+(5, 'BF42-XXXX-XXXX-XXXX-3'),
+(5, 'BF42-XXXX-XXXX-XXXX-4'),
+(5, 'BF42-XXXX-XXXX-XXXX-5'),
+
+-- Ghost of Tsushima
+(6, 'GOT-XXXX-XXXX-XXXX-1'),
+(6, 'GOT-XXXX-XXXX-XXXX-2'),
+(6, 'GOT-XXXX-XXXX-XXXX-3'),
+(6, 'GOT-XXXX-XXXX-XXXX-4'),
+(6, 'GOT-XXXX-XXXX-XXXX-5'),
+
+-- Mortal Kombat 11
+(7, 'MK11-XXXX-XXXX-XXXX-1'),
+(7, 'MK11-XXXX-XXXX-XXXX-2'),
+(7, 'MK11-XXXX-XXXX-XXXX-3'),
+(7, 'MK11-XXXX-XXXX-XXXX-4'),
+(7, 'MK11-XXXX-XXXX-XXXX-5'),
+
+-- Red Dead Redemption 2
+(8, 'RDR2-XXXX-XXXX-XXXX-1'),
+(8, 'RDR2-XXXX-XXXX-XXXX-2'),
+(8, 'RDR2-XXXX-XXXX-XXXX-3'),
+(8, 'RDR2-XXXX-XXXX-XXXX-4'),
+(8, 'RDR2-XXXX-XXXX-XXXX-5'),
+
+-- The Crew Motorfest
+(9, 'TCM-XXXX-XXXX-XXXX-1'),
+(9, 'TCM-XXXX-XXXX-XXXX-2'),
+(9, 'TCM-XXXX-XXXX-XXXX-3'),
+(9, 'TCM-XXXX-XXXX-XXXX-4'),
+(9, 'TCM-XXXX-XXXX-XXXX-5'),
+
+-- Lies of P
+(10, 'LOP-XXXX-XXXX-XXXX-1'),
+(10, 'LOP-XXXX-XXXX-XXXX-2'),
+(10, 'LOP-XXXX-XXXX-XXXX-3'),
+(10, 'LOP-XXXX-XXXX-XXXX-4'),
+(10, 'LOP-XXXX-XXXX-XXXX-5'),
+
+-- Sea of Thieves
+(11, 'SOT-XXXX-XXXX-XXXX-1'),
+(11, 'SOT-XXXX-XXXX-XXXX-2'),
+(11, 'SOT-XXXX-XXXX-XXXX-3'),
+(11, 'SOT-XXXX-XXXX-XXXX-4'),
+(11, 'SOT-XXXX-XXXX-XXXX-5'),
+
+-- Elden Ring
+(12, 'ER-XXXX-XXXX-XXXX-1'),
+(12, 'ER-XXXX-XXXX-XXXX-2'),
+(12, 'ER-XXXX-XXXX-XXXX-3'),
+(12, 'ER-XXXX-XXXX-XXXX-4'),
+(12, 'ER-XXXX-XXXX-XXXX-5'),
+
+-- Helldivers 2
+(13, 'HD2-XXXX-XXXX-XXXX-1'),
+(13, 'HD2-XXXX-XXXX-XXXX-2'),
+(13, 'HD2-XXXX-XXXX-XXXX-3'),
+(13, 'HD2-XXXX-XXXX-XXXX-4'),
+(13, 'HD2-XXXX-XXXX-XXXX-5'),
+
+-- Star Wars: Battlefront II
+(14, 'SWBF2-XXXX-XXXX-XXXX-1'),
+(14, 'SWBF2-XXXX-XXXX-XXXX-2'),
+(14, 'SWBF2-XXXX-XXXX-XXXX-3'),
+(14, 'SWBF2-XXXX-XXXX-XXXX-4'),
+(14, 'SWBF2-XXXX-XXXX-XXXX-5');
+/*!40000 ALTER TABLE `game_keys` ENABLE KEYS */;
 UNLOCK TABLES;
 
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

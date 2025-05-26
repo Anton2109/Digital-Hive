@@ -2,6 +2,7 @@ import { FaSearch } from "react-icons/fa";
 import { useEffect, useRef } from "react";
 import styles from "./Search.module.css";
 import { IGame } from "@/interfaces/game";
+import Loader from "@/UI/Loader/Loader";
 
 interface ISearchProps {
   searchValue: string;
@@ -63,7 +64,7 @@ const Search = ({
       {searchValue.trim() && (
         <div className={styles.searchResults}>
           {isLoading ? (
-            <div className={styles.searchLoading}>Загрузка...</div>
+            <div><Loader/></div>
           ) : (
             <>
               {searchResults.length > 0 ? (

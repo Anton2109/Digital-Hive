@@ -14,6 +14,9 @@ COPY package-lock.json ./
 RUN apk add --no-cache openssl && \
     npm run build
 
+# Создаем директорию для ассетов
+RUN mkdir -p /app/dist/src/assets
+
 CMD ["npm", "run", "start:prod"]
 
 EXPOSE 3000

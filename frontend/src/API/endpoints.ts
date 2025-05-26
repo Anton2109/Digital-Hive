@@ -1,25 +1,32 @@
 export const API_ENDPOINTS = {
-  GAMES: '/games',
+  GAMES: "/games",
   GAME_BY_ID: (id: string | number) => `/games/${id}`,
-  GAMES_BY_CATEGORY: (categoryId: string | number) => `/categories/${categoryId}`,
+  GAMES_BY_CATEGORY: (categoryId: string | number) =>
+    `/categories/${categoryId}`,
 
-  CATEGORIES: '/categories',
+  CATEGORIES: "/categories",
   CATEGORY_BY_ID: (id: string | number) => `/categories/${id}`,
 
-  AUTH_LOGIN: '/auth/login',
-  AUTH_REGISTER: '/auth/register',
-  AUTH_LOGOUT: '/auth/logout',
-  AUTH_REFRESH: '/auth/refresh',
+ /* Авторизация */
+  AUTH: "",
+  AUTH_LOGIN: "/auth/login",
+  AUTH_REGISTER: "/auth/register",
+  AUTH_LOGOUT: "/auth/logout",
+  AUTH_REFRESH: "/auth/refresh",
+  AUTH_PROFILE: "/auth/me",
 
-  USER_PROFILE: '/users/profile',
-  USER_FAVOURITES: '/users/favourites',
-  USER_BASKET: '/users/basket',
-
+  USER_PROFILE: "/users/profile",
+  USER_FAVOURITES: "/users/favourites",
+  USER_BASKET: "/users/basket",
+  
+  /* Корзина */
+  BASKET: "/cart",
+  
   GAME_DETAILS: (id: string) => `/games/${id}`,
-  FEATURED_GAMES: '/games/featured',
-  POPULAR_GAMES: '/games/popular',
-  SALES_GAMES: '/games/sales',
+  FEATURED_GAMES: "/games/featured",
+  POPULAR_GAMES: "/games/popular",
+  SALES_GAMES: "/games/sales",
 
-  NEWS: '/news',
+  NEWS: "/news",
   NEWS_DETAILS: (id: string) => `/news/${id}`,
-} as const; 
+} as const;

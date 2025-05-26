@@ -3,7 +3,7 @@ services:
     image: mysql:8.0
     environment:
       MYSQL_ROOT_PASSWORD: 234565
-    command: --default-authentication-plugin=mysql_native_password
+    command: --default-authentication-plugin=mysql_native_password --port=3306
     volumes:
       - mysql-data:/var/lib/mysql
       - ./init-scripts:/docker-entrypoint-initdb.d
@@ -25,11 +25,13 @@ services:
     environment:
       AUTH_SERVICE_URL: http://auth-service:3000
       GAME_SERVICE_URL: http://game-service:3000
+      BASKET_SERVICE_URL: http://basket-service:3000
     volumes:
-      - static-files:/app/src/assets
+      - ./game-service/src/assets:/app/src/assets
     depends_on:
       - auth-service
       - game-service
+      - basket-service
     networks:
       - game-network
 
@@ -59,8 +61,28 @@ services:
       DB_USER: game_user
       DB_PASSWORD: game_pass
       DB_NAME: game_service
+      NODE_ENV: development
     volumes:
-      - static-files:/app/src/assets
+      - ./game-service/src/assets:/app/src/assets
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - game-network
+
+  basket-service:
+    build: ./basket-service
+    ports:
+      - "3003:3000"
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USER: basket_user
+      DB_PASSWORD: basket_pass
+      DB_NAME: basket_service
+      NODE_ENV: development
+    volumes:
+      - ./game-service/src/assets:/app/src/assets
     depends_on:
       mysql:
         condition: service_healthy
@@ -69,7 +91,6 @@ services:
 
 volumes:
   mysql-data:
-  static-files:
 
 networks:
   game-network:

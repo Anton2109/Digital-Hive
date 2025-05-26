@@ -1,0 +1,269 @@
+@import url("../../styles/variables.css");
+
+.container {
+  min-height: 100vh;
+  background: var(--color-background-primary);
+  padding: 20px;
+}
+
+.profileLayout {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.profileCard {
+  background: var(--cyber-black);
+  padding: 32px;
+  border-radius: 8px;
+  border: 1px solid rgba(205, 176, 108, 0.2);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+  height: fit-content;
+}
+
+.profileCard::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    45deg,
+    transparent 0%,
+    rgba(205, 176, 108, 0.1) 50%,
+    transparent 100%
+  );
+  z-index: 1;
+}
+
+.purchasesCard {
+  background: var(--cyber-black);
+  padding: 32px;
+  border-radius: 8px;
+  border: 1px solid rgba(205, 176, 108, 0.2);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.purchasesCard::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    45deg,
+    transparent 0%,
+    rgba(205, 176, 108, 0.1) 50%,
+    transparent 100%
+  );
+  z-index: 1;
+}
+
+.title {
+  color: var(--text-color);
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 24px;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: relative;
+  z-index: 2;
+  background: linear-gradient(
+    to right,
+    var(--primary-gold) 0%,
+    var(--text-color) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.info {
+  position: relative;
+  z-index: 2;
+}
+
+.infoItem {
+  margin-bottom: 16px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  border: 1px solid rgba(205, 176, 108, 0.2);
+}
+
+.label {
+  color: var(--primary-gold);
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.value {
+  color: var(--text-color);
+  font-size: 16px;
+}
+
+.logoutButton {
+  width: 100%;
+  padding: 12px;
+  background: var(--accent-color);
+  color: var(--text-color);
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s var(--ease-out-expo);
+  position: relative;
+  z-index: 2;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 24px;
+}
+
+.logoutButton:hover {
+  background: #ff1a5e;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 42, 109, 0.3);
+}
+
+.purchasesList {
+  position: relative;
+  z-index: 2;
+}
+
+.purchaseItem {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  border: 1px solid rgba(205, 176, 108, 0.2);
+  padding: 16px;
+  margin-bottom: 16px;
+  transition: all 0.3s var(--ease-out-expo);
+}
+
+.purchaseItem:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(205, 176, 108, 0.1);
+}
+
+.purchaseInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.gameName {
+  color: var(--text-color);
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.purchaseDetails {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.price {
+  color: var(--primary-gold);
+  font-weight: 600;
+}
+
+.date {
+  color: var(--color-text-secondary);
+  font-size: 14px;
+}
+
+.status {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.completed {
+  background: rgba(46, 213, 115, 0.1);
+  color: #2ed573;
+}
+
+.pending {
+  background: rgba(255, 171, 0, 0.1);
+  color: #ffab00;
+}
+
+.cancelled {
+  background: rgba(255, 71, 87, 0.1);
+  color: #ff4757;
+}
+
+.notAuth {
+  background: var(--cyber-black);
+  padding: 32px;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  border: 1px solid rgba(205, 176, 108, 0.2);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 2;
+  margin: 0 auto;
+}
+
+.notAuth h2 {
+  color: var(--text-color);
+  font-size: 24px;
+  margin-bottom: 16px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.notAuth p {
+  color: var(--color-text-secondary);
+  margin-bottom: 24px;
+}
+
+.authButton {
+  padding: 12px 24px;
+  background: var(--primary-gold);
+  color: var(--cyber-black);
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s var(--ease-out-expo);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.authButton:hover {
+  background: var(--accent-color);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 42, 109, 0.3);
+}
+
+.loading {
+  color: var(--text-color);
+  font-size: 18px;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .profileLayout {
+    grid-template-columns: 1fr;
+  }
+} 

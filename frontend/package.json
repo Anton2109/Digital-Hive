@@ -11,6 +11,8 @@
     "knip": "knip"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^2.8.2",
+    "@types/react-input-mask": "^3.0.6",
     "@types/react-router-dom": "^5.3.3",
     "@types/swiper": "^6.0.0",
     "axios": "^1.8.4",
@@ -20,6 +22,8 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-icons": "^5.5.0",
+    "react-number-format": "^5.4.4",
+    "react-redux": "^9.2.0",
     "react-router-dom": "^7.3.0",
     "swiper": "^11.2.6"
   },

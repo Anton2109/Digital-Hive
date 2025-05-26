@@ -3,6 +3,7 @@ import { IGameCard } from "@/interfaces/game";
 import GameService from "@/API/GameService";
 import styles from "./Favourites.module.css";
 import { Link } from "react-router-dom";
+import Loader from "@/UI/Loader/Loader";
 
 const Favourites = () => {
   const [favoriteGames, setFavoriteGames] = useState<IGameCard[]>([]);
@@ -31,7 +32,7 @@ const Favourites = () => {
   }, []);
 
   if (loading) {
-    return <div className={styles.loading}>Загрузка...</div>;
+    return <div><Loader/></div>;
   }
 
   if (favoriteGames.length === 0) {

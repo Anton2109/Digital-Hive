@@ -1,7 +1,7 @@
 import { API_ENDPOINTS } from "./endpoints";
 import { API_URL } from "@/constants";
 import axios from "axios";
-import { IGame, IGameCard } from "@/interfaces/game";
+import { IGame } from "@/interfaces/game";
 import { ICategory } from "@/interfaces/category";
 
 const baseUrl = API_URL;
@@ -14,7 +14,7 @@ export default class GameService {
       );
       return response.data;
     } catch (error) {
-      console.error("Ошибка при получении списка игр:", error);
+      console.error('[GameService] Ошибка при получении списка игр:', error);
       return [];
     }
   }
@@ -26,19 +26,19 @@ export default class GameService {
       );
       return response.data;
     } catch (error) {
-      console.error("Ошибка при получении списка категорий:", error);
+      console.error('[GameService] Ошибка при получении списка категорий:', error);
       return [];
     }
   }
 
-  static async getGameById(id: number): Promise<IGameCard | null> {
+  static async getGameById(id: number): Promise<IGame | null> {
     try {
-      const response = await axios.get<IGameCard>(
+      const response = await axios.get<IGame>(
         `${baseUrl}${API_ENDPOINTS.GAME_BY_ID(id)}`
       );
       return response.data;
     } catch (error) {
-      console.error(`Ошибка при получении игры по id: ${id}:`, error);
+      console.error(`[GameService] Ошибка при получении игры по id: ${id}:`, error);
       return null;
     }
   }
@@ -50,7 +50,7 @@ export default class GameService {
       );
       return response.data;
     } catch (error) {
-      console.error("Ошибка при получении игр по категории:", error);
+      console.error('[GameService] Ошибка при получении игр по категории:', error);
       return [];
     }
   }
@@ -65,7 +65,7 @@ export default class GameService {
       );
       return response.data;
     } catch (error) {
-      console.error("Ошибка при поиске игр:", error);
+      console.error('[GameService] Ошибка при поиске игр:', error);
       return [];
     }
   }

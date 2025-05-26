@@ -5,8 +5,11 @@ import {
   Body,
   Param,
   Req,
-  Res,
   Query,
+  Put,
+  Delete,
+  Headers,
+  Res,
 } from "@nestjs/common";
 import { AppService } from "./app.service";
 import { Request, Response } from "express";
@@ -21,10 +24,18 @@ export class AppController {
   ) {}
 
   @Get("auth/*")
-  @Post("auth/*")
-  async handleAuthRequest(@Req() req: Request, @Body() body?: any) {
+  async getUsers(@Req() req: Request, @Query() query: any, @Headers() headers: any) {
     const path = req.path.replace("/auth", "");
-    return this.appService.forwardRequest("auth", path, req.method, body);
+    return this.appService.forwardRequest("auth", path, "GET", query, headers);
+  }
+
+  @Post("auth/*")
+  async postUsers(@Req() req: Request, @Body() body: any, @Headers() headers: any) {
+    const path = req.path.replace("/auth", "");
+    console.log(`Original path: ${req.path}`);
+    console.log(`Modified path: ${path}`);
+    console.log(`Request body: ${JSON.stringify(body)}`);
+    return this.appService.forwardRequest("auth", path, "POST", body, headers);
   }
 
   @Get("games")
@@ -48,9 +59,32 @@ export class AppController {
   @Post("games")
   @Post("games/*")
   @Get("games/*")
-  async handleGameRequest(@Req() req: Request, @Body() body?: any) {
+  async gameRequests(@Req() req: Request, @Body() body?: any) {
     const path = req.path;
     return this.appService.forwardRequest("game", path, req.method, body);
+  }
+
+  @Get("assets/*")
+  async getStaticFiles(@Req() req: Request, @Res() res: Response) {
+    const path = req.path;
+    const response = await firstValueFrom(
+      this.httpService.get(`http://game-service:3000${path}`, {
+        responseType: 'arraybuffer'
+      })
+    );
+    
+    const ext = path.split('.').pop()?.toLowerCase();
+    const contentType = {
+      'jpg': 'image/jpeg',
+      'jpeg': 'image/jpeg',
+      'png': 'image/png',
+      'gif': 'image/gif',
+      'webp': 'image/webp',
+      'avif': 'image/avif'
+    }[ext] || 'application/octet-stream';
+
+    res.setHeader('Content-Type', contentType);
+    res.send(response.data);
   }
 
   @Get("categories")
@@ -73,5 +107,62 @@ export class AppController {
   async getCategoryPath(@Req() req: Request) {
     const path = req.path;
     return this.appService.forwardRequest("game", path, "GET");
+  }
+
+  @Get("basket")
+  async getBasket(@Query("session_id") sessionId: string) {
+    console.log('GET /basket request received with session_id:', sessionId);
+    const url = `http://basket-service:3000/cart?session_id=${encodeURIComponent(sessionId)}`;
+    console.log('Forwarding request to:', url);
+    const response = await firstValueFrom(this.httpService.get(url));
+    console.log('Response from basket-service:', response.data);
+    return response.data;
+  }
+
+  @Post("basket")
+  async addToBasket(
+    @Body() body: { session_id: string; game_id: number; quantity?: number }
+  ) {
+    console.log('POST /basket request received with body:', body);
+    const url = `http://basket-service:3000/cart`;
+    console.log('Forwarding request to:', url);
+    const response = await firstValueFrom(this.httpService.post(url, body));
+    console.log('Response from basket-service:', response.data);
+    return response.data;
+  }
+
+  @Delete("basket/:id")
+  async removeFromBasket(@Param("id") id: string) {
+    console.log('DELETE /basket request received for id:', id);
+    const url = `http://basket-service:3000/cart/${id}`;
+    console.log('Forwarding request to:', url);
+    const response = await firstValueFrom(this.httpService.delete(url));
+    console.log('Response from basket-service:', response.data);
+    return response.data;
+  }
+
+  @Post('orders')
+  async createOrder(
+    @Body('sessionId') sessionId: string,
+    @Body('email') email: string,
+  ) {
+    console.log('POST /orders request received with sessionId:', sessionId, 'email:', email);
+    const url = `http://basket-service:3000/orders`;
+    console.log('Forwarding request to:', url);
+    const response = await firstValueFrom(
+      this.httpService.post(url, { sessionId, email })
+    );
+    console.log('Response from basket-service:', response.data);
+    return response.data;
+  }
+
+  @Post('orders/:orderId/confirm')
+  async confirmOrder(@Param('orderId') orderId: number) {
+    console.log('POST /orders/confirm request received for orderId:', orderId);
+    const url = `http://basket-service:3000/orders/${orderId}/confirm`;
+    console.log('Forwarding request to:', url);
+    const response = await firstValueFrom(this.httpService.post(url));
+    console.log('Response from basket-service:', response.data);
+    return response.data;
   }
 }

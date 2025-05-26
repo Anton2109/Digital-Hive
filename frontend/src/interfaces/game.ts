@@ -12,16 +12,15 @@ export interface IGameCategory {
   categoriesImg: string;
 }
 
-export interface IGame extends IGameBase {
+export interface IGameInfo {
+  id: number;
+  game_id: number;
   description: string;
-  discountPrice?: number;
-  releaseDate?: string;
-  systemReqMin?: ISystemReq;
-  systemReqMax?: ISystemReq;
-}
-
-export interface FeaturedGame extends IGame {
-  featured: true;
+  release_date: string;
+  developer: string;
+  publisher: string;
+  rating: string;
+  img: string;
 }
 
 export interface ISystemReq {
@@ -36,6 +35,16 @@ export interface ISystemReq {
 export interface ISystemRequirementsProps {
   title: string;
   requirements: ISystemReq;
+}
+
+export interface IGame extends IGameBase {
+  gameInfo?: IGameInfo;
+  systemReqMin?: ISystemReq;
+  systemReqMax?: ISystemReq;
+}
+
+export interface FeaturedGame extends IGame {
+  featured: true;
 }
 
 export interface IGameCard {

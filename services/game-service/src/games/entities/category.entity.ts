@@ -10,4 +10,4 @@ export class Category {
 
   @Column()
   categoriesImg: string;
-} 
+}
