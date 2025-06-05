@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./AuthForm.module.css";
@@ -134,12 +133,6 @@ const AuthForm = ({ mode }: AuthFormProps) => {
       </form>
     </div>
   );
-=======
-import styles from "./AuthForm.module.css";
-
-const AuthForm = () => {
-  return <div className={styles.container}></div>;
->>>>>>> 62fe03f665779e0b10bed12214d10c77982b9400
 };
 
 export default AuthForm;

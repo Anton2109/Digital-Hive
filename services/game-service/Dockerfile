@@ -9,12 +9,11 @@ RUN npm ci
 
 COPY src/ ./src
 COPY nest-cli.json .
-COPY package-lock.json ./
+# COPY package-lock.json ./
 
 RUN apk add --no-cache openssl && \
     npm run build
 
-# Создаем директорию для ассетов
 RUN mkdir -p /app/dist/src/assets
 
 CMD ["npm", "run", "start:prod"]

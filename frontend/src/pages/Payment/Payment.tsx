@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PatternFormat } from 'react-number-format';
 import styles from './Payment.module.css';
+import OrderService from '@/API/OrderService';
 
 interface PaymentFormData {
   cardNumber: string;
   cardHolder: string;
   expiryDate: string;
   cvv: string;
+  email: string;
 }
 
 const Payment: React.FC = () => {
@@ -16,7 +18,8 @@ const Payment: React.FC = () => {
     cardNumber: '',
     cardHolder: '',
     expiryDate: '',
-    cvv: ''
+    cvv: '',
+    email: ''
   });
   const [errors, setErrors] = useState<Partial<PaymentFormData>>({});
   const [isProcessing, setIsProcessing] = useState(false);
@@ -33,22 +36,39 @@ const Payment: React.FC = () => {
     }
 
     if (!/^\d{2}\/\d{2}$/.test(formData.expiryDate)) {
+      console.log('Неверный формат:', formData.expiryDate);
       newErrors.expiryDate = 'Неверный формат срока действия';
     } else {
       const [month, year] = formData.expiryDate.split('/');
       const currentYear = new Date().getFullYear() % 100;
       const currentMonth = new Date().getMonth() + 1;
       
+      console.log('Проверка срока:', {
+        month,
+        year,
+        currentYear,
+        currentMonth,
+        parsedMonth: parseInt(month),
+        parsedYear: parseInt(year)
+      });
+      
       if (parseInt(month) < 1 || parseInt(month) > 12) {
         newErrors.expiryDate = 'Неверный месяц';
-      } else if (parseInt(year) < currentYear || 
-                (parseInt(year) === currentYear && parseInt(month) < currentMonth)) {
+      } else if (parseInt(year) < currentYear) {
+        newErrors.expiryDate = 'Срок действия карты истек';
+      } else if (parseInt(year) === currentYear && parseInt(month) < currentMonth) {
         newErrors.expiryDate = 'Срок действия карты истек';
       }
     }
 
     if (!/^\d{3}$/.test(formData.cvv)) {
       newErrors.cvv = 'CVV должен содержать 3 цифры';
+    }
+
+    if (!formData.email) {
+      newErrors.email = 'Введите email';
+    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(formData.email)) {
+      newErrors.email = 'Неверный формат email';
     }
 
     setErrors(newErrors);
@@ -65,9 +85,20 @@ const Payment: React.FC = () => {
     setIsProcessing(true);
     
     try {
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      // Получаем sessionId из localStorage или другого хранилища
+      const sessionId = localStorage.getItem('sessionId') || 'test-session';
       
-      navigate('/payment/success');
+      // Создаем заказ
+      const order = await OrderService.createOrder({
+        sessionId,
+        email: formData.email
+      });
+
+      if (order) {
+        // Подтверждаем заказ
+        await OrderService.confirmOrder(order.id);
+        navigate('/');
+      }
     } catch (error) {
       console.error('Ошибка при обработке платежа:', error);
       setErrors({ cardNumber: 'Ошибка при обработке платежа' });
@@ -82,6 +113,24 @@ const Payment: React.FC = () => {
         <h2 className={styles.title}>Оплата заказа</h2>
         
         <form onSubmit={handleSubmit} className={styles.form}>
+          <div className={styles.formGroup}>
+            <label htmlFor="email">Email для получения ключей</label>
+            <input
+              type="email"
+              id="email"
+              value={formData.email}
+              onChange={(e) => setFormData(prev => ({
+                ...prev,
+                email: e.target.value
+              }))}
+              className={styles.input}
+              placeholder="your@email.com"
+            />
+            {errors.email && (
+              <span className={styles.error}>{errors.email}</span>
+            )}
+          </div>
+
           <div className={styles.formGroup}>
             <label htmlFor="cardNumber">Номер карты</label>
             <PatternFormat
@@ -123,18 +172,23 @@ const Payment: React.FC = () => {
           <div className={styles.row}>
             <div className={styles.formGroup}>
               <label htmlFor="expiryDate">Срок действия</label>
-              <PatternFormat
-                format="##/##"
-                mask="_"
+              <input
+                type="text"
+                id="expiryDate"
                 value={formData.expiryDate}
-                onValueChange={(values) => {
+                onChange={(e) => {
+                  let value = e.target.value.replace(/\D/g, '');
+                  if (value.length > 2) {
+                    value = value.slice(0, 2) + '/' + value.slice(2, 4);
+                  }
                   setFormData(prev => ({
                     ...prev,
-                    expiryDate: values.value
+                    expiryDate: value
                   }));
                 }}
                 className={styles.input}
                 placeholder="MM/YY"
+                maxLength={5}
               />
               {errors.expiryDate && (
                 <span className={styles.error}>{errors.expiryDate}</span>

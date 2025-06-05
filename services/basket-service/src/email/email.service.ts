@@ -4,16 +4,16 @@ import * as nodemailer from 'nodemailer';
 @Injectable()
 export class EmailService {
   private transporter: nodemailer.Transporter;
-  private readonly senderEmail = 'tony.polischuck2016@yandex.ru';
+  private readonly senderEmail = 'tony.polischuck2016@gmail.com';
 
   constructor() {
     this.transporter = nodemailer.createTransport({
-      host: 'smtp.yandex.ru',
+      host: 'smtp.gmail.com',
       port: 465,
       secure: true,
       auth: {
         user: this.senderEmail,
-        pass: 'ptahawfsxhfbkeya',
+        pass: 'hgbn gvtc bfvw njuo',
       },
     });
   }

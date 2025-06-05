@@ -55,7 +55,7 @@ const Profile: React.FC = () => {
         const data = await AuthService.getProfile();
         setProfile(data);
       } catch (error) {
-        setError("Ошибка при загрузке профиля");
+        console.log("Ошибка при выходе из системы", error);
       } finally {
         setLoading(false);
         setIsFetching(false);
@@ -63,14 +63,14 @@ const Profile: React.FC = () => {
     };
 
     fetchProfile();
-  }, [isFetching]);
+  }, []);
 
   const handleLogout = async () => {
     try {
       await AuthService.logout();
       setProfile(null);
     } catch (error) {
-      setError("Ошибка при выходе из системы");
+      console.log("Ошибка при выходе из системы", error);
     }
   };
 

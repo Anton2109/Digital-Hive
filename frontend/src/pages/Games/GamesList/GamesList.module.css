@@ -2,7 +2,7 @@
 
 .container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   padding: 32px;
   gap: 32px;
   min-height: calc(100vh - 64px);
@@ -12,12 +12,16 @@
   border-radius: 8px;
   padding: 16px;
   z-index: 10;
-  width: 100%;
-  overflow-x: auto;
+  width: 300px;
+  min-width: 300px;
+  height: fit-content;
+  position: sticky;
+  top: 32px;
 }
 
 .mainContent {
   flex: 1;
+  min-width: 0;
 }
 
 .title {
@@ -40,8 +44,8 @@
 
 .gamesGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 32px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
   padding: 16px;
 }
 

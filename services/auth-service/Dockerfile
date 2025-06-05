@@ -9,7 +9,7 @@ RUN npm ci
 
 COPY src/ ./src
 COPY nest-cli.json .
-COPY package-lock.json ./
+# COPY package-lock.json ./
 
 RUN npm run build
 

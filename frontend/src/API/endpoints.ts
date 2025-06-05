@@ -22,6 +22,10 @@ export const API_ENDPOINTS = {
   /* Корзина */
   BASKET: "/cart",
   
+  /* Заказы */
+  ORDERS: "/orders",
+  CONFIRM_ORDER: (orderId: number) => `/orders/${orderId}/confirm`,
+  
   GAME_DETAILS: (id: string) => `/games/${id}`,
   FEATURED_GAMES: "/games/featured",
   POPULAR_GAMES: "/games/popular",

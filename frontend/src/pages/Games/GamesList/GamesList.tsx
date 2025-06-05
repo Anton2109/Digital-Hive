@@ -17,13 +17,24 @@ const GamesList = () => {
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [sortType, setSortType] = useState<SortType>("price_asc");
+  const [minPrice, setMinPrice] = useState<number>(0);
+  const [maxPrice, setMaxPrice] = useState<number>(0);
 
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [gamesPerPage] = useState(12);
 
+  const filteredGames = useMemo(() => {
+    return games.filter(game => {
+      const price = game.price;
+      const meetsMinPrice = minPrice === 0 || price >= minPrice;
+      const meetsMaxPrice = maxPrice === 0 || price <= maxPrice;
+      return meetsMinPrice && meetsMaxPrice;
+    });
+  }, [games, minPrice, maxPrice]);
+
   const sortedGames = useMemo(
-    () => sortGames(games, sortType),
-    [games, sortType]
+    () => sortGames(filteredGames, sortType),
+    [filteredGames, sortType]
   );
 
   const currentGames = useMemo(() => {
@@ -31,6 +42,12 @@ const GamesList = () => {
     const indexOfFirstGame = indexOfLastGame - gamesPerPage;
     return sortedGames.slice(indexOfFirstGame, indexOfLastGame);
   }, [sortedGames, currentPage, gamesPerPage]);
+
+  const handlePriceChange = (min: number, max: number) => {
+    setMinPrice(min);
+    setMaxPrice(max);
+    setCurrentPage(1); // Сбрасываем страницу при изменении фильтров
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -58,17 +75,20 @@ const GamesList = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.filtersPanel}>
+      <aside className={styles.filtersPanel}>
         <AdvancedGameFilters
           categories={categories}
           selectedCategory={selectedCategory}
           onSelectCategory={setSelectedCategory}
           currentSort={sortType}
           onSortChange={setSortType}
+          minPrice={minPrice}
+          maxPrice={maxPrice}
+          onPriceChange={handlePriceChange}
         />
-      </div>
+      </aside>
 
-      <div className={styles.mainContent}>
+      <main className={styles.mainContent}>
         <div className={styles.gamesGrid}>
           {currentGames.length > 0 ? (
             currentGames.map((game) => (
@@ -88,7 +108,7 @@ const GamesList = () => {
             onPageChange={setCurrentPage}
           />
         )}
-      </div>
+      </main>
     </div>
   );
 };

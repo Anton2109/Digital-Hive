@@ -58,7 +58,6 @@ const Basket = () => {
       return;
     }
 
-    // Обновляем только локальное состояние
     setItems(prevItems => 
       prevItems.map(item => 
         item.id === id 
@@ -70,14 +69,12 @@ const Basket = () => {
 
   const handleCheckout = async () => {
     try {
-      // Проверяем, авторизован ли пользователь
       const token = localStorage.getItem('token');
       if (!token) {
         navigate('/auth/login');
         return;
       }
 
-      // Переходим на страницу оплаты
       navigate('/payment');
     } catch (error) {
       console.error('Ошибка при оформлении заказа:', error);

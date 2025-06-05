@@ -4,32 +4,38 @@ import GameService from "@/API/GameService";
 import styles from "./Favourites.module.css";
 import { Link } from "react-router-dom";
 import Loader from "@/UI/Loader/Loader";
+import { FavoriteButton } from "@/UI/FavouriteButton/FavoriteButton";
 
 const Favourites = () => {
   const [favoriteGames, setFavoriteGames] = useState<IGameCard[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const loadFavoriteGames = async () => {
-      try {
-        const favoriteIds = JSON.parse(
-          localStorage.getItem("favoriteGames") || "[]"
-        ) as number[];
-        const games = await Promise.all(
-          favoriteIds.map((id: number) => GameService.getGameById(id))
-        );
-        setFavoriteGames(
-          games.filter((game): game is IGameCard => game !== null)
-        );
-      } catch (error) {
-        console.error("Ошибка при загрузке избранных игр:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const loadFavoriteGames = async () => {
+    try {
+      const favoriteIds = JSON.parse(
+        localStorage.getItem("favoriteGames") || "[]"
+      ) as number[];
+      const games = await Promise.all(
+        favoriteIds.map((id: number) => GameService.getGameById(id))
+      );
+      setFavoriteGames(
+        games.filter((game): game is IGameCard => game !== null)
+      );
+    } catch (error) {
+      console.error("Ошибка при загрузке избранных игр:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     loadFavoriteGames();
   }, []);
+
+  const handleFavoriteError = (error: Error) => {
+    console.error("Ошибка при работе с избранным:", error);
+    loadFavoriteGames();
+  };
 
   if (loading) {
     return <div><Loader/></div>;
@@ -49,17 +55,18 @@ const Favourites = () => {
       <h1 className={styles.title}>Избранные игры</h1>
       <div className={styles.gamesGrid}>
         {favoriteGames.map((game) => (
-          <Link
-            key={game.id}
-            to={`/games/${game.id}`}
-            className={styles.gameLink}
-          >
-            <div className={styles.gameCard}>
+          <div key={game.id} className={styles.gameCard}>
+            <Link to={`/games/${game.id}`} className={styles.gameLink}>
               <img src={game.img_path} alt={game.name} />
               <h3>{game.name}</h3>
               <p className={styles.price}>{game.price} ₽</p>
-            </div>
-          </Link>
+            </Link>
+            <FavoriteButton 
+              gameId={game.id} 
+              className={styles.favoriteButton}
+              onError={handleFavoriteError}
+            />
+          </div>
         ))}
       </div>
     </div>

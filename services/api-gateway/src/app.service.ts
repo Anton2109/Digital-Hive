@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import { Injectable, Logger, HttpException, HttpStatus } from "@nestjs/common";
-=======
-import { Injectable, Logger } from "@nestjs/common";
->>>>>>> 62fe03f665779e0b10bed12214d10c77982b9400
 import { HttpService } from "@nestjs/axios";
 import { ConfigService } from "@nestjs/config";
 import { firstValueFrom } from "rxjs";
@@ -18,10 +14,6 @@ export class AppService {
 
   private getServiceUrl(service: string): string {
     const url = this.configService.get(`${service.toUpperCase()}_SERVICE_URL`);
-<<<<<<< HEAD
-=======
-    this.logger.debug(`Service URL for ${service}: ${url}`);
->>>>>>> 62fe03f665779e0b10bed12214d10c77982b9400
     return url;
   }
 
@@ -29,20 +21,11 @@ export class AppService {
     service: string,
     path: string,
     method: string,
-<<<<<<< HEAD
     data?: any,
     headers?: any
   ) {
     const url = `${this.getServiceUrl(service)}${path}`;
     
-=======
-    data?: any
-  ) {
-    const url = `${this.getServiceUrl(service)}${path}`;
-    this.logger.debug(`Forwarding ${method} request to: ${url}`);
-    this.logger.debug(`Request data: ${JSON.stringify(data)}`);
-
->>>>>>> 62fe03f665779e0b10bed12214d10c77982b9400
     try {
       const response = await firstValueFrom(
         this.httpService.request({
@@ -51,7 +34,6 @@ export class AppService {
           data,
           headers: {
             "Content-Type": "application/json",
-<<<<<<< HEAD
             ...headers,
             Authorization: headers?.authorization || headers?.Authorization
           },
@@ -101,17 +83,5 @@ export class AppService {
         error.response?.status || HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
-=======
-          },
-        })
-      );
-      this.logger.debug(`Response from ${service}: ${JSON.stringify(response.data)}`);
-      return response.data;
-    } catch (error) {
-      this.logger.error(`Error forwarding request to ${service}: ${error.message}`);
-      this.logger.error(`Error details: ${JSON.stringify(error.response?.data)}`);
-      throw error.response?.data || error;
-    }
->>>>>>> 62fe03f665779e0b10bed12214d10c77982b9400
   }
 }

@@ -67,14 +67,7 @@ export class UsersService {
       return null;
     }
 
-<<<<<<< HEAD
-    this.logger.debug(`Comparing passwords for user ${email}`);
     const isPasswordValid = await bcrypt.compare(password, user.password_hash);
-    this.logger.debug(`Password validation result: ${isPasswordValid}`);
-
-=======
-    const isPasswordValid = await bcrypt.compare(password, user.password_hash);
->>>>>>> 62fe03f665779e0b10bed12214d10c77982b9400
     if (!isPasswordValid) {
       this.logger.warn(`Invalid password for user with email ${email}`);
       return null;
