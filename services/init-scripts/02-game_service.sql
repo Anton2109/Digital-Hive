@@ -170,7 +170,7 @@ CREATE TABLE `game_info` (
   `id` int NOT NULL AUTO_INCREMENT,
   `game_id` int NOT NULL,
   `description` text NOT NULL,
-  `release_date` date NOT NULL,
+  `release_date` date,
   `developer` varchar(255) NOT NULL,
   `publisher` varchar(255) NOT NULL,
   `rating` decimal(3,1) DEFAULT NULL,
@@ -325,6 +325,54 @@ INSERT INTO `game_keys` (`game_id`, `key`) VALUES
 (14, 'SWBF2-XXXX-XXXX-XXXX-4'),
 (14, 'SWBF2-XXXX-XXXX-XXXX-5');
 /*!40000 ALTER TABLE `game_keys` ENABLE KEYS */;
+UNLOCK TABLES;
+
+DROP TABLE IF EXISTS `user_games`;
+CREATE TABLE `user_games` (
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `email` VARCHAR(255) NOT NULL,
+    `game_id` INT NOT NULL,
+    `purchase_date` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    `key_id` INT NOT NULL,
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (`game_id`) REFERENCES `games` (`id`) ON DELETE CASCADE,
+    FOREIGN KEY (`key_id`) REFERENCES `game_keys` (`id`) ON DELETE CASCADE,
+    INDEX `idx_email` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Table structure for table `game_discounts`
+--
+
+DROP TABLE IF EXISTS `game_discounts`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `game_discounts` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `game_id` int NOT NULL,
+  `discount_percent` int NOT NULL,
+  `start_date` datetime NOT NULL,
+  `end_date` datetime NOT NULL,
+  `is_active` boolean DEFAULT true,
+  PRIMARY KEY (`id`),
+  KEY `fk_game_discounts_game_id` (`game_id`),
+  CONSTRAINT `fk_game_discounts_game_id` FOREIGN KEY (`game_id`) REFERENCES `games` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `game_discounts`
+--
+
+LOCK TABLES `game_discounts` WRITE;
+/*!40000 ALTER TABLE `game_discounts` DISABLE KEYS */;
+INSERT INTO `game_discounts` (`game_id`, `discount_percent`, `start_date`, `end_date`, `is_active`) VALUES
+(1, 20, '2025-06-01 00:00:00', '2025-06-30 23:59:59', true),
+(2, 15, '2025-06-01 00:00:00', '2025-06-30 23:59:59', true),
+(3, 25, '2025-06-01 00:00:00', '2025-06-30 23:59:59', true),
+(4, 10, '2025-06-01 00:00:00', '2025-06-30 23:59:59', true),
+(5, 30, '2025-06-01 00:00:00', '2025-06-30 23:59:59', true);
+/*!40000 ALTER TABLE `game_discounts` ENABLE KEYS */;
 UNLOCK TABLES;
 
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

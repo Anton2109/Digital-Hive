@@ -23,7 +23,7 @@ export const useFavorites = (gameId: number): UseFavoritesReturn => {
           ? error
           : new Error("Ошибка при чтении избранного")
       );
-      console.error("Error reading favorites:", error);
+      console.error("Ошибка при чтении избранного:", error);
     }
   }, [gameId]);
 
@@ -48,7 +48,7 @@ export const useFavorites = (gameId: number): UseFavoritesReturn => {
           ? error
           : new Error("Ошибка при обновлении избранного")
       );
-      console.error("Error updating favorites:", error);
+      console.error("Ошибка при обновлении избранного:", error);
     }
   }, [gameId, isFavorite]);
 

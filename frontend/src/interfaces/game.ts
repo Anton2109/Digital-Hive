@@ -70,3 +70,9 @@ export interface IGameCard {
     categoriesImg: string;
   };
 }
+
+export interface IUserGame {
+  id: number;
+  game: IGame;
+  purchase_date: string;
+}

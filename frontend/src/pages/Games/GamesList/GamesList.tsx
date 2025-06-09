@@ -46,7 +46,7 @@ const GamesList = () => {
   const handlePriceChange = (min: number, max: number) => {
     setMinPrice(min);
     setMaxPrice(max);
-    setCurrentPage(1); // Сбрасываем страницу при изменении фильтров
+    setCurrentPage(1);
   };
 
   useEffect(() => {

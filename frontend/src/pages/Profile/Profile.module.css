@@ -14,6 +14,17 @@
   margin: 0 auto;
 }
 
+.profileContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background: var(--cyber-black);
+  min-height: 100vh;
+}
+
 .profileCard {
   background: var(--cyber-black);
   padding: 32px;
@@ -39,6 +50,269 @@
     transparent 100%
   );
   z-index: 1;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+  position: relative;
+  z-index: 2;
+}
+
+.userIcon {
+  font-size: 32px;
+  color: var(--primary-gold);
+}
+
+.username {
+  margin: 0;
+  color: var(--text-color);
+  text-shadow: 0 0 10px rgba(205, 176, 108, 0.5);
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.adminIcon {
+  font-size: 24px;
+  color: var(--primary-gold);
+  filter: drop-shadow(0 0 5px rgba(205, 176, 108, 0.5));
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 24px;
+  position: relative;
+  z-index: 2;
+}
+
+.email {
+  color: var(--text-color);
+  font-size: 16px;
+  opacity: 0.8;
+}
+
+.role {
+  color: var(--primary-gold);
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  width: 100%;
+  position: relative;
+  z-index: 2;
+}
+
+.adminButton,
+.logoutButton {
+  flex: 1;
+  padding: 12px 20px;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s var(--ease-out-expo);
+  border: none;
+  font-size: 14px;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.adminButton {
+  background: linear-gradient(45deg, var(--primary-gold), #e6c88e);
+  color: var(--cyber-black);
+  box-shadow: 0 4px 15px rgba(205, 176, 108, 0.3);
+}
+
+.adminButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(205, 176, 108, 0.4);
+}
+
+.logoutButton {
+  background: linear-gradient(45deg, var(--accent-color), #ff4d8d);
+  color: var(--text-color);
+  box-shadow: 0 4px 15px rgba(255, 42, 109, 0.3);
+}
+
+.logoutButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 42, 109, 0.4);
+}
+
+.gamesCard {
+  background: var(--cyber-black);
+  border-radius: 12px;
+  border: 1px solid rgba(205, 176, 108, 0.2);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  padding: 32px;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+}
+
+.gamesCard::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(205, 176, 108, 0.1) 0%,
+    transparent 50%,
+    rgba(205, 176, 108, 0.05) 100%
+  );
+  z-index: 1;
+}
+
+.gamesTitle {
+  color: var(--text-color);
+  margin-bottom: 32px;
+  text-shadow: 0 0 10px rgba(205, 176, 108, 0.5);
+  position: relative;
+  z-index: 2;
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.gamesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 16px;
+  position: relative;
+  z-index: 2;
+}
+
+.gameCard {
+  background: linear-gradient(145deg, var(--color-secondary), var(--cyber-black));
+  border: 1px solid rgba(205, 176, 108, 0.15);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.4s var(--ease-out-expo);
+  position: relative;
+  z-index: 2;
+  height: 100%;
+}
+
+.gameCard:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 12px 30px rgba(205, 176, 108, 0.15);
+  border-color: rgba(205, 176, 108, 0.3);
+}
+
+.gameImageContainer {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(205, 176, 108, 0.1);
+}
+
+.gameImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s var(--ease-out-expo);
+}
+
+.gameCard:hover .gameImage {
+  transform: scale(1.05);
+}
+
+.gameInfo {
+  padding: 20px;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(205, 176, 108, 0.05) 100%
+  );
+}
+
+.gameTitle {
+  color: var(--text-color);
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.gameDetails {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.gamePrice {
+  color: var(--primary-gold);
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.purchaseDate {
+  color: var(--text-color);
+  opacity: 0.7;
+  font-size: 14px;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  color: var(--primary-gold);
+  font-size: 18px;
+  position: relative;
+}
+
+.loading::after {
+  content: "";
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--primary-gold);
+  border-top-color: transparent;
+  border-radius: 50%;
+  margin-left: 10px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.emptyState {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  color: var(--text-color);
+  opacity: 0.7;
+  font-size: 16px;
+  text-align: center;
 }
 
 .purchasesCard {
@@ -86,11 +360,6 @@
   background-clip: text;
 }
 
-.info {
-  position: relative;
-  z-index: 2;
-}
-
 .infoItem {
   margin-bottom: 16px;
   padding: 16px;
@@ -113,30 +382,6 @@
   font-size: 16px;
 }
 
-.logoutButton {
-  width: 100%;
-  padding: 12px;
-  background: var(--accent-color);
-  color: var(--text-color);
-  border: none;
-  border-radius: 4px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s var(--ease-out-expo);
-  position: relative;
-  z-index: 2;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-top: 24px;
-}
-
-.logoutButton:hover {
-  background: #ff1a5e;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(255, 42, 109, 0.3);
-}
-
 .purchasesList {
   position: relative;
   z-index: 2;
@@ -149,11 +394,28 @@
   padding: 16px;
   margin-bottom: 16px;
   transition: all 0.3s var(--ease-out-expo);
+  display: flex;
+  gap: 16px;
+  align-items: center;
 }
 
 .purchaseItem:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(205, 176, 108, 0.1);
+}
+
+.gameImage {
+  width: 120px;
+  height: 80px;
+  border-radius: 4px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .purchaseInfo {
@@ -256,14 +518,37 @@
   box-shadow: 0 4px 12px rgba(255, 42, 109, 0.3);
 }
 
-.loading {
-  color: var(--text-color);
-  font-size: 18px;
-  text-align: center;
-}
-
 @media (max-width: 768px) {
-  .profileLayout {
-    grid-template-columns: 1fr;
+  .profileContainer {
+    padding: 16px;
   }
-} 
+
+  .profileCard,
+  .gamesCard {
+    padding: 20px;
+  }
+
+  .buttons {
+    flex-direction: column;
+  }
+
+  .gamesGrid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+
+  .gameInfo {
+    padding: 16px;
+  }
+
+  .gameTitle {
+    font-size: 16px;
+  }
+
+  .gamePrice {
+    font-size: 14px;
+  }
+
+  .purchaseDate {
+    font-size: 12px;
+  }
+}

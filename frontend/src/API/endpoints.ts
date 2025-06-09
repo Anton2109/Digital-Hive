@@ -7,6 +7,10 @@ export const API_ENDPOINTS = {
   CATEGORIES: "/categories",
   CATEGORY_BY_ID: (id: string | number) => `/categories/${id}`,
 
+  /* Скидки */
+  DISCOUNTS: "/discounts",
+  DISCOUNT_BY_ID: (id: string | number) => `/discounts/${id}`,
+
  /* Авторизация */
   AUTH: "",
   AUTH_LOGIN: "/auth/login",

@@ -1,0 +1,40 @@
+.adminLayout {
+  min-height: 100vh;
+  background-color: var(--color-background-primary);
+}
+
+.header {
+  background-color: var(--color-primary) !important;
+  border-bottom: 1px solid var(--color-accent);
+  padding: 0;
+}
+
+.headerTitle {
+  padding: 0 24px;
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--color-text-primary);
+}
+
+.sider {
+  background-color: var(--color-primary) !important;
+}
+
+.menu {
+  height: 100%;
+  border-right: 0;
+  background-color: var(--color-primary);
+}
+
+.contentLayout {
+  padding: 24px;
+}
+
+.content {
+  background-color: var(--color-background-secondary);
+  padding: 24px;
+  margin: 0;
+  min-height: 280px;
+  border-radius: 8px;
+  border: 1px solid var(--color-accent);
+} 

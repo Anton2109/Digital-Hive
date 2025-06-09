@@ -6,22 +6,22 @@ export class SystemReqMin {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ length: 2 })
+  @Column({ length: 2, nullable: true })
   windows: string;
 
-  @Column()
+  @Column({ nullable: true })
   processor: string;
 
-  @Column({ length: 3 })
+  @Column({ length: 3, nullable: true })
   RAM: string;
 
-  @Column()
+  @Column({ nullable: true })
   graphicsCard: string;
 
-  @Column({ length: 2 })
+  @Column({ length: 2, nullable: true })
   DirectX: string;
 
-  @Column({ length: 10 })
+  @Column({ length: 10, nullable: true })
   DiskSpace: string;
 
   @Column()

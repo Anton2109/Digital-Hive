@@ -8,6 +8,7 @@ import { Category } from './entities/category.entity';
 import { GameInfo } from './entities/game-info.entity';
 import { SystemReqMin } from './entities/system-req-min.entity';
 import { SystemReqMax } from './entities/system-req-max.entity';
+import { UserGame } from './entities/user-game.entity';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { SystemReqMax } from './entities/system-req-max.entity';
       GameInfo,
       SystemReqMin,
       SystemReqMax,
+      UserGame,
     ]),
   ],
   controllers: [GamesController, CategoriesController],

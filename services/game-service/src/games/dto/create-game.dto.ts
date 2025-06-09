@@ -3,28 +3,28 @@ import { Type } from 'class-transformer';
 
 class SystemRequirementsDto {
   @IsString()
-  @IsNotEmpty()
-  windows: string;
+  @IsOptional()
+  windows?: string;
 
   @IsString()
-  @IsNotEmpty()
-  processor: string;
+  @IsOptional()
+  processor?: string;
 
   @IsString()
-  @IsNotEmpty()
-  RAM: string;
+  @IsOptional()
+  RAM?: string;
 
   @IsString()
-  @IsNotEmpty()
-  graphicsCard: string;
+  @IsOptional()
+  graphicsCard?: string;
 
   @IsString()
-  @IsNotEmpty()
-  DirectX: string;
+  @IsOptional()
+  DirectX?: string;
 
   @IsString()
-  @IsNotEmpty()
-  DiskSpace: string;
+  @IsOptional()
+  DiskSpace?: string;
 }
 
 class GameInfoDto {
@@ -34,7 +34,7 @@ class GameInfoDto {
 
   @IsString()
   @IsNotEmpty()
-  release_date: string;
+  release_date?: string;
 
   @IsString()
   @IsNotEmpty()

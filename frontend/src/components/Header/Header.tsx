@@ -26,8 +26,9 @@ const Header: React.FC = () => {
 
   const navItems: INavigation[] = [
     { name: "Главная", path: "/" },
-    { name: "Скидки", path: "/games/sales" },
-    { name: "Популярные", path: "/games/popular" },
+    // { name: "Скидки", path: "/games/sales" },
+    // { name: "Популярные", path: "/games/popular" },
+    { name: "Все игры", path: "/games" },
     {
       name: "Избранное",
       path: "/user/favourites",

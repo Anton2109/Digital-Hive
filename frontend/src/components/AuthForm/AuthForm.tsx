@@ -1,8 +1,30 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import styles from "./AuthForm.module.css";
-import AuthService from "@/API/AuthService";
+import authService from "@/API/AuthService";
 import { IAuthForm } from "@/interfaces/authForm";
+import { setUser, setToken } from "@/store/slices/authSlice";
+
+interface LoginResponse {
+  access_token: string;
+  user: {
+    id: number;
+    email: string;
+    username: string;
+    role: string;
+  };
+}
+
+interface RegisterResponse {
+  token: string;
+  user: {
+    id: number;
+    email: string;
+    username: string;
+    role: string;
+  };
+}
 
 interface AuthFormProps {
   mode: "login" | "register";
@@ -10,6 +32,7 @@ interface AuthFormProps {
 
 const AuthForm = ({ mode }: AuthFormProps) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState<IAuthForm>({
     email: "",
     password: "",
@@ -20,26 +43,92 @@ const AuthForm = ({ mode }: AuthFormProps) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.email || !formData.password) {
+
+    setError("");
+
+    if (!formData.email.trim() || !formData.password.trim()) {
       setError("Пожалуйста, заполните все обязательные поля");
       return;
     }
-    
+
+    if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      setError("Пожалуйста, введите корректный email");
+      return;
+    }
+
+    setIsLoading(true);
+
     try {
-      setIsLoading(true);
-      const data = mode === "login" 
-        ? await AuthService.login(formData)
-        : await AuthService.register(formData);
+      console.log('Начало авторизации:', { mode, email: formData.email });
       
+      const response = mode === "login"
+        ? await authService.login(formData.email, formData.password)
+        : await authService.register(formData.email, formData.password, formData.username);
+
+      console.log('Ответ от сервера:', response);
+
+      const token = response.access_token;
+      
+      console.log('Полученный токен:', token);
+      console.log('Полный ответ:', JSON.stringify(response, null, 2));
+      
+      if (!token) {
+        console.error('Токен отсутствует в ответе:', response);
+        throw new Error(mode === "login" ? "Неверный email или пароль" : "Ошибка при регистрации");
+      }
+
+      dispatch(setToken(token));
+      dispatch(setUser(response.user));
+
       if (mode === "login") {
-        localStorage.setItem("token", data.access_token);
-        navigate("/");
+        console.log('Перенаправление на профиль');
+        await new Promise(resolve => setTimeout(resolve, 500));
+        navigate("/user/profile");
       } else {
+        console.log('Перенаправление на страницу входа');
         navigate("/auth/login");
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Ошибка авторизации:", error);
-      setError("Не удалось выполнить авторизацию");
+      console.error("Детали ошибки:", {
+        status: error.response?.status,
+        data: error.response?.data,
+        message: error.message,
+        response: error.response
+      });
+
+      let errorMessage = "Не удалось выполнить авторизацию";
+
+      if (error.response?.status === 401) {
+        errorMessage = "Неверный email или пароль";
+      } else if (error.message.includes("Неверный email или пароль")) {
+        errorMessage = "Неверный email или пароль";
+      } else if (error.response?.data?.message) {
+        errorMessage = error.response.data.message;
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+
+      if (!error.response?.data && response?.access_token) {
+        console.log('Получен пустой ответ, но токен есть. Пробуем еще раз...');
+        try {
+          await new Promise(resolve => setTimeout(resolve, 500));
+          const retryResponse = mode === "login"
+            ? await authService.login(formData.email, formData.password)
+            : await authService.register(formData.email, formData.password, formData.username);
+          
+          if (retryResponse.access_token) {
+            dispatch(setToken(retryResponse.access_token));
+            dispatch(setUser(retryResponse.user));
+            navigate("/user/profile");
+            return;
+          }
+        } catch (retryError) {
+          console.error("Ошибка при повторной попытке:", retryError);
+        }
+      }
+
+      setError(errorMessage);
     } finally {
       setIsLoading(false);
     }
@@ -47,7 +136,9 @@ const AuthForm = ({ mode }: AuthFormProps) => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData((prev: IAuthForm) => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
+
+    if (error) setError("");
   };
 
   if (isLoading) {
@@ -101,7 +192,11 @@ const AuthForm = ({ mode }: AuthFormProps) => {
           />
         </div>
 
-        <button type="submit" className={styles.submitButton}>
+        <button
+          type="submit"
+          className={styles.submitButton}
+          disabled={isLoading}
+        >
           {mode === "login" ? "Войти" : "Зарегистрироваться"}
         </button>
 

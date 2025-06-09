@@ -1,6 +1,7 @@
 import { lazy } from 'react';
 import PageLayout from '@/components/Layout/PageLayout';
 import { AppRoute } from '@/interfaces/routes';
+import AdminRoute from '@/components/admin/AdminRoute';
 
 const Home = lazy(() => import('@/pages/Home/Home'));
 const Games = lazy(() => import('@/pages/Games/Games'));
@@ -18,6 +19,8 @@ const Support = lazy(() => import('@/pages/Support/Support'));
 const NotFound = lazy(() => import('@/pages/NotFound/NotFound'));
 const Auth = lazy(() => import('@/pages/Auth/Auth'));
 const Payment = lazy(() => import('@/pages/Payment/Payment'));
+const PaymentSuccess = lazy(() => import('@/pages/PaymentSuccess/PaymentSuccess'));
+const AdminPage = lazy(() => import('@/pages/AdminPage'));
 
 export const routes = [
   {
@@ -76,6 +79,11 @@ export const routes = [
         title: 'Оплата'
       },
       {
+        path: 'payment-success',
+        element: <PaymentSuccess />,
+        title: 'Успешная оплата'
+      },
+      {
         path: 'info/about',
         element: <About />,
         title: 'О нас'
@@ -111,5 +119,14 @@ export const routes = [
         title: 'Форма регистрации/ авторизации'
       }
     ]
+  },
+  {
+    path: '/admin',
+    element: (
+      <AdminRoute>
+        <AdminPage />
+      </AdminRoute>
+    ),
+    title: 'Админ-панель'
   }
 ] as AppRoute[]; 

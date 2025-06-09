@@ -23,9 +23,12 @@ export class GameKeysController {
   }
 
   @Post('confirm/:orderId')
-  async confirmKeys(@Param('orderId') orderId: number) {
+  async confirmKeys(
+    @Param('orderId') orderId: number,
+    @Body('email') email: string,
+  ) {
     this.logger.log(`Запрос на подтверждение ключей для заказа ${orderId}`);
-    return this.gameKeysService.confirmKeys(orderId);
+    return this.gameKeysService.confirmKeys(orderId, email);
   }
 
   @Post('cancel/:orderId')

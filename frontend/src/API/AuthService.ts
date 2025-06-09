@@ -1,119 +1,144 @@
-import { API_ENDPOINTS } from "./endpoints";
-import { API_URL } from "@/constants";
 import axios from "axios";
-import { IAuthForm } from "@/interfaces/authForm";
-import { IUserProfile } from '@/interfaces/user';
+import { API_URL } from "@/constants";
+import { IUserProfile } from "../interfaces/user";
 
-const baseUrl = API_URL;
+interface LoginResponse {
+  access_token: string;
+  user: {
+    id: number;
+    email: string;
+    username: string;
+    role: string;
+  };
+}
 
-export default class AuthService {
-  private static cachedProfile: IUserProfile | null = null;
+interface RegisterResponse {
+  access_token: string;
+  user: {
+    id: number;
+    email: string;
+    username: string;
+    role: string;
+  };
+}
 
-  static async login(data: IAuthForm) {
-    try {
-      const url = `${baseUrl}${API_ENDPOINTS.AUTH_LOGIN}`;
-      const response = await axios.post(url, data);
-      if (response.data.access_token) {
-        localStorage.setItem('token', response.data.access_token);
-        this.cachedProfile = null;
-      }
-      return response.data;
-    } catch (error) {
-      console.error("Ошибка при входе:", error);
-      throw error;
+class AuthService {
+  private static instance: AuthService;
+  private constructor() {}
+
+  public static getInstance(): AuthService {
+    if (!AuthService.instance) {
+      AuthService.instance = new AuthService();
     }
+    return AuthService.instance;
   }
 
-  static async register(data: IAuthForm) {
+  async login(email: string, password: string): Promise<LoginResponse> {
+    console.log('AuthService: начало входа');
+    const response = await axios.post<LoginResponse>(`${API_URL}/auth/login`, {
+      email,
+      password,
+    });
+    console.log('AuthService: ответ от сервера при входе:', response.data);
+    return response.data;
+  }
+
+  async register(email: string, password: string, username: string): Promise<RegisterResponse> {
     try {
-      const url = `${baseUrl}${API_ENDPOINTS.AUTH_REGISTER}`;
-      const response = await axios.post(url, data);
+      console.log('AuthService: начало регистрации');
+      const response = await axios.post<RegisterResponse>(`${API_URL}/auth/register`, {
+        email,
+        password,
+        username,
+      });
+      console.log('AuthService: ответ от сервера при регистрации:', response.data);
       return response.data;
-    } catch (error) {
+    } catch (error: any) {
       console.error("Ошибка при регистрации:", error);
-      throw error;
+      if (error.response?.data?.message) {
+        throw new Error(error.response.data.message);
+      }
+      throw new Error("Ошибка при регистрации. Пожалуйста, попробуйте позже.");
     }
   }
 
-  static async logout() {
+  async getProfile(): Promise<IUserProfile> {
     try {
-      const token = localStorage.getItem('token');
+      console.log('AuthService: начало получения профиля');
+      const token = localStorage.getItem("token");
+      console.log('AuthService: токен при получении профиля:', token);
+      
       if (!token) {
-        throw new Error('Токен не найден');
+        throw new Error("Токен не найден");
       }
 
-      const url = `${baseUrl}${API_ENDPOINTS.AUTH_LOGOUT}`;
-      await axios.post(url, {}, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
-      localStorage.removeItem('token');
-      this.cachedProfile = null;
-    } catch (error) {
-      console.error("Ошибка при выходе:", error);
-      throw error;
-    }
-  }
-
-  static async refresh() {
-    try {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        throw new Error('Токен не найден');
-      }
-
-      const url = `${baseUrl}${API_ENDPOINTS.AUTH_REFRESH}`;
-      const response = await axios.post(url, {}, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
-      return response.data;
-    } catch (error) {
-      console.error("Ошибка при обновлении токена:", error);
-      throw error;
-    }
-  }
-
-  static async getProfile(): Promise<IUserProfile> {
-    if (this.cachedProfile) {
-      return this.cachedProfile;
-    }
-
-    const token = localStorage.getItem('token');
-    if (!token) {
-      throw new Error('Токен не найден');
-    }
-
-    try {
-      const response = await axios.get(`${baseUrl}${API_ENDPOINTS.AUTH_PROFILE}`, {
+      const response = await axios.get<IUserProfile>(`${API_URL}/auth/me`, {
         headers: {
           Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
         },
-        validateStatus: (status) => status < 500,
       });
 
-      if (!response.data && this.cachedProfile) {
-        return this.cachedProfile;
-      }
+      console.log('AuthService: ответ от сервера при получении профиля:', response.data);
 
       if (!response.data) {
-        throw new Error('Данные профиля не получены');
+        console.error('AuthService: пустой ответ от сервера');
+        throw new Error("Пустой ответ от сервера");
       }
 
-      const { id, email, username } = response.data;
-
-      if (!id || !email || !username) {
-        throw new Error('Данные профиля не получены');
+      const userData = response.data;
+      const requiredFields = ['id', 'email', 'username', 'role'];
+      const missingFields = requiredFields.filter(field => !(field in userData));
+      
+      if (missingFields.length > 0) {
+        console.error('AuthService: отсутствуют обязательные поля:', missingFields);
+        throw new Error(`Отсутствуют обязательные поля: ${missingFields.join(', ')}`);
       }
 
-      this.cachedProfile = { id, email, username };
-      return this.cachedProfile;
-    } catch (error) {
+      return userData;
+    } catch (error: any) {
       console.error("Ошибка при получении профиля:", error);
-      throw error;
+      
+      if (error.response?.status === 401) {
+        localStorage.removeItem("token");
+        throw new Error("Сессия истекла");
+      }
+      
+      if (error instanceof Error && error.message === "Токен не найден") {
+        throw error;
+      }
+      
+      if (error.response?.data?.message) {
+        throw new Error(error.response.data.message);
+      }
+      
+      throw new Error("Не удалось загрузить профиль");
     }
   }
+
+  async logout(): Promise<void> {
+    try {
+      const token = localStorage.getItem("token");
+      if (token) {
+        await axios.post(
+          `${API_URL}/auth/logout`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+      }
+    } catch (error) {
+      console.error("Ошибка при выходе:", error);
+    } finally {
+      localStorage.removeItem("token");
+    }
+  }
+
+  isAuthenticated(): boolean {
+    return !!localStorage.getItem("token");
+  }
 }
+
+export default AuthService.getInstance();

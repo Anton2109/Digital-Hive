@@ -5,10 +5,13 @@ import { GameKey } from './entities/game-key.entity';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
 import { Game } from '../games/entities/game.entity';
+import { UserGamesService } from '../user-games/user-games.service';
 
 @Injectable()
 export class GameKeysService {
   private readonly logger = new Logger(GameKeysService.name);
+  private readonly MAX_RETRIES = 3;
+  private readonly RETRY_DELAY = 100;
 
   constructor(
     @InjectRepository(GameKey)
@@ -16,7 +19,27 @@ export class GameKeysService {
     @InjectRepository(Game)
     private gamesRepository: Repository<Game>,
     private readonly httpService: HttpService,
+    private readonly userGamesService: UserGamesService,
   ) {}
+
+  private async sleep(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  private async retryOperation<T>(operation: () => Promise<T>, retries = this.MAX_RETRIES): Promise<T> {
+    try {
+      return await operation();
+    } catch (error) {
+      if (retries > 0 && error.message.includes('Lock wait timeout exceeded')) {
+        this.logger.warn(`Lock timeout, retrying... (${this.MAX_RETRIES - retries + 1}/${this.MAX_RETRIES})`);
+        this.logger.debug(`Error details: ${error.message}`);
+        await this.sleep(this.RETRY_DELAY);
+        return this.retryOperation(operation, retries - 1);
+      }
+      this.logger.error(`Operation failed after all retries: ${error.message}`);
+      throw error;
+    }
+  }
 
   async reserveKeys(gameId: number, quantity: number, orderId: number): Promise<GameKey[]> {
     this.logger.log(`Резервирование ключей для игры ${gameId}, количество: ${quantity}, заказ: ${orderId}`);
@@ -59,29 +82,53 @@ export class GameKeysService {
     });
   }
 
-  async confirmKeys(orderId: number): Promise<void> {
-    this.logger.log(`Подтверждение ключей для заказа ${orderId}`);
-    return this.gameKeysRepository.manager.transaction(async (manager) => {
-      const reservedKeys = await manager
-        .createQueryBuilder(GameKey, 'key')
-        .where('key.status = :status', { status: 'reserved' })
-        .andWhere('key.order_id = :orderId', { orderId })
-        .getMany();
+  async confirmKeys(orderId: number, email: string): Promise<void> {
+    this.logger.log(`Подтверждение ключей для заказа ${orderId} для email ${email}`);
+    
+    return this.retryOperation(async () => {
+      return this.gameKeysRepository.manager.transaction(async (manager) => {
+        this.logger.debug(`Начало транзакции для заказа ${orderId}`);
+        
+        const reservedKeys = await manager
+          .createQueryBuilder(GameKey, 'key')
+          .where('key.status = :status', { status: 'reserved' })
+          .andWhere('key.order_id = :orderId', { orderId })
+          .getMany();
 
-      if (reservedKeys.length === 0) {
-        this.logger.error(`Не найдены зарезервированные ключи для заказа ${orderId}`);
-        throw new NotFoundException(`No reserved keys found for order ${orderId}`);
-      }
+        this.logger.debug(`Найдено зарезервированных ключей: ${reservedKeys.length}`);
 
-      const keysToConfirm = reservedKeys.map(key => ({
-        ...key,
-        status: 'used',
-        used_at: new Date(),
-        order_id: orderId
-      }));
+        if (reservedKeys.length === 0) {
+          this.logger.error(`Не найдены зарезервированные ключи для заказа ${orderId}`);
+          throw new NotFoundException(`No reserved keys found for order ${orderId}`);
+        }
 
-      this.logger.log(`Подтверждение ${keysToConfirm.length} ключей для заказа ${orderId}`);
-      await manager.save(GameKey, keysToConfirm);
+        const keysToConfirm = reservedKeys.map(key => ({
+          ...key,
+          status: 'used',
+          used_at: new Date(),
+          order_id: orderId
+        }));
+
+        this.logger.log(`Подтверждение ${keysToConfirm.length} ключей для заказа ${orderId}`);
+        this.logger.debug(`Ключи для подтверждения: ${JSON.stringify(keysToConfirm)}`);
+        
+        await manager.save(GameKey, keysToConfirm);
+        this.logger.debug(`Ключи успешно сохранены в базе данных`);
+
+        // Добавляем игры в список купленных в той же транзакции
+        for (const key of keysToConfirm) {
+          this.logger.debug(`Добавление игры ${key.game_id} для пользователя ${email}`);
+          const userGame = manager.create('UserGame', {
+            email: email,
+            game_id: key.game_id,
+            key_id: key.id,
+          });
+          await manager.save('UserGame', userGame);
+          this.logger.debug(`Игра ${key.game_id} успешно добавлена для пользователя ${email}`);
+        }
+
+        this.logger.debug(`Транзакция успешно завершена для заказа ${orderId}`);
+      });
     });
   }
 

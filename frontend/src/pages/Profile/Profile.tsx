@@ -1,76 +1,85 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import styles from './Profile.module.css';
-import AuthService from '@/API/AuthService';
-import { IUserProfile } from '@/interfaces/user';
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/store/store";
+import { logout, setUser } from "../../store/slices/authSlice";
+import { IUserGame } from "@/interfaces/game";
+import AuthService from "../../API/AuthService";
+import GameService from "../../API/GameService";
+import styles from "./Profile.module.css";
+import { LogoutOutlined, UserOutlined, CrownOutlined } from "@ant-design/icons";
+import { IMAGES_URL } from "../../constants";
 
-interface Purchase {
-  id: number;
-  gameName: string;
-  price: number;
-  date: string;
-  status: 'completed' | 'pending' | 'cancelled';
-}
-
-const mockPurchases: Purchase[] = [
-  {
-    id: 1,
-    gameName: 'Cyberpunk 2077',
-    price: 1999,
-    date: '2024-03-15',
-    status: 'completed'
-  },
-  {
-    id: 2,
-    gameName: 'The Witcher 3',
-    price: 999,
-    date: '2024-03-10',
-    status: 'completed'
-  },
-  {
-    id: 3,
-    gameName: 'Red Dead Redemption 2',
-    price: 2499,
-    date: '2024-03-05',
-    status: 'pending'
-  }
-];
-
-const Profile: React.FC = () => {
+const Profile = () => {
   const navigate = useNavigate();
-  const [profile, setProfile] = useState<IUserProfile | null>(null);
+  const dispatch = useDispatch();
+  const user = useSelector((state: RootState) => state.auth.user);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [isFetching, setIsFetching] = useState(false);
+  const [games, setGames] = useState<IUserGame[]>([]);
+  const [retryCount, setRetryCount] = useState(0);
+  const maxRetries = 2;
+
+  const fetchProfile = async () => {
+    try {
+      console.log('Запрос профиля...');
+      const profileData = await AuthService.getProfile();
+      console.log('Полученные данные профиля:', profileData);
+      
+      if (profileData && profileData.id) {
+        dispatch(setUser(profileData));
+        await fetchUserGames(profileData.email);
+      }
+    } catch (error) {
+      console.error('Ошибка при получении данных профиля:', error);
+      if (retryCount < maxRetries) {
+        console.log(`Повторная попытка ${retryCount + 1} из ${maxRetries}`);
+        setRetryCount(prev => prev + 1);
+        setTimeout(fetchProfile, 1000);
+      } else {
+        alert("Не удалось загрузить профиль");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchUserGames = async (email: string) => {
+    try {
+      console.log('Запрос игр пользователя...');
+      const userGames = await GameService.getUserGames(email);
+      console.log('Полученные игры:', userGames);
+      setGames(userGames);
+    } catch (error) {
+      console.error('Ошибка при получении игр:', error);
+      alert("Не удалось загрузить игры пользователя");
+    }
+  };
 
   useEffect(() => {
-    const fetchProfile = async () => {
-      if (isFetching) return;
-      
-      setIsFetching(true);
-      setLoading(true);
-      setError(null);
-      
-      try {
-        const data = await AuthService.getProfile();
-        setProfile(data);
-      } catch (error) {
-        console.log("Ошибка при выходе из системы", error);
-      } finally {
-        setLoading(false);
-        setIsFetching(false);
-      }
-    };
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/auth/login");
+      return;
+    }
 
-    fetchProfile();
-  }, []);
+    if (!user || !user.id) {
+      fetchProfile();
+    } else {
+      fetchUserGames(user.email);
+      setLoading(false);
+    }
+  }, [user?.id]);
 
   const handleLogout = async () => {
     try {
+      console.log('Начало процесса выхода...');
       await AuthService.logout();
-      setProfile(null);
+      console.log('Выход выполнен успешно');
+      dispatch(logout());
+      navigate("/auth/login");
     } catch (error) {
-      console.log("Ошибка при выходе из системы", error);
+      console.error('Ошибка при выходе:', error);
+      alert("Ошибка при выходе из системы");
     }
   };
 
@@ -78,56 +87,70 @@ const Profile: React.FC = () => {
     return <div className={styles.loading}>Загрузка...</div>;
   }
 
-  if (!profile) {
-    return (
-      <div className={styles.container}>
-        <div className={styles.notAuth}>
-          <h2>Для доступа к профилю необходимо авторизоваться</h2>
-          <button 
-            onClick={() => navigate('/auth/login')} 
-            className={styles.authButton}
+  return (
+    <div className={styles.profileContainer}>
+      <div className={styles.profileCard}>
+        <div className={styles.header}>
+          <UserOutlined className={styles.userIcon} />
+          <h2 className={styles.username}>
+            {user?.username || "Пользователь"}
+          </h2>
+          {user?.role === "admin" && (
+            <CrownOutlined className={styles.adminIcon} title="Администратор" />
+          )}
+        </div>
+
+        <div className={styles.info}>
+          <span className={styles.email}>{user?.email}</span>
+          <span className={styles.role}>
+            {user?.role === "admin" ? "Администратор" : "Пользователь"}
+          </span>
+        </div>
+
+        <div className={styles.buttons}>
+          {user?.role === "admin" && (
+            <button
+              className={styles.adminButton}
+              onClick={() => {
+                console.log('Переход в админ-панель');
+                navigate('/admin');
+              }}
+            >
+              Админ-панель
+            </button>
+          )}
+          <button
+            className={styles.logoutButton}
+            onClick={handleLogout}
           >
-            Войти
+            <LogoutOutlined /> Выйти
           </button>
         </div>
       </div>
-    );
-  }
 
-  return (
-    <div className={styles.container}>
-      <div className={styles.profileLayout}>
-        <div className={styles.profileCard}>
-          <h2 className={styles.title}>Профиль</h2>
-          <div className={styles.info}>
-            <div className={styles.infoItem}>
-              <span className={styles.label}>Email:</span>
-              <span className={styles.value}>{profile.email}</span>
-            </div>
-            <div className={styles.infoItem}>
-              <span className={styles.label}>Имя:</span>
-              <span className={styles.value}>{profile.username}</span>
-            </div>
-          </div>
-          <button onClick={handleLogout} className={styles.logoutButton}>
-            Выйти
-          </button>
-        </div>
-
-        <div className={styles.purchasesCard}>
-          <h2 className={styles.title}>История покупок</h2>
-          <div className={styles.purchasesList}>
-            {mockPurchases.map((purchase) => (
-              <div key={purchase.id} className={styles.purchaseItem}>
-                <div className={styles.purchaseInfo}>
-                  <h3 className={styles.gameName}>{purchase.gameName}</h3>
-                  <div className={styles.purchaseDetails}>
-                    <span className={styles.price}>{purchase.price} ₽</span>
-                    <span className={styles.date}>{purchase.date}</span>
-                    <span className={`${styles.status} ${styles[purchase.status]}`}>
-                      {purchase.status === 'completed' && 'Выполнено'}
-                      {purchase.status === 'pending' && 'В обработке'}
-                      {purchase.status === 'cancelled' && 'Отменено'}
+      {games.length > 0 ? (
+        <div className={styles.gamesCard}>
+          <h3 className={styles.gamesTitle}>
+            Купленные игры
+          </h3>
+          <div className={styles.gamesGrid}>
+            {games.map((game) => (
+              <div key={game.id} className={styles.gameCard}>
+                <div className={styles.gameImageContainer}>
+                  <img
+                    src={`${IMAGES_URL}/${game.game.img_path}`}
+                    alt={game.game.name}
+                    className={styles.gameImage}
+                  />
+                </div>
+                <div className={styles.gameInfo}>
+                  <h4 className={styles.gameTitle}>
+                    {game.game.name}
+                  </h4>
+                  <div className={styles.gameDetails}>
+                    <span className={styles.gamePrice}>{game.game.price} ₽</span>
+                    <span className={styles.purchaseDate}>
+                      {game.purchase_date ? new Date(game.purchase_date).toLocaleDateString('ru-RU') : 'Дата покупки неизвестна'}
                     </span>
                   </div>
                 </div>
@@ -135,9 +158,15 @@ const Profile: React.FC = () => {
             ))}
           </div>
         </div>
-      </div>
+      ) : (
+        <div className={styles.gamesCard}>
+          <div className={styles.emptyState}>
+            <p>У вас пока нет купленных игр</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
-export default Profile; 
+export default Profile;

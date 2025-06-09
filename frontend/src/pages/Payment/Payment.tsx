@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { PatternFormat } from 'react-number-format';
-import styles from './Payment.module.css';
-import OrderService from '@/API/OrderService';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { PatternFormat } from "react-number-format";
+import styles from "./Payment.module.css";
+import OrderService from "@/API/OrderService";
 
 interface PaymentFormData {
   cardNumber: string;
@@ -15,60 +15,65 @@ interface PaymentFormData {
 const Payment: React.FC = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState<PaymentFormData>({
-    cardNumber: '',
-    cardHolder: '',
-    expiryDate: '',
-    cvv: '',
-    email: ''
+    cardNumber: "",
+    cardHolder: "",
+    expiryDate: "",
+    cvv: "",
+    email: "",
   });
   const [errors, setErrors] = useState<Partial<PaymentFormData>>({});
   const [isProcessing, setIsProcessing] = useState(false);
 
   const validateForm = (): boolean => {
     const newErrors: Partial<PaymentFormData> = {};
-    
-    if (formData.cardNumber.replace(/\s/g, '').length !== 16) {
-      newErrors.cardNumber = 'Номер карты должен содержать 16 цифр';
+
+    if (formData.cardNumber.replace(/\s/g, "").length !== 16) {
+      newErrors.cardNumber = "Номер карты должен содержать 16 цифр";
     }
 
     if (!formData.cardHolder.trim()) {
-      newErrors.cardHolder = 'Введите имя держателя карты';
+      newErrors.cardHolder = "Введите имя держателя карты";
     }
 
     if (!/^\d{2}\/\d{2}$/.test(formData.expiryDate)) {
-      console.log('Неверный формат:', formData.expiryDate);
-      newErrors.expiryDate = 'Неверный формат срока действия';
+      console.log("Неверный формат:", formData.expiryDate);
+      newErrors.expiryDate = "Неверный формат срока действия";
     } else {
-      const [month, year] = formData.expiryDate.split('/');
+      const [month, year] = formData.expiryDate.split("/");
       const currentYear = new Date().getFullYear() % 100;
       const currentMonth = new Date().getMonth() + 1;
-      
-      console.log('Проверка срока:', {
+
+      console.log("Проверка срока:", {
         month,
         year,
         currentYear,
         currentMonth,
         parsedMonth: parseInt(month),
-        parsedYear: parseInt(year)
+        parsedYear: parseInt(year),
       });
-      
+
       if (parseInt(month) < 1 || parseInt(month) > 12) {
-        newErrors.expiryDate = 'Неверный месяц';
+        newErrors.expiryDate = "Неверный месяц";
       } else if (parseInt(year) < currentYear) {
-        newErrors.expiryDate = 'Срок действия карты истек';
-      } else if (parseInt(year) === currentYear && parseInt(month) < currentMonth) {
-        newErrors.expiryDate = 'Срок действия карты истек';
+        newErrors.expiryDate = "Срок действия карты истек";
+      } else if (
+        parseInt(year) === currentYear &&
+        parseInt(month) < currentMonth
+      ) {
+        newErrors.expiryDate = "Срок действия карты истек";
       }
     }
 
     if (!/^\d{3}$/.test(formData.cvv)) {
-      newErrors.cvv = 'CVV должен содержать 3 цифры';
+      newErrors.cvv = "CVV должен содержать 3 цифры";
     }
 
     if (!formData.email) {
-      newErrors.email = 'Введите email';
-    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(formData.email)) {
-      newErrors.email = 'Неверный формат email';
+      newErrors.email = "Введите email";
+    } else if (
+      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(formData.email)
+    ) {
+      newErrors.email = "Неверный формат email";
     }
 
     setErrors(newErrors);
@@ -77,31 +82,28 @@ const Payment: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
 
     setIsProcessing(true);
-    
+
     try {
-      // Получаем sessionId из localStorage или другого хранилища
-      const sessionId = localStorage.getItem('sessionId') || 'test-session';
-      
-      // Создаем заказ
+      const sessionId = localStorage.getItem("sessionId") || "test-session";
+
       const order = await OrderService.createOrder({
         sessionId,
-        email: formData.email
+        email: formData.email,
       });
 
       if (order) {
-        // Подтверждаем заказ
         await OrderService.confirmOrder(order.id);
-        navigate('/');
+        navigate("/payment-success");
       }
     } catch (error) {
-      console.error('Ошибка при обработке платежа:', error);
-      setErrors({ cardNumber: 'Ошибка при обработке платежа' });
+      console.error("Ошибка при обработке платежа:", error);
+      setErrors({ cardNumber: "Ошибка при обработке платежа" });
     } finally {
       setIsProcessing(false);
     }
@@ -111,7 +113,7 @@ const Payment: React.FC = () => {
     <div className={styles.container}>
       <div className={styles.paymentCard}>
         <h2 className={styles.title}>Оплата заказа</h2>
-        
+
         <form onSubmit={handleSubmit} className={styles.form}>
           <div className={styles.formGroup}>
             <label htmlFor="email">Email для получения ключей</label>
@@ -119,10 +121,12 @@ const Payment: React.FC = () => {
               type="email"
               id="email"
               value={formData.email}
-              onChange={(e) => setFormData(prev => ({
-                ...prev,
-                email: e.target.value
-              }))}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  email: e.target.value,
+                }))
+              }
               className={styles.input}
               placeholder="your@email.com"
             />
@@ -138,9 +142,9 @@ const Payment: React.FC = () => {
               mask="_"
               value={formData.cardNumber}
               onValueChange={(values) => {
-                setFormData(prev => ({
+                setFormData((prev) => ({
                   ...prev,
-                  cardNumber: values.value
+                  cardNumber: values.value,
                 }));
               }}
               className={styles.input}
@@ -157,10 +161,12 @@ const Payment: React.FC = () => {
               type="text"
               id="cardHolder"
               value={formData.cardHolder}
-              onChange={(e) => setFormData(prev => ({
-                ...prev,
-                cardHolder: e.target.value.toUpperCase()
-              }))}
+              onChange={(e) =>
+                setFormData((prev) => ({
+                  ...prev,
+                  cardHolder: e.target.value.toUpperCase(),
+                }))
+              }
               className={styles.input}
               placeholder="IVAN IVANOV"
             />
@@ -177,13 +183,13 @@ const Payment: React.FC = () => {
                 id="expiryDate"
                 value={formData.expiryDate}
                 onChange={(e) => {
-                  let value = e.target.value.replace(/\D/g, '');
+                  let value = e.target.value.replace(/\D/g, "");
                   if (value.length > 2) {
-                    value = value.slice(0, 2) + '/' + value.slice(2, 4);
+                    value = value.slice(0, 2) + "/" + value.slice(2, 4);
                   }
-                  setFormData(prev => ({
+                  setFormData((prev) => ({
                     ...prev,
-                    expiryDate: value
+                    expiryDate: value,
                   }));
                 }}
                 className={styles.input}
@@ -202,17 +208,15 @@ const Payment: React.FC = () => {
                 mask="_"
                 value={formData.cvv}
                 onValueChange={(values) => {
-                  setFormData(prev => ({
+                  setFormData((prev) => ({
                     ...prev,
-                    cvv: values.value
+                    cvv: values.value,
                   }));
                 }}
                 className={styles.input}
                 placeholder="123"
               />
-              {errors.cvv && (
-                <span className={styles.error}>{errors.cvv}</span>
-              )}
+              {errors.cvv && <span className={styles.error}>{errors.cvv}</span>}
             </div>
           </div>
 
@@ -221,7 +225,7 @@ const Payment: React.FC = () => {
             className={styles.submitButton}
             disabled={isProcessing}
           >
-            {isProcessing ? 'Обработка...' : 'Оплатить'}
+            {isProcessing ? "Обработка..." : "Оплатить"}
           </button>
         </form>
       </div>
@@ -229,4 +233,4 @@ const Payment: React.FC = () => {
   );
 };
 
-export default Payment; 
+export default Payment;

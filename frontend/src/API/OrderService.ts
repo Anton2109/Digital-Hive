@@ -1,42 +1,43 @@
-import { API_ENDPOINTS } from "./endpoints";
-import { API_URL } from "@/constants";
-import axios from "axios";
+import axios from 'axios';
+import { API_URL } from '@/constants';
 
-const baseUrl = API_URL;
-
-export interface ICreateOrder {
-  sessionId: string;
-  email: string;
+export interface OrderItem {
+  gameId: number;
+  quantity: number;
 }
 
-export interface IOrder {
+export interface CreateOrderRequest {
+  email: string;
+  items: OrderItem[];
+}
+
+export interface Order {
   id: number;
   email: string;
-  status: 'pending' | 'completed' | 'cancelled';
-  created_at: string;
-  updated_at: string;
+  status: string;
+  createdAt: string;
+  items: OrderItem[];
 }
 
-export default class OrderService {
-  static async createOrder(data: ICreateOrder): Promise<IOrder | null> {
-    try {
-      const response = await axios.post<IOrder>(
-        `${baseUrl}${API_ENDPOINTS.ORDERS}`,
-        data
-      );
-      return response.data;
-    } catch (error) {
-      console.error("Ошибка при создании заказа:", error);
-      throw error;
-    }
+export interface GameKey {
+  gameName: string;
+  key: string;
+}
+
+class OrderService {
+  static async createOrder(data: CreateOrderRequest): Promise<Order> {
+    const response = await axios.post(`${API_URL}/orders`, data);
+    return response.data;
   }
 
   static async confirmOrder(orderId: number): Promise<void> {
-    try {
-      await axios.post(`${baseUrl}${API_ENDPOINTS.CONFIRM_ORDER(orderId)}`);
-    } catch (error) {
-      console.error("Ошибка при подтверждении заказа:", error);
-      throw error;
-    }
+    await axios.post(`${API_URL}/orders/${orderId}/confirm`);
   }
-} 
+
+  static async getOrderKeys(orderId: number): Promise<GameKey[]> {
+    const response = await axios.get(`${API_URL}/orders/${orderId}/keys`);
+    return response.data;
+  }
+}
+
+export default OrderService; 

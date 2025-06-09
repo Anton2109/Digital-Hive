@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `email` varchar(255) NOT NULL,
   `username` varchar(50) NOT NULL,
   `password_hash` char(60) NOT NULL,
+  `role` varchar(20) DEFAULT 'user' NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`),
   UNIQUE KEY `username` (`username`)
@@ -31,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'test@yandex.ru','nikname','$2b$10$epgzD0IrDpTZoRJXjWb0Jem2Zo7rJAaAe1XMP2dxXy4y0vjT1FEH.');
+INSERT INTO `users` VALUES (1,'test@yandex.ru','nikname','$2b$10$epgzD0IrDpTZoRJXjWb0Jem2Zo7rJAaAe1XMP2dxXy4y0vjT1FEH.','user');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 

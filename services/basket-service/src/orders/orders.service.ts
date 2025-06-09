@@ -115,7 +115,9 @@ export class OrdersService {
       try {
         const confirmUrl = `http://game-service:3000/game-keys/confirm/${orderId}`;
         this.logger.log(`Попытка подтверждения ключей для заказа ${orderId} по URL: ${confirmUrl}`);
-        await firstValueFrom(this.httpService.post(confirmUrl));
+        await firstValueFrom(
+          this.httpService.post(confirmUrl, { email: order.email })
+        );
         this.logger.log(`Успешно подтверждены ключи для заказа ${orderId}`);
 
         const keysUrl = `http://game-service:3000/game-keys/order/${orderId}`;

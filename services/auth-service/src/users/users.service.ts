@@ -42,6 +42,7 @@ export class UsersService {
       email: createUserDto.email,
       username: createUserDto.username,
       password_hash: hashedPassword,
+      role: createUserDto.role || 'user'
     });
     this.logger.debug(`Created user entity: ${JSON.stringify(user)}`);
 
@@ -91,5 +92,18 @@ export class UsersService {
 
   async findById(id: number): Promise<User | undefined> {
     return this.userRepository.findOne({ where: { id } });
+  }
+
+  async update(id: number, updateData: Partial<User>): Promise<User> {
+    this.logger.debug(`Attempting to update user with ID: ${id}`);
+    const user = await this.findById(id);
+    
+    if (!user) {
+      this.logger.warn(`User with ID ${id} not found`);
+      throw new Error('User not found');
+    }
+
+    Object.assign(user, updateData);
+    return this.userRepository.save(user);
   }
 }

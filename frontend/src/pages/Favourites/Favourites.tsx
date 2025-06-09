@@ -55,18 +55,16 @@ const Favourites = () => {
       <h1 className={styles.title}>Избранные игры</h1>
       <div className={styles.gamesGrid}>
         {favoriteGames.map((game) => (
-          <div key={game.id} className={styles.gameCard}>
-            <Link to={`/games/${game.id}`} className={styles.gameLink}>
+          <Link key={game.id} to={`/games/${game.id}`} className={styles.gameCard}>
               <img src={game.img_path} alt={game.name} />
               <h3>{game.name}</h3>
               <p className={styles.price}>{game.price} ₽</p>
-            </Link>
             <FavoriteButton 
               gameId={game.id} 
               className={styles.favoriteButton}
               onError={handleFavoriteError}
             />
-          </div>
+          </Link>
         ))}
       </div>
     </div>
