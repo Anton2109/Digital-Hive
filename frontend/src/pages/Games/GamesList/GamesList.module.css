@@ -56,3 +56,52 @@
   padding: 32px;
   grid-column: 1 / -1;
 }
+
+@media (max-width: 1024px) {
+  .container {
+    padding: 24px;
+    gap: 24px;
+  }
+
+  .filtersPanel {
+    width: 250px;
+    min-width: 250px;
+  }
+
+  .gamesGrid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    padding: 16px;
+    gap: 16px;
+  }
+
+  .filtersPanel {
+    width: 100%;
+    min-width: 100%;
+    position: relative;
+    top: 0;
+  }
+
+  .gamesGrid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+    padding: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 12px;
+  }
+
+  .gamesGrid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 12px;
+  }
+}

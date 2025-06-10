@@ -5,7 +5,6 @@ import { GamesModule } from './games/games.module';
 import { GameKeysModule } from './game-keys/game-keys.module';
 import { UserGamesModule } from './user-games/user-games.module';
 import { AuthModule } from './auth/auth.module';
-import { DiscountsModule } from './discounts/discounts.module';
 import { DefaultNamingStrategy } from 'typeorm';
 
 @Module({
@@ -36,7 +35,6 @@ import { DefaultNamingStrategy } from 'typeorm';
     GameKeysModule,
     UserGamesModule,
     AuthModule,
-    DiscountsModule,
   ],
 
   controllers: [],

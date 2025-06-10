@@ -22,6 +22,13 @@ interface RegisterResponse {
   };
 }
 
+interface UpdateProfileData {
+  username: string;
+  email: string;
+  currentPassword: string;
+  newPassword?: string;
+}
+
 class AuthService {
   private static instance: AuthService;
   private constructor() {}
@@ -138,6 +145,48 @@ class AuthService {
 
   isAuthenticated(): boolean {
     return !!localStorage.getItem("token");
+  }
+
+  async updateProfile(data: UpdateProfileData): Promise<IUserProfile> {
+    try {
+      console.log('AuthService: начало обновления профиля');
+      const token = localStorage.getItem("token");
+      
+      if (!token) {
+        throw new Error("Токен не найден");
+      }
+
+      const response = await axios.put<IUserProfile>(
+        `${API_URL}/auth/update-profile`,
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      console.log('AuthService: ответ от сервера при обновлении профиля:', response.data);
+
+      if (!response.data) {
+        throw new Error("Пустой ответ от сервера");
+      }
+
+      return response.data;
+    } catch (error: any) {
+      console.error("Ошибка при обновлении профиля:", error);
+      
+      if (error.response?.status === 401) {
+        localStorage.removeItem("token");
+        throw new Error("Сессия истекла");
+      }
+      
+      if (error.response?.data?.message) {
+        throw new Error(error.response.data.message);
+      }
+      
+      throw new Error("Не удалось обновить профиль");
+    }
   }
 }
 

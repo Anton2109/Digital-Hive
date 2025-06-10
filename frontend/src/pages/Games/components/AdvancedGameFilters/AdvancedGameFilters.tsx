@@ -1,9 +1,10 @@
-import { useState } from 'react';
-import { ICategory } from '@/interfaces/category';
-import { SortType } from '@/types/SortType';
-import styles from './AdvancedGameFilters.module.css';
+import { useState } from "react";
+import { ICategory } from "@/interfaces/category";
+import { SortType } from "@/types/SortType";
+import styles from "./AdvancedGameFilters.module.css";
 import { SORT_OPTIONS } from "@/constants";
-import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+import { FiFilter, FiX } from "react-icons/fi";
 
 interface AdvancedGameFiltersProps {
   categories: ICategory[];
@@ -26,12 +27,7 @@ export const AdvancedGameFilters = ({
   maxPrice,
   onPriceChange,
 }: AdvancedGameFiltersProps) => {
-  const [isCategoriesExpanded, setIsCategoriesExpanded] = useState(false);
-  const INITIAL_CATEGORIES_COUNT = 4;
-
-  const visibleCategories = isCategoriesExpanded 
-    ? categories 
-    : categories.slice(0, INITIAL_CATEGORIES_COUNT);
+  const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
 
   const handleMinPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value) || 0;
@@ -43,95 +39,99 @@ export const AdvancedGameFilters = ({
     onPriceChange(minPrice, value);
   };
 
+  const toggleMobileFilters = () => {
+    setIsMobileFiltersOpen(!isMobileFiltersOpen);
+  };
+
   return (
-    <div className={styles.filters}>
-      <div className={styles.filterSection}>
-        <h3>Категории</h3>
-        <div className={styles.categories}>
-          <button
-            className={`${styles.categoryButton} ${
-              selectedCategory === null ? styles.active : ""
-            }`}
-            onClick={() => onSelectCategory(null)}
-          >
-            Все игры
-          </button>
-          {visibleCategories.map((category) => (
+    <>
+      <button
+        className={styles.mobileFilterButton}
+        onClick={toggleMobileFilters}
+      >
+        <FiFilter />
+        Фильтры
+        {isMobileFiltersOpen ? <IoIosArrowUp /> : <IoIosArrowDown />}
+      </button>
+
+      <div
+        className={`${styles.filters} ${
+          isMobileFiltersOpen ? styles.mobileOpen : ""
+        }`}
+      >
+        <button className={styles.closeButton} onClick={toggleMobileFilters}>
+          <FiX />
+        </button>
+        <div className={styles.filterSection}>
+          <h3>Категории</h3>
+          <div className={styles.categories}>
             <button
-              key={category.id}
               className={`${styles.categoryButton} ${
-                selectedCategory === category.id ? styles.active : ""
+                selectedCategory === null ? styles.active : ""
               }`}
-              onClick={() => onSelectCategory(category.id)}
+              onClick={() => onSelectCategory(null)}
             >
-              {category.name}
+              Все игры
             </button>
-          ))}
-          {categories.length > INITIAL_CATEGORIES_COUNT && (
-            <button
-              className={styles.expandButton}
-              onClick={() => setIsCategoriesExpanded(!isCategoriesExpanded)}
-            >
-              {isCategoriesExpanded ? (
-                <>
-                  Скрыть
-                  <IoIosArrowUp className={styles.expandIcon} />
-                </>
-              ) : (
-                <>
-                  Показать еще
-                  <IoIosArrowDown className={styles.expandIcon} />
-                </>
-              )}
-            </button>
-          )}
-        </div>
-      </div>
-
-      <div className={styles.filterSection}>
-        <h3>Цена</h3>
-        <div className={styles.priceInputs}>
-          <div className={styles.priceInput}>
-            <label htmlFor="minPrice">От</label>
-            <input
-              type="number"
-              id="minPrice"
-              value={minPrice || ''}
-              onChange={handleMinPriceChange}
-              placeholder="0"
-              min="0"
-            />
-            <span className={styles.currency}>₽</span>
-          </div>
-          <div className={styles.priceInput}>
-            <label htmlFor="maxPrice">До</label>
-            <input
-              type="number"
-              id="maxPrice"
-              value={maxPrice || ''}
-              onChange={handleMaxPriceChange}
-              placeholder="∞"
-              min="0"
-            />
-            <span className={styles.currency}>₽</span>
+            {categories.map((category) => (
+              <button
+                key={category.id}
+                className={`${styles.categoryButton} ${
+                  selectedCategory === category.id ? styles.active : ""
+                }`}
+                onClick={() => onSelectCategory(category.id)}
+              >
+                {category.name}
+              </button>
+            ))}
           </div>
         </div>
-      </div>
 
-      <div className={styles.filterSection}>
-        <h3>Сортировка</h3>
-        <select
-          className={styles.sortSelect}
-          value={currentSort}
-          onChange={(e) => onSortChange(e.target.value as SortType)}
-        >
-          {SORT_OPTIONS.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
+        <div className={styles.filterSection}>
+          <h3>Цена</h3>
+          <div className={styles.priceInputs}>
+            <div className={styles.priceInput}>
+              <label htmlFor="minPrice">От</label>
+              <input
+                type="number"
+                id="minPrice"
+                value={minPrice || ""}
+                onChange={handleMinPriceChange}
+                placeholder="0"
+                min="0"
+              />
+              <span className={styles.currency}>₽</span>
+            </div>
+            <div className={styles.priceInput}>
+              <label htmlFor="maxPrice">До</label>
+              <input
+                type="number"
+                id="maxPrice"
+                value={maxPrice || ""}
+                onChange={handleMaxPriceChange}
+                placeholder="∞"
+                min="0"
+              />
+              <span className={styles.currency}>₽</span>
+            </div>
+          </div>
+        </div>
+
+        <div className={styles.filterSection}>
+          <h3>Сортировка</h3>
+          <select
+            className={styles.sortSelect}
+            value={currentSort}
+            onChange={(e) => onSortChange(e.target.value as SortType)}
+          >
+            {SORT_OPTIONS.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
-    </div>
+    </>
   );
 };

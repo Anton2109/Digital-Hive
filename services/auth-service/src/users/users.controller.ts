@@ -1,6 +1,9 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Controller, Get, Post, Body, UseGuards, Put, Req } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateUserDto } from './dto/create-user.dto';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { UpdateProfileDto } from './dto/update-profile.dto';
+import { User } from './entities/user.entity';
+import { Request } from 'express';
 
 @Controller('users')
 export class UsersController {
@@ -11,8 +14,11 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
-  @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+  @UseGuards(JwtAuthGuard)
+  @Put('update-profile')
+  async updateProfile(@Body() updateProfileDto: UpdateProfileDto, @Req() req: Request): Promise<User> {
+    // Получаем email из токена
+    const currentEmail = (req.user as any).email;
+    return this.usersService.updateProfile(updateProfileDto, currentEmail);
   }
 }

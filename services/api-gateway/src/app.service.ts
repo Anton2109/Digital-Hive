@@ -183,4 +183,8 @@ export class AppService {
       );
     }
   }
+
+  getAuthServiceUrl(): string {
+    return 'http://auth-service:3000';
+  }
 }

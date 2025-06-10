@@ -11,6 +11,7 @@ interface ISearchProps {
   isLoading: boolean;
   onResultClick: (game: IGame) => void;
   clearSearch: () => void;
+  isAdminPanel?: boolean;
 }
 
 const Search = ({
@@ -20,6 +21,7 @@ const Search = ({
   isLoading,
   onResultClick,
   clearSearch,
+  isAdminPanel = false,
 }: ISearchProps) => {
   const searchRef = useRef<HTMLDivElement>(null);
 
@@ -28,21 +30,21 @@ const Search = ({
     clearSearch();
   };
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        searchRef.current &&
-        !searchRef.current.contains(event.target as Node)
-      ) {
-        clearSearch();
-      }
-    };
+  // useEffect(() => {
+  //   const handleClickOutside = (event: MouseEvent) => {
+  //     if (
+  //       searchRef.current &&
+  //       !searchRef.current.contains(event.target as Node)
+  //     ) {
+  //       clearSearch();
+  //     }
+  //   };
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [clearSearch]);
+  //   document.addEventListener("mousedown", handleClickOutside);
+  //   return () => {
+  //     document.removeEventListener("mousedown", handleClickOutside);
+  //   };
+  // }, [clearSearch]);
 
   return (
     <div className={styles.searchWrapper} ref={searchRef}>
@@ -61,7 +63,7 @@ const Search = ({
         </button>
       </form>
 
-      {searchValue.trim() && (
+      {searchValue.trim() && !isAdminPanel && (
         <div className={styles.searchResults}>
           {isLoading ? (
             <div><Loader/></div>

@@ -189,3 +189,155 @@
 .gameCard:hover::after {
   opacity: 1;
 }
+
+@media (max-width: 1024px) {
+  .container {
+    padding: 24px;
+  }
+
+  .title {
+    font-size: 36px;
+    margin-bottom: 36px;
+  }
+
+  .title::after {
+    width: 160px;
+  }
+
+  .gamesGrid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 24px;
+  }
+
+  .gameCard h3 {
+    font-size: 17px;
+    margin: 12px;
+  }
+
+  .price {
+    font-size: 16px;
+    margin: 0 12px 12px;
+  }
+
+  .emptyState h2 {
+    font-size: 28px;
+  }
+
+  .emptyState p {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 20px;
+  }
+
+  .title {
+    font-size: 32px;
+    margin-bottom: 32px;
+  }
+
+  .title::after {
+    width: 140px;
+  }
+
+  .gamesGrid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 16px 0;
+  }
+
+  .gameCard img {
+    height: 180px;
+  }
+
+  .gameCard h3 {
+    font-size: 16px;
+    margin: 10px;
+  }
+
+  .price {
+    font-size: 15px;
+    margin: 0 10px 10px;
+  }
+
+  .favoriteButton {
+    width: 32px;
+    height: 32px;
+  }
+
+  .favoriteButton svg {
+    font-size: 16px;
+  }
+
+  .emptyState {
+    padding: 32px;
+  }
+
+  .emptyState h2 {
+    font-size: 24px;
+  }
+
+  .emptyState p {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 16px;
+  }
+
+  .title {
+    font-size: 28px;
+    margin-bottom: 24px;
+  }
+
+  .title::after {
+    width: 120px;
+  }
+
+  .gamesGrid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 16px;
+    padding: 12px 0;
+  }
+
+  .gameCard img {
+    height: 160px;
+  }
+
+  .gameCard h3 {
+    font-size: 14px;
+    margin: 8px;
+  }
+
+  .price {
+    font-size: 14px;
+    margin: 0 8px 8px;
+  }
+
+  .favoriteButton {
+    width: 28px;
+    height: 28px;
+    top: 8px;
+    right: 8px;
+  }
+
+  .favoriteButton svg {
+    font-size: 14px;
+  }
+
+  .emptyState {
+    padding: 24px;
+  }
+
+  .emptyState h2 {
+    font-size: 20px;
+  }
+
+  .emptyState p {
+    font-size: 14px;
+  }
+}

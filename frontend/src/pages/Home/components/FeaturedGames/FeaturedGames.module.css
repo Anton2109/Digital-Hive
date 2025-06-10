@@ -12,6 +12,20 @@
   z-index: 2;
 }
 
+:global(.swiper-pagination-bullet) {
+  width: 12px;
+  height: 12px;
+  background: rgba(255, 255, 255, 0.3);
+  border: 2px solid var(--primary-gold);
+  opacity: 1;
+  transition: all 0.3s ease;
+}
+
+:global(.swiper-pagination-bullet-active) {
+  background: var(--primary-gold);
+  transform: scale(1.2);
+}
+
 .swiperSlide {
   overflow: hidden !important;
 }
@@ -196,6 +210,8 @@
   transition: all 0.3s ease;
   width: fit-content;
   margin-left: 16px;
+  margin-bottom: 60px;
+  z-index: 3;
 }
 
 .buyButton:hover {
@@ -289,5 +305,160 @@
   }
   100% {
     transform: translate(0);
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .slider {
+    height: 500px;
+  }
+
+  .gameTitle {
+    font-size: 36px;
+  }
+
+  .gameDescription {
+    font-size: 16px;
+  }
+
+  .newPrice {
+    font-size: 28px;
+  }
+
+  .oldPrice {
+    font-size: 16px;
+  }
+
+  .discount {
+    font-size: 20px;
+    padding: 6px 12px;
+  }
+
+  .buyButton {
+    font-size: 16px;
+    padding: 14px 28px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .slider {
+    height: 400px;
+  }
+
+  .slideContent {
+    flex-direction: column;
+    padding: 16px;
+  }
+
+  .slideInfo {
+    padding: 16px;
+    order: 2;
+  }
+
+  .slideImage {
+    flex: 1;
+    order: 1;
+    min-height: 200px;
+  }
+
+  .gameTitle {
+    font-size: 28px;
+    margin-bottom: 12px;
+  }
+
+  .gameDescription {
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+
+  .priceBlock {
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .newPrice {
+    font-size: 24px;
+  }
+
+  .oldPrice {
+    font-size: 14px;
+  }
+
+  .discount {
+    font-size: 18px;
+    padding: 4px 10px;
+  }
+
+  .buyButton {
+    font-size: 14px;
+    padding: 12px 24px;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 50px;
+  }
+
+  :global(.swiper-pagination) {
+    bottom: 20px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .slider {
+    height: 350px;
+  }
+
+  .slideContent {
+    padding: 12px;
+  }
+
+  .slideInfo {
+    padding: 12px;
+  }
+
+  .slideImage {
+    min-height: 150px;
+  }
+
+  .gameTitle {
+    font-size: 24px;
+    margin-bottom: 8px;
+  }
+
+  .gameDescription {
+    font-size: 13px;
+    margin-bottom: 16px;
+  }
+
+  .priceBlock {
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .newPrice {
+    font-size: 20px;
+  }
+
+  .oldPrice {
+    font-size: 12px;
+  }
+
+  .discount {
+    font-size: 16px;
+    padding: 3px 8px;
+  }
+
+  .buyButton {
+    font-size: 13px;
+    padding: 10px 20px;
+    margin-bottom: 40px;
+  }
+
+  :global(.swiper-pagination) {
+    bottom: 15px;
+  }
+
+  :global(.swiper-pagination-bullet) {
+    width: 10px;
+    height: 10px;
   }
 }

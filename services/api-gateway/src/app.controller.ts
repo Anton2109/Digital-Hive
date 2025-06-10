@@ -13,6 +13,7 @@ import {
   HttpException,
   Put,
   Patch,
+  HttpStatus,
 } from "@nestjs/common";
 
 import { AppService } from "./app.service";
@@ -443,6 +444,73 @@ export class AppController {
     } catch (error) {
       this.logger.error(`Ошибка при обработке запроса к discounts ${req.path}: ${error.message}`);
       throw error;
+    }
+  }
+
+  @Put('auth/update-profile')
+  async updateProfile(@Body() updateProfileDto: any, @Headers() headers: any) {
+    this.logger.log('Получен запрос на обновление профиля');
+    this.logger.debug('Данные запроса:', {
+      body: updateProfileDto,
+      headers: headers
+    });
+
+    try {
+      const authServiceUrl = this.appService.getAuthServiceUrl();
+      this.logger.log(`Получен URL для сервиса auth: ${authServiceUrl}`);
+
+      const url = `${authServiceUrl}/users/update-profile`;
+      this.logger.log(`Переадресация PUT запроса к auth: ${url}`);
+
+      this.logger.debug('Заголовки запроса:', headers);
+      this.logger.debug('Метод запроса: PUT');
+      this.logger.debug('Полный URL:', url);
+      this.logger.debug('Тело запроса:', updateProfileDto);
+
+      this.logger.debug('Отправка запроса к auth...');
+      const response = await firstValueFrom(
+        this.httpService.put(url, updateProfileDto, {
+          headers: {
+            'Authorization': headers.authorization,
+            'Content-Type': 'application/json'
+          }
+        })
+      );
+
+      this.logger.debug('Получен ответ от auth:', {
+        status: response.status,
+        statusText: response.statusText,
+        data: response.data
+      });
+
+      return response.data;
+    } catch (error) {
+      this.logger.error('Ошибка при переадресации:', {
+        error: error.response?.data || error.message,
+        status: error.response?.status,
+        statusText: error.response?.statusText
+      });
+
+      if (error.response) {
+        this.logger.error('Ошибка от сервиса auth:', error.response.data);
+        throw new HttpException(
+          {
+            message: 'Ошибка при переадресации запроса к auth',
+            serviceError: error.response.data.message,
+            statusCode: error.response.status
+          },
+          error.response.status
+        );
+      }
+
+      throw new HttpException(
+        {
+          message: 'Ошибка при переадресации запроса к auth',
+          error: error.message,
+          statusCode: HttpStatus.INTERNAL_SERVER_ERROR
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
     }
   }
 }

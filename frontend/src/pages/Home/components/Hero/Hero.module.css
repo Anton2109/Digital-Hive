@@ -64,3 +64,47 @@
 .heroButton:hover {
   background-color: var(--color-primary-dark);
 }
+
+@media screen and (max-width: 768px) {
+  .heroContent {
+    padding: 150px 20px;
+  }
+
+  .heroTitle {
+    font-size: 42px;
+    margin-bottom: 16px;
+  }
+
+  .heroSubtitle {
+    font-size: 20px;
+    margin-bottom: 24px;
+  }
+
+  .heroButton {
+    padding: 14px 28px;
+    font-size: 16px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .heroContent {
+    padding: 120px 16px;
+  }
+
+  .heroTitle {
+    font-size: 32px;
+    margin-bottom: 12px;
+  }
+
+  .heroSubtitle {
+    font-size: 18px;
+    margin-bottom: 20px;
+  }
+
+  .heroButton {
+    padding: 12px 24px;
+    font-size: 16px;
+    width: 100%;
+    max-width: 280px;
+  }
+}

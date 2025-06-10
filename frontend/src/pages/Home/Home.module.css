@@ -2,4 +2,18 @@
   width: 100%;
   min-height: 100vh;
   background-color: var(--color-background-primary);
+  padding: 0;
+  overflow-x: hidden;
+}
+
+@media screen and (max-width: 768px) {
+  .home {
+    padding: 0;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .home {
+    padding: 0;
+  }
 }

@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { Layout, Menu } from 'antd';
-import { AppstoreOutlined, TagOutlined } from '@ant-design/icons';
+import { AppstoreOutlined } from '@ant-design/icons';
 import AdminGames from '@/components/admin/AdminGames';
-import AdminDiscounts from '@/components/admin/AdminDiscounts';
 import styles from './AdminPage.module.css';
 
 const { Header, Content, Sider } = Layout;
@@ -15,7 +14,7 @@ const AdminPage: React.FC = () => {
       case 'games':
         return <AdminGames />;
       case 'discounts':
-        return <AdminDiscounts />;
+        return <AdminGames />;
       default:
         return <AdminGames />;
     }

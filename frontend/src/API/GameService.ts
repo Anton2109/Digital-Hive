@@ -86,7 +86,7 @@ class GameService {
 
   async getGamesByCategoryId(categoryId: number): Promise<IGame[]> {
     const response = await axios.get<IGame[]>(
-      `${API_URL}${API_ENDPOINTS.GAMES}/category/${categoryId}`
+      `${API_URL}${API_ENDPOINTS.GAMES_BY_CATEGORY(categoryId)}`
     );
     return response.data;
   }

@@ -10,6 +10,7 @@
   border-radius: 8px;
   padding: 24px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+  position: relative;
 }
 
 .btnWrapper {
@@ -416,4 +417,162 @@ select:hover {
 
 .priceInput input:focus {
   animation: glow 1.5s infinite;
+}
+
+.mobileFilterButton {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 12px;
+  background: var(--cyber-black);
+  border: 1px solid var(--primary-gold);
+  border-radius: 8px;
+  color: var(--primary-gold);
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 16px;
+}
+
+.mobileFilterButton:hover {
+  background: rgba(205, 176, 108, 0.1);
+}
+
+.mobileFilterButton svg {
+  font-size: 20px;
+}
+
+.closeButton {
+  display: none;
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: transparent;
+  border: 1px solid var(--primary-gold);
+  color: var(--primary-gold);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.closeButton:hover {
+  background: rgba(205, 176, 108, 0.1);
+}
+
+.closeButton svg {
+  font-size: 20px;
+}
+
+@media (max-width: 768px) {
+  .mobileFilterButton {
+    display: flex;
+  }
+
+  .filters {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1000;
+    background: var(--cyber-black);
+    border-radius: 0;
+    padding: 16px;
+    overflow-y: auto;
+  }
+
+  .filters.mobileOpen {
+    display: flex;
+  }
+
+  .filterSection {
+    gap: 12px;
+  }
+
+  .filterSection h3 {
+    font-size: 16px;
+    padding-bottom: 6px;
+  }
+
+  .categoryButton {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+
+  .sortSelect {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+
+  .priceInputs {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .priceInput {
+    width: 100%;
+  }
+
+  .priceInput input {
+    font-size: 13px;
+    padding: 10px 12px;
+  }
+
+  .expandButton {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+
+  .closeButton {
+    display: flex;
+  }
+}
+
+@media (max-width: 480px) {
+  .filters {
+    padding: 12px;
+  }
+
+  .filterSection {
+    gap: 8px;
+  }
+
+  .filterSection h3 {
+    font-size: 14px;
+    padding-bottom: 4px;
+  }
+
+  .categoryButton {
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+
+  .sortSelect {
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+
+  .priceInput input {
+    font-size: 12px;
+    padding: 8px 10px;
+  }
+
+  .expandButton {
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+
+  .closeButton {
+    padding: 8px 10px;
+    font-size: 12px;
+  }
 }

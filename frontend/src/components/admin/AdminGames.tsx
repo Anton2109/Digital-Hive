@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import GameService, { IGame } from '@/API/GameService';
-import { EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
+import { EditOutlined, DeleteOutlined, PlusOutlined, CloseOutlined } from '@ant-design/icons';
 import styles from './AdminGames.module.css';
 import Search from '@/components/Search/Search';
 
@@ -119,6 +119,18 @@ const AdminGames: React.FC = () => {
     }
   };
 
+  const handleCloseModal = () => {
+    setModalVisible(false);
+    setEditingGame(null);
+    setFormData({});
+  };
+
+  const handleModalClick = (e: React.MouseEvent) => {
+    if (e.target === e.currentTarget) {
+      handleCloseModal();
+    }
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.searchContainer}>
@@ -129,6 +141,7 @@ const AdminGames: React.FC = () => {
           isLoading={false}
           onResultClick={() => {}}
           clearSearch={() => setSearchValue('')}
+          isAdminPanel={true}
         />
       </div>
 
@@ -165,8 +178,11 @@ const AdminGames: React.FC = () => {
       </div>
 
       {modalVisible && (
-        <div className={styles.modal}>
+        <div className={styles.modal} onClick={handleModalClick}>
           <div className={styles.modalContent}>
+            <button className={styles.closeButton} onClick={handleCloseModal}>
+              <CloseOutlined />
+            </button>
             <h2>{editingGame ? 'Редактировать игру' : 'Добавить игру'}</h2>
             <form onSubmit={handleSubmit} className={styles.form}>
               <div>

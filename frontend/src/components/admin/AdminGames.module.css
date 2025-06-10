@@ -102,16 +102,12 @@
   border: 1px solid rgba(205, 176, 108, 0.1);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
   position: relative;
+  width: 100%;
 }
 
-.table::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--primary-gold), transparent);
+.table table {
+  width: 100%;
+  border-collapse: collapse;
 }
 
 .table th {
@@ -120,7 +116,7 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 2px;
-  padding: 16px;
+  padding: 20px;
   text-align: left;
   border-bottom: 2px solid var(--primary-gold);
 }
@@ -128,8 +124,25 @@
 .table td {
   color: var(--text-color);
   border-bottom: 1px solid rgba(205, 176, 108, 0.1);
-  padding: 16px;
+  padding: 20px;
   transition: all 0.3s var(--ease-out-expo);
+}
+
+.table th:nth-child(1) {
+  width: 60%;
+}
+
+.table th:nth-child(2) {
+  width: 20%;
+}
+
+.table th:nth-child(3) {
+  width: 20%;
+  text-align: center;
+}
+
+.table td:last-child {
+  text-align: center;
 }
 
 .table tr:hover td {
@@ -171,6 +184,19 @@
 }
 
 .modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modalContent {
   background: var(--cyber-black);
   border-radius: 8px;
   border: 1px solid var(--primary-gold);
@@ -180,7 +206,8 @@
   padding: 24px;
   max-width: 600px;
   width: 100%;
-  margin: 0 auto;
+  max-height: 90vh;
+  overflow-y: auto;
 }
 
 .modal::before {
@@ -450,7 +477,23 @@
   color: var(--primary-gold) !important;
 }
 
-.table :global(.ant-select-item-option-active) {
-  background: rgba(205, 176, 108, 0.05) !important;
-  color: var(--primary-gold) !important;
+.closeButton {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: transparent;
+  border: none;
+  color: var(--primary-gold);
+  font-size: 20px;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s var(--ease-out-expo);
+}
+
+.closeButton:hover {
+  transform: rotate(90deg);
+  color: var(--accent-color);
 } 

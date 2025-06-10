@@ -1,8 +1,9 @@
-import { ConflictException, Injectable, Logger } from '@nestjs/common';
+import { ConflictException, Injectable, Logger, NotFoundException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateProfileDto } from './dto/update-profile.dto';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
@@ -105,5 +106,78 @@ export class UsersService {
 
     Object.assign(user, updateData);
     return this.userRepository.save(user);
+  }
+
+  async updateProfile(updateProfileDto: UpdateProfileDto, currentEmail: string): Promise<User> {
+    this.logger.debug('Начало обновления профиля:', {
+      currentEmail,
+      updateData: {
+        ...updateProfileDto,
+        currentPassword: '***' // Скрываем пароль в логах
+      }
+    });
+
+    const { email, username, currentPassword, newPassword } = updateProfileDto;
+
+    // Находим пользователя по текущему email из токена
+    const currentUser = await this.userRepository.findOne({
+      where: { email: currentEmail }
+    });
+
+    if (!currentUser) {
+      this.logger.warn(`Пользователь с email ${currentEmail} не найден`);
+      throw new NotFoundException('User not found');
+    }
+
+    this.logger.debug('Найден текущий пользователь:', {
+      id: currentUser.id,
+      email: currentUser.email,
+      username: currentUser.username
+    });
+
+    // Проверяем текущий пароль
+    const isPasswordValid = await bcrypt.compare(currentPassword, currentUser.password_hash);
+    if (!isPasswordValid) {
+      this.logger.warn(`Неверный пароль для пользователя с email ${currentEmail}`);
+      throw new BadRequestException('Current password is incorrect');
+    }
+
+    this.logger.debug('Пароль подтвержден');
+
+    // Проверяем, не занят ли новый email другим пользователем
+    if (email !== currentEmail) {
+      this.logger.debug(`Проверка доступности нового email: ${email}`);
+      const existingUser = await this.findByEmail(email);
+      if (existingUser && existingUser.id !== currentUser.id) {
+        this.logger.warn(`Email ${email} уже занят другим пользователем`);
+        throw new BadRequestException('Email is already taken');
+      }
+    }
+
+    // Обновляем данные пользователя
+    currentUser.email = email;
+    currentUser.username = username;
+
+    // Если указан новый пароль, обновляем его
+    if (newPassword) {
+      this.logger.debug('Обновление пароля пользователя');
+      currentUser.password_hash = await bcrypt.hash(newPassword, 10);
+    }
+
+    try {
+      const updatedUser = await this.userRepository.save(currentUser);
+      this.logger.debug('Профиль успешно обновлен:', {
+        id: updatedUser.id,
+        email: updatedUser.email,
+        username: updatedUser.username
+      });
+      return updatedUser;
+    } catch (error) {
+      this.logger.error('Ошибка при сохранении обновленного профиля:', {
+        error: error.message,
+        stack: error.stack
+      });
+      throw new BadRequestException('Failed to update profile');
+    }
   }
 }

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { FaShoppingCart, FaUser, FaHeart } from "react-icons/fa";
+import { FaShoppingCart, FaUser, FaHeart, FaSearch, FaBars, FaTimes } from "react-icons/fa";
 import { INavigation } from "@/interfaces/navigation";
 import styles from "./Header.module.css";
 import Search from "../Search/Search";
@@ -10,6 +10,8 @@ import { useGameSearch } from "@/hooks/useGameSearch";
 const Header: React.FC = () => {
   const [activeItem, setActiveItem] = useState<string | null>(null);
   const [isGlitching, setIsGlitching] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const { searchValue, results, isLoading, handleSearchChange, clearSearch } =
@@ -63,17 +65,42 @@ const Header: React.FC = () => {
           </h1>
         </Link>
 
-        <Search
-          searchValue={searchValue}
-          setSearchValue={handleSearchChange}
-          searchResults={results}
-          isLoading={isLoading}
-          onResultClick={handleResultClick}
-          clearSearch={clearSearch}
-        />
+        <div className={styles.mobileControls}>
+          <button 
+            className={styles.searchButton}
+            onClick={() => setIsSearchOpen(!isSearchOpen)}
+          >
+            <FaSearch size={20} />
+          </button>
+          {!isMobileMenuOpen && (
+            <button 
+              className={styles.burgerButton}
+              onClick={() => setIsMobileMenuOpen(true)}
+            >
+              <FaBars size={24} />
+            </button>
+          )}
+        </div>
+
+        <div className={`${styles.searchWrapper} ${isSearchOpen ? styles.searchOpen : ''}`}>
+          <Search
+            searchValue={searchValue}
+            setSearchValue={handleSearchChange}
+            searchResults={results}
+            isLoading={isLoading}
+            onResultClick={handleResultClick}
+            clearSearch={clearSearch}
+          />
+        </div>
       </div>
 
-      <div className={styles.navWrapper}>
+      <div className={`${styles.navWrapper} ${isMobileMenuOpen ? styles.mobileMenuOpen : ''}`}>
+        <button 
+          className={styles.closeButton}
+          onClick={() => setIsMobileMenuOpen(false)}
+        >
+          <FaTimes size={24} />
+        </button>
         <nav className={styles.nav}>
           <ul className={styles.navList}>
             {navItems.map((item) => (
@@ -85,7 +112,11 @@ const Header: React.FC = () => {
                 onMouseEnter={() => handleItemHover(item.name)}
                 onMouseLeave={() => handleItemHover(null)}
               >
-                <Link to={item.path} className={styles.navLink}>
+                <Link 
+                  to={item.path} 
+                  className={styles.navLink}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
                   {item.name}
                   {item.icon}
                 </Link>
