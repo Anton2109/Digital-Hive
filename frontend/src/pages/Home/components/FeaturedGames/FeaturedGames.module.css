@@ -398,7 +398,7 @@
   }
 
   :global(.swiper-pagination) {
-    bottom: 20px;
+    display: none !important;
   }
 }
 

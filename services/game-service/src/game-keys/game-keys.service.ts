@@ -115,7 +115,6 @@ export class GameKeysService {
         await manager.save(GameKey, keysToConfirm);
         this.logger.debug(`Ключи успешно сохранены в базе данных`);
 
-        // Добавляем игры в список купленных в той же транзакции
         for (const key of keysToConfirm) {
           this.logger.debug(`Добавление игры ${key.game_id} для пользователя ${email}`);
           const userGame = manager.create('UserGame', {

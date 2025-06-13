@@ -160,7 +160,6 @@ const Profile = () => {
 
       setIsSubmitting(true);
       
-      // Проверяем пароли
       if (formData.newPassword && formData.newPassword !== formData.confirmPassword) {
         throw new Error('Пароли не совпадают');
       }
@@ -229,7 +228,6 @@ const Profile = () => {
     }
   };
 
-  // Добавляем логирование при изменении состояния
   useEffect(() => {
     console.log('Состояние компонента изменилось:', {
       isEditing,
@@ -240,7 +238,6 @@ const Profile = () => {
     });
   }, [isEditing, isSubmitting, loading, user, formData]);
 
-  // Добавляем логирование при монтировании компонента
   useEffect(() => {
     console.log('Компонент профиля смонтирован');
     return () => {

@@ -113,13 +113,12 @@ export class UsersService {
       currentEmail,
       updateData: {
         ...updateProfileDto,
-        currentPassword: '***' // Скрываем пароль в логах
+        currentPassword: '***'
       }
     });
 
     const { email, username, currentPassword, newPassword } = updateProfileDto;
 
-    // Находим пользователя по текущему email из токена
     const currentUser = await this.userRepository.findOne({
       where: { email: currentEmail }
     });
@@ -135,7 +134,6 @@ export class UsersService {
       username: currentUser.username
     });
 
-    // Проверяем текущий пароль
     const isPasswordValid = await bcrypt.compare(currentPassword, currentUser.password_hash);
     if (!isPasswordValid) {
       this.logger.warn(`Неверный пароль для пользователя с email ${currentEmail}`);
@@ -144,7 +142,6 @@ export class UsersService {
 
     this.logger.debug('Пароль подтвержден');
 
-    // Проверяем, не занят ли новый email другим пользователем
     if (email !== currentEmail) {
       this.logger.debug(`Проверка доступности нового email: ${email}`);
       const existingUser = await this.findByEmail(email);
@@ -154,11 +151,9 @@ export class UsersService {
       }
     }
 
-    // Обновляем данные пользователя
     currentUser.email = email;
     currentUser.username = username;
 
-    // Если указан новый пароль, обновляем его
     if (newPassword) {
       this.logger.debug('Обновление пароля пользователя');
       currentUser.password_hash = await bcrypt.hash(newPassword, 10);

@@ -17,7 +17,6 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @Put('update-profile')
   async updateProfile(@Body() updateProfileDto: UpdateProfileDto, @Req() req: Request): Promise<User> {
-    // Получаем email из токена
     const currentEmail = (req.user as any).email;
     return this.usersService.updateProfile(updateProfileDto, currentEmail);
   }

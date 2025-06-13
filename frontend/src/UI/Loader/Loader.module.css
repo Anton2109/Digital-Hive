@@ -43,3 +43,29 @@
     transform: translateY(0px);
   }
 }
+
+@media screen and (max-width: 768px) {
+  .container {
+    min-height: 60vh;
+  }
+  .wave {
+    height: 60px;
+  }
+  .wave span {
+    font-size: 22px;
+    margin: 0 3px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .container {
+    min-height: 40vh;
+  }
+  .wave {
+    height: 40px;
+  }
+  .wave span {
+    font-size: 16px;
+    margin: 0 2px;
+  }
+}

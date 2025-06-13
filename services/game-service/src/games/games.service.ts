@@ -141,7 +141,6 @@ export class GamesService {
     this.logger.log(`Попытка удаления игры с ID: ${id}`);
     
     try {
-      // Получаем игру без форматирования путей
       const game = await this.gameRepository.findOne({
         where: { id },
         relations: ['gameInfo', 'systemReqMin', 'systemReqMax', 'categories'],
@@ -153,10 +152,8 @@ export class GamesService {
       
       this.logger.log(`Найдена игра для удаления: ${JSON.stringify(game)}`);
       
-      // Удаляем связанные записи в user_games
       await this.userGameRepository.delete({ game_id: id });
       
-      // Удаляем связанные записи
       if (game.gameInfo) {
         await this.gameInfoRepository.remove(game.gameInfo);
       }
@@ -167,7 +164,6 @@ export class GamesService {
         await this.systemReqMaxRepository.remove(game.systemReqMax);
       }
       
-      // Удаляем связи с категориями
       if (game.categories && game.categories.length > 0) {
         await this.gameRepository
           .createQueryBuilder()
@@ -176,7 +172,6 @@ export class GamesService {
           .remove(game.categories);
       }
       
-      // Удаляем саму игру
       await this.gameRepository.remove(game);
       
       this.logger.log(`Игра с ID ${id} успешно удалена`);
@@ -255,7 +250,6 @@ export class GamesService {
       game.name = updateGameDto.name;
     }
     if (updateGameDto.img_path) {
-      // Извлекаем только имя файла из полного пути
       const fileName = updateGameDto.img_path.split('/').pop();
       game.img_path = fileName;
     }
@@ -281,7 +275,6 @@ export class GamesService {
       }
     }
 
-    // Обработка минимальных системных требований
     const existingMinReq = await this.systemReqMinRepository.findOne({
       where: { game_id: id },
     });
@@ -298,7 +291,6 @@ export class GamesService {
       }
     }
 
-    // Обработка рекомендуемых системных требований
     const existingMaxReq = await this.systemReqMaxRepository.findOne({
       where: { game_id: id },
     });

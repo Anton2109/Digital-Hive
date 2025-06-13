@@ -93,7 +93,7 @@ const GameDetails = () => {
             {game.gameInfo?.description || "Описание отсутствует"}
           </p>
           <div className={styles.buttonContainer}>
-            <Button>Купить за {game.price} ₽</Button>
+            <Button className={styles.buyNowButton}>Купить за {game.price} ₽</Button>
             <button 
               className={styles.priceButton} 
               onClick={handleAddToCart}

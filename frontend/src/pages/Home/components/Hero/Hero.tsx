@@ -14,7 +14,7 @@ const Hero = () => {
       <div className={styles.heroOverlay} />
       <div className={styles.heroContent}>
         <h1 className={styles.heroTitle}>
-          Добро пожаловать в мир цифровых развлечений
+          Добро пожаловать в цифровой мир
         </h1>
         <p className={styles.heroSubtitle}>
           Откройте для себя тысячи игр и погрузитесь в незабываемые приключения
