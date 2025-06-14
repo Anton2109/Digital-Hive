@@ -47,10 +47,11 @@ export class GameKeysService {
       const existingReservations = await manager
         .createQueryBuilder(GameKey, 'key')
         .where('key.order_id = :orderId', { orderId })
+        .andWhere('key.game_id = :gameId', { gameId })
         .getMany();
 
       if (existingReservations.length > 0) {
-        this.logger.log(`Найдены существующие резервации для заказа ${orderId}: ${existingReservations.length} ключей`);
+        this.logger.log(`Найдены существующие резервации для заказа ${orderId} и игры ${gameId}: ${existingReservations.length} ключей`);
         return existingReservations;
       }
 

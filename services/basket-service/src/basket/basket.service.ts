@@ -34,4 +34,13 @@ export class BasketService {
   async removeItem(id: number) {
     return this.basketRepository.delete(id);
   }
+
+  async updateQuantity(id: number, quantity: number) {
+    const item = await this.basketRepository.findOne({ where: { id } });
+    if (!item) {
+      throw new Error('Item not found');
+    }
+    item.quantity = quantity;
+    return this.basketRepository.save(item);
+  }
 }

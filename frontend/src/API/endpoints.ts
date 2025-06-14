@@ -24,7 +24,7 @@ export const API_ENDPOINTS = {
   USER_BASKET: "/users/basket",
   
   /* Корзина */
-  BASKET: "/cart",
+  BASKET: "/basket",
   
   /* Заказы */
   ORDERS: "/orders",

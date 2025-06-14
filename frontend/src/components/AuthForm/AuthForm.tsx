@@ -101,6 +101,8 @@ const AuthForm = ({ mode }: AuthFormProps) => {
 
       if (error.response?.status === 401) {
         errorMessage = "Неверный email или пароль";
+      } else if (error.response?.status === 409) {
+        errorMessage = "Данный email уже зарегистрирован";
       } else if (error.message.includes("Неверный email или пароль")) {
         errorMessage = "Неверный email или пароль";
       } else if (error.response?.data?.message) {
@@ -109,7 +111,7 @@ const AuthForm = ({ mode }: AuthFormProps) => {
         errorMessage = error.message;
       }
 
-      if (!error.response?.data && response?.access_token) {
+      if (!error.response?.data && error.response?.access_token) {
         console.log('Получен пустой ответ, но токен есть. Пробуем еще раз...');
         try {
           await new Promise(resolve => setTimeout(resolve, 500));

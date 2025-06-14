@@ -6,6 +6,7 @@ import {
   Param,
   Body,
   Query,
+  Put,
 } from '@nestjs/common';
 import { BasketService } from './basket.service';
 
@@ -35,5 +36,13 @@ export class BasketController {
   @Delete(':id')
   removeItem(@Param('id') id: number) {
     return this.basketService.removeItem(id);
+  }
+
+  @Put(':id')
+  updateQuantity(
+    @Param('id') id: number,
+    @Body() body: { quantity: number }
+  ) {
+    return this.basketService.updateQuantity(id, body.quantity);
   }
 }

@@ -73,6 +73,9 @@ export interface IGameCard {
 
 export interface IUserGame {
   id: number;
-  game: IGame;
+  email: string;
+  game_id: number;
+  key_id: number;
   purchase_date: string;
+  game: IGame;
 }

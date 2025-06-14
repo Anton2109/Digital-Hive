@@ -8,7 +8,7 @@ export interface OrderItem {
 
 export interface CreateOrderRequest {
   email: string;
-  items: OrderItem[];
+  sessionId: string;
 }
 
 export interface Order {

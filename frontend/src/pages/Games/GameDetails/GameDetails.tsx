@@ -3,10 +3,9 @@ import { IGame } from "@/interfaces/game";
 import GameService from "@/API/GameService";
 import RequirementsList from "@/components/SystemRequirements/SystemRequirements";
 import { Button } from "@/UI/Button/Button";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styles from "./GameDetails.module.css";
-import axios from "axios";
-import { API_URL } from "@/constants";
+import BasketService from "@/API/BasketService";
 
 const GameDetails = () => {
   const [game, setGame] = useState<IGame | null>(null);
@@ -14,6 +13,7 @@ const GameDetails = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { gameId } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchGame = async () => {
@@ -27,7 +27,11 @@ const GameDetails = () => {
         setGame(data as IGame);
       } catch (error) {
         console.error("Ошибка при получении игры:", error);
-        setError(error instanceof Error ? error.message : "Произошла ошибка при загрузке игры");
+        setError(
+          error instanceof Error
+            ? error.message
+            : "Произошла ошибка при загрузке игры"
+        );
       } finally {
         setIsLoading(false);
       }
@@ -40,23 +44,43 @@ const GameDetails = () => {
 
   const handleAddToCart = async () => {
     if (!game) return;
-    
+
     try {
       const sessionId = localStorage.getItem("session_id") || "test-session";
-      await axios.post(
-        `${API_URL}/basket`,
-        {
-          session_id: sessionId,
-          game_id: game.id,
-          quantity: 1,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      alert("Товар добавлен в корзину!");
+      const result = await BasketService.addItem({
+        session_id: sessionId,
+        game_id: game.id,
+        quantity: 1,
+      });
+
+      if (result) {
+        alert("Товар добавлен в корзину!");
+      } else {
+        alert("Не удалось добавить товар в корзину");
+      }
+    } catch (error) {
+      console.error("Ошибка при добавлении в корзину:", error);
+      alert("Не удалось добавить товар в корзину");
+    }
+  };
+
+  const handleBuyNow = async () => {
+    if (!game) return;
+
+    try {
+      const sessionId = localStorage.getItem("session_id") || "test-session";
+      const result = await BasketService.addItem({
+        session_id: sessionId,
+        game_id: game.id,
+        quantity: 1,
+      });
+
+      if (result) {
+        navigate('/payment')
+        alert("Товар добавлен в корзину!");
+      } else {
+        alert("Не удалось добавить товар в корзину");
+      }
     } catch (error) {
       console.error("Ошибка при добавлении в корзину:", error);
       alert("Не удалось добавить товар в корзину");
@@ -93,9 +117,14 @@ const GameDetails = () => {
             {game.gameInfo?.description || "Описание отсутствует"}
           </p>
           <div className={styles.buttonContainer}>
-            <Button className={styles.buyNowButton}>Купить за {game.price} ₽</Button>
-            <button 
-              className={styles.priceButton} 
+            <Button className={styles.buyNowButton}
+            onClick={handleBuyNow}
+            disabled={!game}
+            >
+              Купить за {game.price} ₽
+            </Button>
+            <button
+              className={styles.priceButton}
               onClick={handleAddToCart}
               disabled={!game}
             >

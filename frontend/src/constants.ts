@@ -1,5 +1,5 @@
-// export const API_URL = "http://localhost:3000";
-export const API_URL = "http://192.168.4.185:3000";
+export const API_URL = "http://localhost:3000";
+// export const API_URL = "http://192.168.4.185:3000";
 export const IMAGES_URL = `${API_URL}/assets/images/games`;
 
 export const SORT_OPTIONS = [

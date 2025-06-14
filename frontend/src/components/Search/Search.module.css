@@ -1,3 +1,8 @@
+.searchWrapper {
+  position: relative;
+  width: 300px;
+}
+
 .searchContainer {
   position: relative;
   width: 250px;
@@ -42,12 +47,12 @@
   position: absolute;
   top: 100%;
   left: 0;
-  right: 0;
+  width: 100%;
   max-height: 400px;
   overflow-y: auto;
   background: var(--color-background-primary, #181818);
   color: var(--text-color, #fff);
-  border: 1px solid #e1e1e1;
+  border: 1px solid var(--primary-gold);
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   margin-top: 5px;
@@ -61,10 +66,12 @@
   padding: 12px;
   border-bottom: 1px solid rgba(205, 176, 108, 0.08);
   background: transparent;
+  transition: background-color 0.2s ease;
+  cursor: pointer;
 }
 
 .searchResultItem:hover {
-  background-color: #f5f5f5;
+  background-color: rgba(205, 176, 108, 0.1);
 }
 
 .gameCover {
@@ -116,7 +123,7 @@
 }
 
 .searchResultPrice {
-  color: var(--primary-gold, #CDB06C);
+  color: var(--primary-gold, #cdb06c);
   font-size: 16px;
   font-weight: bold;
   margin-left: 8px;
@@ -146,10 +153,16 @@
 }
 
 @media screen and (max-width: 768px) {
-  .searchContainer {
+  .searchWrapper {
     width: 100%;
     max-width: 100%;
     padding: 0 8px;
+    box-sizing: border-box;
+  }
+
+  .searchContainer {
+    width: 100%;
+    max-width: 100%;
     box-sizing: border-box;
     position: relative;
   }

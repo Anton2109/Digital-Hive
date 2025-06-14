@@ -3,8 +3,8 @@ import styles from "./Basket.module.css";
 import { IBasketItem } from "@/interfaces/basket";
 import { IGame } from "@/interfaces/game";
 import GameService from "@/API/GameService";
+import BasketService from "@/API/BasketService";
 import { Button } from "@/UI/Button/Button";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const MAX_QUANTITY = 10;
@@ -19,9 +19,7 @@ const Basket = () => {
 
   const fetchBasket = async () => {
     try {
-      const { data } = await axios.get<IBasketItem[]>(
-        `http://localhost:3000/basket?session_id=${sessionId}`
-      );
+      const data = await BasketService.getBasket(sessionId);
       setItems(data);
       
       const gamesData: { [key: number]: IGame } = {};
@@ -41,14 +39,14 @@ const Basket = () => {
 
   const removeItem = async (id: number) => {
     try {
-      await axios.delete(`http://localhost:3000/basket/${id}`);
+      await BasketService.removeItem(id);
       fetchBasket();
     } catch (error) {
       console.error("Ошибка при удалении товара:", error);
     }
   };
 
-  const updateQuantity = (id: number, newQuantity: number) => {
+  const updateQuantity = async (id: number, newQuantity: number) => {
     if (newQuantity < 1) {
       removeItem(id);
       return;
@@ -58,13 +56,24 @@ const Basket = () => {
       return;
     }
 
-    setItems(prevItems => 
-      prevItems.map(item => 
-        item.id === id 
-          ? { ...item, quantity: newQuantity }
-          : item
-      )
-    );
+    try {
+      const success = await BasketService.updateQuantity(id, newQuantity);
+      if (success) {
+        setItems(prevItems => 
+          prevItems.map(item => 
+            item.id === id 
+              ? { ...item, quantity: newQuantity }
+              : item
+          )
+        );
+      } else {
+        console.error('Не удалось обновить количество товара');
+        setError('Не удалось обновить количество товара');
+      }
+    } catch (error) {
+      console.error('Ошибка при обновлении количества:', error);
+      setError('Ошибка при обновлении количества товара');
+    }
   };
 
   const handleCheckout = async () => {
@@ -74,6 +83,17 @@ const Basket = () => {
         navigate('/auth/login');
         return;
       }
+
+      for (const item of items) {
+        await BasketService.updateQuantity(item.id, item.quantity);
+      }
+
+      const basketData = items.map(item => ({
+        game_id: item.game_id,
+        quantity: item.quantity,
+        price: games[item.game_id]?.price || 0
+      }));
+      localStorage.setItem('checkout_data', JSON.stringify(basketData));
 
       navigate('/payment');
     } catch (error) {

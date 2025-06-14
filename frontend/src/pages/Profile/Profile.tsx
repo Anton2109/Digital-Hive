@@ -10,7 +10,6 @@ import styles from "./Profile.module.css";
 import { LogoutOutlined, UserOutlined, CrownOutlined, EditOutlined, InfoCircleOutlined, DashboardOutlined } from "@ant-design/icons";
 import { IMAGES_URL } from "../../constants";
 import { message } from "antd";
-import { Button, Input } from "antd";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -18,6 +17,9 @@ const Profile = () => {
   const user = useSelector((state: RootState) => state.auth.user);
   const [loading, setLoading] = useState(true);
   const [games, setGames] = useState<IUserGame[]>([]);
+  const [visibleGames, setVisibleGames] = useState<IUserGame[]>([]);
+  const [showAllGames, setShowAllGames] = useState(false);
+  const gamesPerPage = 9;
   const [retryCount, setRetryCount] = useState(0);
   const maxRetries = 2;
   const [isEditing, setIsEditing] = useState(false);
@@ -60,7 +62,8 @@ const Profile = () => {
       console.log('Запрос игр пользователя...');
       const userGames = await GameService.getUserGames(email);
       console.log('Полученные игры:', userGames);
-      setGames(userGames);
+      setGames(userGames as unknown as IUserGame[]);
+      setVisibleGames(userGames.slice(0, gamesPerPage) as unknown as IUserGame[]);
     } catch (error) {
       console.error('Ошибка при получении игр:', error);
       alert("Не удалось загрузить игры пользователя");
@@ -100,15 +103,8 @@ const Profile = () => {
   };
 
   const handleEditClick = () => {
-    console.log('handleEditClick вызван');
-    console.log('Текущее состояние isSubmitting:', isSubmitting);
+    if (isSubmitting) return;
     
-    if (isSubmitting) {
-      console.log('Форма заблокирована, выход из функции');
-      return;
-    }
-    
-    console.log('Установка данных формы');
     setFormData({
       username: user?.username || "",
       email: user?.email || "",
@@ -117,21 +113,13 @@ const Profile = () => {
       confirmPassword: "",
     });
     
-    console.log('Включение режима редактирования');
     setIsEditing(true);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log('handleInputChange вызван');
-    console.log('Текущее состояние isSubmitting:', isSubmitting);
-    
-    if (isSubmitting) {
-      console.log('Форма заблокирована, выход из функции');
-      return;
-    }
+    if (isSubmitting) return;
     
     const { name, value } = e.target;
-    console.log('Обновление поля:', name, 'значение:', value);
     setFormData(prev => ({
       ...prev,
       [name]: value
@@ -140,10 +128,7 @@ const Profile = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (isSubmitting) {
-      console.log('Форма уже отправляется, игнорируем повторную отправку');
-      return;
-    }
+    if (isSubmitting) return;
 
     if (!formData.currentPassword) {
       message.error('Для сохранения изменений необходимо ввести текущий пароль');
@@ -151,28 +136,11 @@ const Profile = () => {
     }
 
     try {
-      console.log('Начало отправки формы:', {
-        formData,
-        isSubmitting,
-        isEditing,
-        loading
-      });
-
       setIsSubmitting(true);
       
       if (formData.newPassword && formData.newPassword !== formData.confirmPassword) {
         throw new Error('Пароли не совпадают');
       }
-
-      console.log('Отправка запроса на обновление профиля:', {
-        url: 'http://localhost:3000/auth/update-profile',
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        },
-        body: formData
-      });
 
       const response = await fetch('http://localhost:3000/auth/update-profile', {
         method: 'PUT',
@@ -183,14 +151,7 @@ const Profile = () => {
         body: JSON.stringify(formData)
       });
 
-      console.log('Получен ответ от сервера:', {
-        status: response.status,
-        ok: response.ok,
-        statusText: response.statusText
-      });
-
       const responseData = await response.json();
-      console.log('Данные ответа:', responseData);
 
       if (!response.ok) {
         if (responseData.message === 'Current password is incorrect') {
@@ -198,8 +159,6 @@ const Profile = () => {
         }
         throw new Error(responseData.message || 'Ошибка при обновлении профиля');
       }
-
-      console.log('Профиль успешно обновлен:', responseData);
       
       dispatch(setUser(responseData));
       setIsEditing(false);
@@ -212,196 +171,189 @@ const Profile = () => {
       });
       message.success('Профиль успешно обновлен');
     } catch (error: any) {
-      console.error('Ошибка при обновлении профиля:', {
-        error,
-        message: error.message,
-        stack: error.stack
-      });
+      console.error('Ошибка при обновлении профиля:', error);
       message.error(error.message || 'Ошибка при обновлении профиля');
     } finally {
-      console.log('Завершение отправки формы:', {
-        isSubmitting: false,
-        isEditing,
-        loading
-      });
       setIsSubmitting(false);
     }
   };
 
-  useEffect(() => {
-    console.log('Состояние компонента изменилось:', {
-      isEditing,
-      isSubmitting,
-      loading,
-      user,
-      formData
-    });
-  }, [isEditing, isSubmitting, loading, user, formData]);
-
-  useEffect(() => {
-    console.log('Компонент профиля смонтирован');
-    return () => {
-      console.log('Компонент профиля размонтирован');
-    };
-  }, []);
+  const toggleShowAllGames = () => {
+    if (showAllGames) {
+      setVisibleGames(games.slice(0, gamesPerPage));
+    } else {
+      setVisibleGames(games);
+    }
+    setShowAllGames(!showAllGames);
+  };
 
   if (loading) {
     return <div className={styles.loading}>Загрузка...</div>;
   }
 
-  console.log('Текущее состояние компонента:', {
-    isEditing,
-    isSubmitting,
-    loading,
-    user: user?.username
-  });
-
   return (
     <div className={styles.profileContainer}>
       <div className={styles.profileHeader}>
-        <h1>Профиль</h1>
+        <div className={styles.profileInfo}>
+          <div className={styles.profileAvatar}>
+            <UserOutlined />
+          </div>
+          <div className={styles.profileDetails}>
+            <h1>{user?.username}</h1>
+            <p>{user?.email}</p>
+          </div>
+        </div>
         <div className={styles.headerActions}>
           {user?.role === 'admin' && (
-            <Button
-              type="primary"
-              icon={<DashboardOutlined />}
+            <button
               onClick={handleAdminPanel}
-              className={styles.adminButton}
+              className={styles.cyberButton}
             >
-              Админ-панель
-            </Button>
+              <DashboardOutlined /> Админ-панель
+            </button>
           )}
-          <Button
-            type="primary"
-            icon={<EditOutlined />}
+          <button
             onClick={handleEditClick}
             disabled={isSubmitting}
+            className={styles.cyberButton}
           >
-            Редактировать
-          </Button>
-          <Button
-            danger
-            icon={<LogoutOutlined />}
+            <EditOutlined /> Редактировать
+          </button>
+          <button
             onClick={handleLogout}
-            className={styles.logoutButton}
+            className={`${styles.cyberButton} ${styles.logoutButton}`}
           >
-            Выйти
-          </Button>
+            <LogoutOutlined /> Выйти
+          </button>
         </div>
       </div>
 
       {isEditing ? (
         <form onSubmit={handleSubmit} className={styles.editForm}>
-          <div className={styles.formNotice}>
-            <InfoCircleOutlined /> Для сохранения изменений необходимо ввести текущий пароль
+          <div className={styles.warning}>
+            Для изменения данных профиля необходимо ввести текущий пароль.
           </div>
           <div className={styles.formGroup}>
-            <label>Имя пользователя:</label>
-            <Input
-              type="text"
+            <label htmlFor="username">Имя пользователя</label>
+            <input
+              id="username"
               name="username"
+              type="text"
               value={formData.username}
               onChange={handleInputChange}
               disabled={isSubmitting}
+              className={styles.input}
             />
           </div>
           <div className={styles.formGroup}>
-            <label>Email:</label>
-            <Input
-              type="email"
+            <label htmlFor="email">Email</label>
+            <input
+              id="email"
               name="email"
+              type="email"
               value={formData.email}
               onChange={handleInputChange}
               disabled={isSubmitting}
+              className={styles.input}
             />
           </div>
           <div className={styles.formGroup}>
-            <label>Текущий пароль:</label>
-            <Input
-              type="password"
+            <label htmlFor="currentPassword">Текущий пароль</label>
+            <input
+              id="currentPassword"
               name="currentPassword"
+              type="password"
               value={formData.currentPassword}
               onChange={handleInputChange}
               disabled={isSubmitting}
+              className={styles.input}
+              autoComplete="current-password"
             />
           </div>
           <div className={styles.formGroup}>
-            <label>Новый пароль (оставьте пустым, если не хотите менять):</label>
-            <Input
-              type="password"
+            <label htmlFor="newPassword">Новый пароль</label>
+            <input
+              id="newPassword"
               name="newPassword"
+              type="password"
               value={formData.newPassword}
               onChange={handleInputChange}
               disabled={isSubmitting}
+              className={styles.input}
+              autoComplete="new-password"
             />
           </div>
           <div className={styles.formGroup}>
-            <label>Подтвердите новый пароль:</label>
-            <Input
-              type="password"
+            <label htmlFor="confirmPassword">Подтвердите новый пароль</label>
+            <input
+              id="confirmPassword"
               name="confirmPassword"
+              type="password"
               value={formData.confirmPassword}
               onChange={handleInputChange}
               disabled={isSubmitting}
+              className={styles.input}
+              autoComplete="new-password"
             />
           </div>
+          {error && <div className={styles.error}>{error}</div>}
           <div className={styles.formActions}>
-            <Button type="primary" htmlType="submit" loading={isSubmitting}>
-              Сохранить
-            </Button>
-            <Button onClick={() => setIsEditing(false)} disabled={isSubmitting}>
+            <button type="submit" disabled={isSubmitting} className={styles.cyberButton}>
+              {isSubmitting ? 'Сохранение...' : 'Сохранить'}
+            </button>
+            <button type="button" onClick={() => setIsEditing(false)} disabled={isSubmitting} className={styles.cyberButton}>
               Отмена
-            </Button>
+            </button>
           </div>
         </form>
       ) : (
-        <div className={styles.profileInfo}>
-          <div className={styles.infoGroup}>
-            <label>Имя пользователя</label>
-            <span>{user?.username}</span>
-          </div>
-          <div className={styles.infoGroup}>
-            <label>Email</label>
-            <span>{user?.email}</span>
-          </div>
+        <div className={styles.gamesSection}>
+          <h2>Мои игры</h2>
+          {loading ? (
+            <div className={styles.loading}>Загрузка игр...</div>
+          ) : games.length > 0 ? (
+            <>
+              <div className={styles.gamesGrid}>
+                {visibleGames.map((userGame) => (
+                  <div key={userGame.id} className={styles.gameCard}>
+                    <div className={styles.gameImageContainer}>
+                      <img
+                        src={`${IMAGES_URL}/${userGame.game.img_path}`}
+                        alt={userGame.game.name}
+                        className={styles.gameImage}
+                      />
+                    </div>
+                    <div className={styles.gameInfo}>
+                      <h3>{userGame.game.name}</h3>
+                      <div className={styles.gameDetails}>
+                        <span className={styles.gamePrice}>{userGame.game.price} ₽</span>
+                        <span className={styles.purchaseDate}>
+                          {userGame.purchase_date ? new Date(userGame.purchase_date).toLocaleDateString('ru-RU') : 'Дата покупки неизвестна'}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              {games.length > gamesPerPage && (
+                <button 
+                  onClick={toggleShowAllGames}
+                  className={styles.cyberButton}
+                >
+                  {showAllGames ? 'Показать меньше' : 'Показать еще'}
+                </button>
+              )}
+            </>
+          ) : (
+            <div className={styles.noGames}>
+              У вас пока нет купленных игр
+            </div>
+          )}
         </div>
       )}
-
-      <div className={styles.userGames}>
-        <h2>Мои игры</h2>
-        {loading ? (
-          <div className={styles.loading}>Загрузка игр...</div>
-        ) : games.length > 0 ? (
-          <div className={styles.gamesGrid}>
-            {games.map((game) => (
-              <div key={game.id} className={styles.gameCard}>
-                <div className={styles.gameImageContainer}>
-                  <img
-                    src={`${IMAGES_URL}/${game.game.img_path}`}
-                    alt={game.game.name}
-                    className={styles.gameImage}
-                  />
-                </div>
-                <div className={styles.gameInfo}>
-                  <h3>{game.game.name}</h3>
-                  <div className={styles.gameDetails}>
-                    <span className={styles.gamePrice}>{game.game.price} ₽</span>
-                    <span className={styles.purchaseDate}>
-                      {game.purchase_date ? new Date(game.purchase_date).toLocaleDateString('ru-RU') : 'Дата покупки неизвестна'}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className={styles.noGames}>
-            У вас пока нет купленных игр
-          </div>
-        )}
-      </div>
     </div>
   );
 };
 
 export default Profile;
+  

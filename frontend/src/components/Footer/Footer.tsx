@@ -11,11 +11,18 @@ const Footer: React.FC = () => {
     { icon: <FaDiscord size={20} />, url: 'https://discord.com', label: 'Discord' },
   ];
 
+  // const footerLinks = [
+  //   { name: 'О нас', path: '/info/about' },
+  //   { name: 'Условия использования', path: '/info/terms' },
+  //   { name: 'Политика конфиденциальности', path: '/info/privacy' },
+  //   { name: 'Поддержка', path: '/info/support' },
+  // ];
+
   const footerLinks = [
-    { name: 'О нас', path: '/info/about' },
-    { name: 'Условия использования', path: '/info/terms' },
-    { name: 'Политика конфиденциальности', path: '/info/privacy' },
-    { name: 'Поддержка', path: '/info/support' },
+    { name: 'Главная', path: '/' },
+    { name: 'Все игры', path: '/games' },
+    { name: 'Избранное', path: '/user/favourites' },
+    { name: 'Профиль', path: '/user/profile' },
   ];
 
   return (

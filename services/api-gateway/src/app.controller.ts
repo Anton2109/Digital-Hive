@@ -259,6 +259,23 @@ export class AppController {
     }
   }
 
+  @Put('basket/:id')
+  async updateBasketItem(
+    @Param('id') id: string,
+    @Body() body: { quantity: number }
+  ) {
+    this.logger.log(`Получен запрос на обновление количества товара в корзине: ${id}`);
+    try {
+      const url = `http://basket-service:3000/cart/${id}`;
+      const response = await firstValueFrom(this.httpService.put(url, body));
+      this.logger.log(`Успешно обновлено количество товара в корзине: ${id}`);
+      return response.data;
+    } catch (error) {
+      this.logger.error(`Ошибка при обновлении количества товара в корзине ${id}: ${error.message}`);
+      throw error;
+    }
+  }
+
   @Delete("basket/:id")
   async removeFromBasket(@Param("id") id: string) {
     this.logger.log(`Получен запрос на удаление из корзины: ${id}`);

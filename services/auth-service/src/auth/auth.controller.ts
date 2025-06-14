@@ -30,7 +30,7 @@ export class AuthController {
       body.password,
     );
     if (!user) {
-      throw new UnauthorizedException("Неверный логин или пароль");
+      throw new UnauthorizedException("Неправильный логин или пароль");
     }
     return this.authService.login(user);
   }

@@ -77,7 +77,10 @@ export class AppService {
         this.logger.error(
           `Ошибка от сервиса ${service}: ${JSON.stringify(response.data)}`
         );
-        throw response.data;
+        throw new HttpException(
+          response.data,
+          response.status
+        );
       }
 
       if (
@@ -95,19 +98,23 @@ export class AppService {
       );
       return response.data;
     } catch (error) {
-      const errorData = {
-        message: `Ошибка при переадресации запроса к ${service}`,
-        serviceError: error.response?.data || error.message,
-        statusCode: error.response?.status || 500,
-      };
+      if (error instanceof HttpException) {
+        throw error;
+      }
+
+      const errorResponse = error.response?.data;
+      const statusCode = error.response?.status || HttpStatus.INTERNAL_SERVER_ERROR;
 
       this.logger.error(
-        `Ошибка при переадресации: ${JSON.stringify(errorData)}`
+        `Ошибка при переадресации: ${JSON.stringify(errorResponse || error.message)}`
       );
 
       throw new HttpException(
-        errorData,
-        error.response?.status || HttpStatus.INTERNAL_SERVER_ERROR
+        errorResponse || {
+          message: `Ошибка при переадресации запроса к ${service}`,
+          statusCode
+        },
+        statusCode
       );
     }
   }

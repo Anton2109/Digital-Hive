@@ -1,8 +1,7 @@
 import { API_ENDPOINTS } from "./endpoints";
 import axios from "axios";
 import { IBasketItem, IAddBasketItem } from "@/interfaces/basket";
-
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3000';
+import { API_URL } from "@/constants";
 
 export default class BasketService {
   static async getBasket(sessionId: string): Promise<IBasketItem[]> {
@@ -11,6 +10,7 @@ export default class BasketService {
         `${API_URL}${API_ENDPOINTS.BASKET}`,
         { params: { session_id: sessionId } }
       );
+      console.log("Ответ от сервера (корзина):", response.data);
       return response.data;
     } catch (error) {
       console.error("Ошибка при получении корзины:", error);
@@ -37,6 +37,18 @@ export default class BasketService {
       return true;
     } catch (error) {
       console.error("Ошибка при удалении из корзины:", error);
+      return false;
+    }
+  }
+
+  static async updateQuantity(id: number, quantity: number): Promise<boolean> {
+    try {
+      await axios.put(`${API_URL}${API_ENDPOINTS.BASKET}/${id}`, {
+        quantity
+      });
+      return true;
+    } catch (error) {
+      console.error("Ошибка при обновлении количества:", error);
       return false;
     }
   }

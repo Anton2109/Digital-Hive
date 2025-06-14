@@ -157,6 +157,69 @@
   left: 100%;
 }
 
+.paymentWrapper {
+  display: flex;
+  gap: 32px;
+  width: 100%;
+  max-width: 1000px;
+}
+
+.orderSummary {
+  background: var(--cyber-black);
+  padding: 32px;
+  border-radius: 8px;
+  border: 1px solid rgba(205, 176, 108, 0.2);
+  width: 100%;
+  max-width: 400px;
+  height: fit-content;
+}
+
+.summaryTitle {
+  color: var(--primary-gold);
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 24px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.itemsList {
+  margin-bottom: 24px;
+}
+
+.orderItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(205, 176, 108, 0.1);
+}
+
+.itemName {
+  color: var(--text-color);
+  font-size: 14px;
+}
+
+.itemPrice {
+  color: var(--primary-gold);
+  font-weight: 600;
+}
+
+.total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 16px;
+  border-top: 2px solid rgba(205, 176, 108, 0.2);
+  color: var(--text-color);
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.total span:last-child {
+  color: var(--primary-gold);
+}
+
 @media (max-width: 768px) {
   .paymentCard {
     padding: 24px;
@@ -165,5 +228,44 @@
   .row {
     grid-template-columns: 1fr;
     gap: 0;
+  }
+
+  .paymentWrapper {
+    flex-direction: column;
+  }
+
+  .orderSummary {
+    max-width: 100%;
+  }
+}
+
+.loading,
+.emptyCart {
+  color: var(--text-color);
+  text-align: center;
+  padding: 24px;
+  font-size: 16px;
+  opacity: 0.7;
+}
+
+.loading {
+  position: relative;
+}
+
+.loading::after {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--primary-gold);
+  border-radius: 50%;
+  border-top-color: transparent;
+  animation: spin 1s linear infinite;
+  margin-left: 8px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
   }
 } 
