@@ -20,11 +20,11 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(
+  /* background: linear-gradient(
     to bottom,
     rgba(0, 0, 0, 0.7) 0%,
     rgba(0, 0, 0, 0.5) 100%
-  );
+  ); */
 }
 
 .heroContent {
@@ -51,14 +51,64 @@
 }
 
 .heroButton {
-  padding: 16px 32px;
-  font-size: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.8rem 2.5rem;
+  background: linear-gradient(
+    145deg,
+    var(--color-secondary),
+    var(--cyber-black)
+  );
+  color: var(--primary-gold);
+  border: 1px solid rgba(205, 176, 108, 0.3);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s var(--ease-out-expo);
+  text-transform: uppercase;
+  letter-spacing: 1px;
   font-weight: 600;
-  color: var(--text-color);
-  background-color: rgba(255, 215, 0, 0.1);
-  border: 1px solid var(--primary-gold);
-  border-radius: 4px;
-  transition: background-color 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  font-size: 14px;
+  min-width: 120px;
+}
+
+.heroButton::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(205, 176, 108, 0.2),
+    transparent
+  );
+  transition: 0.5s;
+}
+
+.heroButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(205, 176, 108, 0.15);
+  border-color: rgba(205, 176, 108, 0.5);
+  background: linear-gradient(
+    145deg,
+    var(--cyber-black),
+    var(--color-secondary)
+  );
+}
+
+.heroButton:hover::before {
+  left: 100%;
+}
+
+.heroButton:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 10px rgba(205, 176, 108, 0.1);
 }
 
 .heroButton:hover {

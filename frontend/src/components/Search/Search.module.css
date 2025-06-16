@@ -239,3 +239,42 @@
     font-size: 13px;
   }
 }
+
+.searchLoading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100px;
+  padding: 20px;
+  background: var(--color-background-primary);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.searchResultsLoading {
+  min-height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.searchLoader {
+  height: 40px;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.searchLoader .wave {
+  height: 30px;
+  -webkit-box-reflect: none;
+}
+
+.searchLoader .wave span {
+  font-size: 16px;
+  margin: 0 2px;
+  color: var(--primary-gold);
+}

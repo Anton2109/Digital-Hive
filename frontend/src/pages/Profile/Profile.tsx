@@ -7,7 +7,7 @@ import { IUserGame } from "@/interfaces/game";
 import AuthService from "../../API/AuthService";
 import GameService from "../../API/GameService";
 import styles from "./Profile.module.css";
-import { LogoutOutlined, UserOutlined, CrownOutlined, EditOutlined, InfoCircleOutlined, DashboardOutlined } from "@ant-design/icons";
+import { LogoutOutlined, UserOutlined, EditOutlined, DashboardOutlined } from "@ant-design/icons";
 import { IMAGES_URL } from "../../constants";
 import { message } from "antd";
 

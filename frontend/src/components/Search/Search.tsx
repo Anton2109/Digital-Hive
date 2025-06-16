@@ -64,35 +64,33 @@ const Search = ({
       </form>
 
       {searchValue.trim() && !isAdminPanel && (
-        <div className={styles.searchResults}>
+        <div className={isLoading ? `${styles.searchResults} ${styles.searchResultsLoading}` : styles.searchResults}>
           {isLoading ? (
-            <div><Loader/></div>
+            <div className={styles.searchLoading}>
+               <h1>Загрузка...</h1>
+            </div>
+          ) : searchResults.length > 0 ? (
+            searchResults.map((game) => (
+              <div
+                key={game.id}
+                className={styles.searchResultItem}
+                onClick={() => handleResultClick(game)}
+              >
+                <img
+                  src={game.img_path}
+                  alt={game.name}
+                  className={styles.searchResultImage}
+                />
+                <span className={styles.searchResultName}>{game.name}</span>
+                {game.price && (
+                  <span className={styles.searchResultPrice}>
+                    {game.price} ₽
+                  </span>
+                )}
+              </div>
+            ))
           ) : (
-            <>
-              {searchResults.length > 0 ? (
-                searchResults.map((game) => (
-                  <div
-                    key={game.id}
-                    className={styles.searchResultItem}
-                    onClick={() => handleResultClick(game)}
-                  >
-                    <img
-                      src={game.img_path}
-                      alt={game.name}
-                      className={styles.searchResultImage}
-                    />
-                    <span className={styles.searchResultName}>{game.name}</span>
-                    {game.price && (
-                      <span className={styles.searchResultPrice}>
-                        {game.price} ₽
-                      </span>
-                    )}
-                  </div>
-                ))
-              ) : (
-                <div className={styles.noResults}>Ничего не найдено</div>
-              )}
-            </>
+            <div className={styles.noResults}>Ничего не найдено</div>
           )}
         </div>
       )}
