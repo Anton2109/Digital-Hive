@@ -10,11 +10,11 @@
 - 📊 Управление профилем и историей заказов
 
 **Технологический стек**:
-| Frontend               | Backend               | Инфраструктура       |
+| Frontend               | Backend     |           База данных
 |------------------------|-----------------------|----------------------|
-| React.js + TypeScript  | Nest.js (микросервисы)| Docker + Docker Compose      |
+| React.js + TypeScript  | Nest.js (микросервисы)|       |
 | Redux Toolkit          | JWT Auth              | MySQL               |
-| Vite                   | Docker                |             |
+| Vite                   | Docker Compose               |             |
 
 ## 🛠 Инструкция по запуску
 
@@ -26,7 +26,7 @@ git clone https://github.com/Anton2109/Digital-Hive
 ### 2. Запуск Frontend
 ```bash
 cd frontend
-npm install    # Установка зависимостей
+npm install    # Установка библиотек
 npm run dev    # Запуск dev-сервера
 ```
 
@@ -37,6 +37,5 @@ npm run dev    # Запуск dev-сервера
 
 ```bash
 cd  services
-docker-compose down -v    # Очистка предыдущих контейнеров
 docker-compose up --build # Сборка и запуск сервисов
 ```
