@@ -4,7 +4,6 @@ import { IBasketItem } from "@/interfaces/basket";
 import { IGame } from "@/interfaces/game";
 import GameService from "@/API/GameService";
 import BasketService from "@/API/BasketService";
-import { Button } from "@/UI/Button/Button";
 import { useNavigate } from "react-router-dom";
 
 const MAX_QUANTITY = 10;
@@ -80,7 +79,7 @@ const Basket = () => {
     try {
       const token = localStorage.getItem('token');
       if (!token) {
-        navigate('/auth/login');
+        navigate('/payment');
         return;
       }
 
@@ -172,12 +171,12 @@ const Basket = () => {
             <div className={styles.total}>
               Итого: <span>{calculateTotal()} ₽</span>
             </div>
-            <Button 
+            <button
               className={styles.checkoutButton}
               onClick={handleCheckout}
             >
               Оформить заказ
-            </Button>
+            </button>
           </div>
         </>
       )}
