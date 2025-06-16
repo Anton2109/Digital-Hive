@@ -12,8 +12,8 @@
 **Технологический стек**:
 | Frontend               | Backend     |           База данных
 |------------------------|-----------------------|----------------------|
-| React.js + TypeScript  | Nest.js (микросервисы)|       |
-| Redux Toolkit          | JWT Auth              | MySQL               |
+| React.js + TypeScript  | Nest.js (микросервисы)|   MySQL    |
+| Redux Toolkit          | JWT Auth              |                |
 | Vite                   | Docker Compose               |             |
 
 ## 🛠 Инструкция по запуску
